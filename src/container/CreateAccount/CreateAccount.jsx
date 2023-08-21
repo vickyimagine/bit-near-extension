@@ -1,17 +1,27 @@
 import React from "react";
-// import {setupWalletSelector} from "@near-wallet-selector/core";
-import {useNavigate} from "react-router-dom";
-import {genKeys} from "../../utils/generateKeys";
+import {Routes, Route} from "react-router-dom";
+import {NewAccount, ImportAccount, AccountOptions, Welcome} from "../../components";
 
 const CreateAccount = () => {
-  const generatePairs = () => {};
-
   return (
-    <div
-      className='text-3xl text-white'
-      onClick={generatePairs}>
-      Generate
-    </div>
+    <Routes>
+      <Route
+        path='/welcome'
+        element={<Welcome />}
+      />
+      <Route
+        path='/account-options'
+        element={<AccountOptions />}
+      />
+      <Route
+        path='/new-account'
+        element={<NewAccount />}
+      />
+      <Route
+        path='/import-account'
+        element={<ImportAccount />}
+      />
+    </Routes>
   );
 };
 

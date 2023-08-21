@@ -3,11 +3,9 @@ const bs58 = require("bs58");
 
 export const genKeys = () => {
   const keyPair = KeyPair.fromRandom("ed25519");
-  console.log(keyPair);
   let publicKey = keyPair.publicKey.toString().slice(8);
-  console.log(publicKey.slice(8));
   const accountId = getAccountId(publicKey);
-  console.log(accountId);
+  return [keyPair, accountId];
 };
 
 function getAccountId(publicKey) {

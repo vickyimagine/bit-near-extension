@@ -5,10 +5,10 @@ import {Home, CreateAccount} from "./container/index";
 
 const App = () => {
   return (
-    <div className='bg-cyan-950 rounded-md h-[500px] w-[500px] flex justify-center mx-auto'>
+    <div className='bg-bitBg rounded-md h-[500px] w-[500px] flex justify-center mx-auto p-4'>
       <Routes>
         <Route
-          path='/login'
+          path='/login/*'
           element={<CreateAccount />}
         />
         <Route
