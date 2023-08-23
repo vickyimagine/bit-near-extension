@@ -6,7 +6,7 @@ const Sidebar = ({setSidebarOpen}) => {
   return (
     <div className='flex flex-col text-bitBg font-semibold p-4'>
       <span
-        className='self-end mb-3 '
+        className='self-end mb-3 cursor-pointer'
         onClick={() => {
           setSidebarOpen(false);
         }}>
