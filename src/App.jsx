@@ -5,7 +5,7 @@ import {Home, CreateAccount} from "./container/index";
 
 const App = () => {
   return (
-    <div className='bg-bitBg rounded-md h-[500px] w-[500px] flex justify-center mx-auto p-7'>
+    <div className='bg-bitBg rounded-md h-[500px] w-[500px] flex justify-center mx-auto p-5'>
       <Routes>
         <Route
           path='/login/*'

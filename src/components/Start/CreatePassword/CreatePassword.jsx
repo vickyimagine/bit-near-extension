@@ -24,7 +24,7 @@ const EnterPassword = () => {
 
     // Store the updated JSON string back into local storage
     localStorage.setItem("keyStore", updatedJSON);
-    // navigate("/home");
+    navigate("/home");
   };
 
   return (
