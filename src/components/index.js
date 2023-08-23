@@ -4,3 +4,6 @@ export {default as AccountOptions} from "./Start/AccountOptions/AccountOptions";
 export {default as Welcome} from "./Start/Welcome/Welcome";
 export {default as EnterPhrase} from "./Start/EnterPhrase/EnterPhrase";
 export {default as CreatePassword} from "./Start/CreatePassword/CreatePassword";
+export {default as Balances} from "./Balances/Balances";
+export {default as Collectibles} from "./Collectibles/Collectibles";
+export {default as Sidebar} from "./Sidebar/Sidebar";
