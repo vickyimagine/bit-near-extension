@@ -9,7 +9,7 @@ const Welcome = () => {
         Welcome To <p className='font-semibold'>Bitwallet</p>
       </h1>
       <Link to='/login/account-options'>
-        <button className='flex justify-center space-x-3 items-center bg-white text-cyan-900 font-semibold p-2 px-4 mt-20  rounded-md shadow-lg hover:scale-105 transition-all duration-200 hover:shadow-gray-400'>
+        <button className='bit-btn px-4 mt-20'>
           <p>Click To Start</p>
           <MdStart fontSize={21} />
         </button>

@@ -1,13 +1,15 @@
 import React from "react";
 import {IoMdArrowRoundBack} from "react-icons/io";
+import {FaUserPlus} from "react-icons/fa";
+import {BiImport} from "react-icons/bi";
 import {Link} from "react-router-dom";
 
 const AccountOptions = () => {
   return (
     <>
-      <div className='flex flex-col items-center w-full space-y-10 p-4'>
+      <div className='flex flex-col items-center w-full justify-between'>
         <Link
-          className='flex self-start justify-center space-x-3 items-center bg-white text-cyan-900 font-semibold p-2 px-4 rounded-md hover:scale-105 transition-all duration-200'
+          className='bit-btn self-start px-4'
           to='/login/welcome'>
           <IoMdArrowRoundBack fontSize={21} />
           <p>Back</p>
@@ -18,8 +20,9 @@ const AccountOptions = () => {
           <p className='text-center text-white '>
             If you have not created wallet before, you can choose below option
           </p>
-          <button className='bg-white w-3/5 rounded-md p-2 text-cyan-900 font-semibold hover:scale-105 transition-all duration-200'>
-            Create Account
+          <button className='bit-btn w-3/5'>
+            <p>Create Account</p>
+            <FaUserPlus fontSize={21} />
           </button>
         </Link>
         <Link
@@ -29,8 +32,9 @@ const AccountOptions = () => {
           <p className='text-center text-white '>
             If you have created wallet before, you can choose below option
           </p>
-          <button className='bg-white w-3/5 rounded-md p-2 text-cyan-900 font-semibold hover:scale-105 transition-all duration-200'>
-            Import Account
+          <button className='bit-btn w-3/5'>
+            <p>Import Account</p>
+            <BiImport fontSize={21} />
           </button>
         </Link>
         <Link className='text-white'>Terms & Conditions</Link>

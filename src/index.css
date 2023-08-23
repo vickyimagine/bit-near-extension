@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .bit-btn {
+    @apply flex justify-center space-x-3 items-center bg-white text-bitBg font-semibold p-2 rounded-md hover:scale-105 transition-all duration-200;
+  }
+}
