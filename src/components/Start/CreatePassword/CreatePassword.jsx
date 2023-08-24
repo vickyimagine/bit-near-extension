@@ -24,7 +24,7 @@ const EnterPassword = () => {
 
     // Store the updated JSON string back into local storage
     localStorage.setItem("keyStore", updatedJSON);
-    navigate("/home");
+    navigate("/homescreen");
   };
 
   return (
@@ -73,8 +73,7 @@ const EnterPassword = () => {
           </p>
         </div>
       </div>
-      <Link
-        to='/home'
+      <button
         className={`bit-btn px-8 ${
           (finalPassword.length === 0 ||
             password.length === 0 ||
@@ -86,7 +85,7 @@ const EnterPassword = () => {
           handleSave();
         }}>
         <p>Next</p>
-      </Link>
+      </button>
     </div>
   );
 };

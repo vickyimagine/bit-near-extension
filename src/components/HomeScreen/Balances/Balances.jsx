@@ -4,6 +4,7 @@ import {CopyToClipboard} from "react-copy-to-clipboard";
 import {HiOutlineClipboardCopy} from "react-icons/hi";
 import {HiOutlineArrowUturnDown} from "react-icons/hi2";
 import {LuSend} from "react-icons/lu";
+import {Link} from "react-router-dom";
 
 const Balances = ({accountId}) => {
   return (
@@ -22,21 +23,22 @@ const Balances = ({accountId}) => {
         <span className='opacity-90'>Available Balance</span>
       </div>
       <div className='flex justify-around'>
-        <div className='flex flex-col items-center space-y-2'>
+        <Link
+          to='/send'
+          className='flex flex-col items-center space-y-2'>
           <button className='bg-white text-bitBg p-3 rounded-2xl opacity-80 hover:opacity-100 hover:scale-105'>
             <LuSend fontSize={27} />
           </button>
           <span className='text-white'>Send</span>
-        </div>
-        <div className='flex flex-col items-center space-y-2'>
+        </Link>
+        <Link
+          to='/receive'
+          className='flex flex-col items-center space-y-2'>
           <button className='bg-white text-bitBg p-3 rounded-2xl opacity-80 hover:opacity-100 hover:scale-105'>
-            <HiOutlineArrowUturnDown
-              fontSize={27}
-              fontWeight='500'
-            />
+            <HiOutlineArrowUturnDown fontSize={27} />
           </button>
           <span className='text-white'>Receive</span>
-        </div>
+        </Link>
       </div>
     </div>
   );

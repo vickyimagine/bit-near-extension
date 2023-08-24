@@ -44,7 +44,6 @@ export const transferNear = async (signer, receiver, networkType, amount, privat
     const result = await provider.sendJsonRpc("broadcast_tx_commit", [
       Buffer.from(signedSerializedTx).toString("base64")
     ]);
-    console.log(result);
     return result;
   } catch (e) {
     console.log(e);

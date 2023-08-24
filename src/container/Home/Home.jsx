@@ -1,24 +1,19 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Routes, Route} from "react-router-dom";
 import {fetchKeys} from "../../utils/fetchKeyStore";
 
-import {Balances, Collectibles, Sidebar} from "../../components";
+import {Sidebar, HomeScreen, Send, Receive} from "../../components";
 
 import {GiHamburgerMenu} from "react-icons/gi";
 import {bitLogo} from "../../Assets";
 
 const Home = () => {
   const [accountId, setAccountId] = useState(null);
-  const [btnText, setBtnText] = useState("Balances");
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // New state for sidebar
 
   const keyStore = fetchKeys();
   const navigate = useNavigate();
-
-  const activeStyle =
-    "flex items-center justify-center w-1/2 text-center bg-white text-bitBg font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md";
-  const inActiveStyle =
-    "flex items-center justify-center w-1/2 text-center text-white font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md";
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -26,7 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!keyStore) {
-      navigate("/login/account-options");
+      navigate("/account-options");
     }
     setAccountId(keyStore?.accountId);
   }, []);
@@ -60,25 +55,20 @@ const Home = () => {
           alt=''
         />
       </div>
-      <div className='flex justify-center h-10  my-3'>
-        <div
-          className={btnText === "Balances" ? activeStyle : inActiveStyle}
-          onClick={e => {
-            setBtnText(e.target.textContent);
-          }}>
-          Balances
-        </div>
-        <div
-          className={btnText === "Collectibles" ? activeStyle : inActiveStyle}
-          onClick={e => setBtnText(e.target.textContent)}>
-          Collectibles
-        </div>
-      </div>
-      {btnText === "Balances" ? (
-        <Balances accountId={accountId && accountId} />
-      ) : (
-        <Collectibles />
-      )}
+      <Routes>
+        <Route
+          path='/homescreen'
+          element={<HomeScreen accountId={accountId && accountId} />}
+        />
+        <Route
+          path='/send'
+          element={<Send accountId={accountId && accountId} />}
+        />
+        <Route
+          path='/receive'
+          element={<Receive accountId={accountId && accountId} />}
+        />
+      </Routes>
     </div>
   );
 };
