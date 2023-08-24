@@ -12,9 +12,11 @@ const Sidebar = ({setSidebarOpen}) => {
         }}>
         <AiFillCloseSquare fontSize={28} />
       </span>
-      {sidebarLinks?.map(item => {
+      {sidebarLinks?.map((item, index) => {
         return (
-          <span className='capitalize  flex items-center gap-x-3 mb-5 cursor-pointer font-semibold text-lg hover:border-b hover:border-bitBg p-1 transition-all duration-200'>
+          <span
+            key={index}
+            className='capitalize  flex items-center gap-x-3 mb-5 cursor-pointer font-semibold text-lg hover:border-b hover:border-bitBg p-1 transition-all duration-200'>
             {item.logo}
             {item.title}
           </span>

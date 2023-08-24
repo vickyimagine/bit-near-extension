@@ -40,6 +40,7 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
       navigate("/login/password");
     }
   };
+
   return (
     <div className='flex flex-col w-full justify-between items-center'>
       <button
@@ -78,6 +79,7 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
           </button>
         ))}
       </div>
+
       <button
         className={`bit-btn disabled:opacity-75 disabled:hover:scale-100 ${
           checkedArray.length !== 12 && "hidden"

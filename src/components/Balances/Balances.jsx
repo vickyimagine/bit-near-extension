@@ -11,7 +11,7 @@ const Balances = ({accountId}) => {
       <div className='flex items-center justify-between py-2'>
         <span className='font-semibold text-xl text-white'>Wallet ID</span>
         <CopyToClipboard text={accountId && accountId}>
-          <div className='flex items-center justify-between gap-x-3 bg-white font-bold text-bitBg rounded-full px-3 p-1 cursor-pointer active:scale-105'>
+          <div className='flex items-center justify-between gap-x-3 bg-white font-bold text-bitBg rounded-md px-3 p-1 cursor-pointer active:scale-105'>
             {`${accountId?.slice(0, 4)}...${accountId?.slice(-6)}`}
             <HiOutlineClipboardCopy fontSize={21} />
           </div>
