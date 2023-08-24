@@ -2,6 +2,18 @@ import {KeyPair} from "near-api-js";
 const nearAPI = require("near-api-js");
 const sha256 = require("js-sha256");
 
+export const fetchBalance = async networkType => {
+  const provider = new nearAPI.providers.JsonRpcProvider(
+    `https://rpc.${networkType}.near.org`
+  );
+  const response = await provider.query({
+    request_type: "view_account",
+    finality: "final",
+    account_id: "48d7f2d39b7140d430cb92803d35c0e408559b7cb811974df3e6cfca9f50f50c"
+  });
+  console.log(response);
+};
+
 export const transferNear = async (signer, receiver, networkType, amount, privateKey) => {
   const amount = nearAPI.utils.format.parseNearAmount(amount);
   const provider = new nearAPI.providers.JsonRpcProvider(
