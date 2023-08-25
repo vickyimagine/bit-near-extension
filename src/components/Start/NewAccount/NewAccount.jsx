@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {generateSeedPhrase} from "near-seed-phrase";
-import {getAccountId} from "../../../utils/generateAccountId";
+import {getAccountId} from "../../../utils";
 import EnterPhrase from "../EnterPhrase/EnterPhrase";
 
 import {CopyToClipboard} from "react-copy-to-clipboard";

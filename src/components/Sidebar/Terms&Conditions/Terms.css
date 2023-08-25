@@ -1,0 +1,5 @@
+.terms {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}

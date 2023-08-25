@@ -7,22 +7,27 @@ import {BiReset} from "react-icons/bi";
 export const sidebarLinks = [
   {
     logo: <TbInfoSquareRounded fontSize={21} />,
-    title: "about us"
+    title: "about us",
+    destination: "/about"
   },
   {
     logo: <LiaFileSignatureSolid fontSize={21} />,
-    title: "terms & conditions"
+    title: "terms & conditions",
+    destination: "/terms"
   },
   {
     logo: <MdPrivacyTip fontSize={21} />,
-    title: "privacy policy"
+    title: "privacy policy",
+    destination: "/privacy"
   },
   {
     logo: <IoExit fontSize={21} />,
-    title: "log out"
+    title: "log out",
+    destination: "/logout"
   },
   {
     logo: <BiReset fontSize={21} />,
-    title: "reset"
+    title: "reset",
+    destination: "/login/account-options"
   }
 ];

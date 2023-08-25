@@ -1,8 +1,32 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
+import {useSelector} from "react-redux";
+
+import {transferNear, fetchKeys} from "../../../utils";
 
 const ReceiverDetails = ({setNextStep, amount}) => {
+  const {accountId, currentNetwork} = useSelector(state => state.wallet);
+  const [recipient, setRecipient] = useState(null);
+
+  const keyStore = fetchKeys();
+
+  const sendNear = async () => {
+    try {
+      setRecipient("");
+      const txn = await transferNear(
+        accountId,
+        recipient,
+        currentNetwork?.type,
+        amount,
+        keyStore?.keys.secretKey.slice(8)
+      );
+      console.log(txn);
+    } catch (error) {
+      console.log(`Error occured:${error}`);
+    }
+  };
+
   return (
     <div className='flex flex-col  space-y-10'>
       <div className='relative flex items-center justify-center my-5 mb-8'>
@@ -11,10 +35,9 @@ const ReceiverDetails = ({setNextStep, amount}) => {
           onClick={() => {
             setNextStep(false);
           }}>
-          {" "}
           <IoMdArrowRoundBack fontSize={21} />
         </button>
-        <span className='text-2xl text-white font-semibold'>{amount} NEAR</span>
+        <span className='text-2xl text-white font-semibold'>{Number(amount)} NEAR</span>
       </div>
       <div className='flex p-2  rounded-md focus:ring-white ring-1 ring-slate-400 bg-transparent transparent-all duration-200'>
         <span className='w-1/5 text-white font-semibold'>Send To</span>
@@ -22,9 +45,16 @@ const ReceiverDetails = ({setNextStep, amount}) => {
           type='text'
           className='text-end w-4/5 bg-transparent focus:outline-none text-white'
           placeholder='Account ID'
+          onChange={e => {
+            setRecipient(e.target.value);
+          }}
         />
       </div>
-      <button className='bit-btn'>Send </button>
+      <button
+        className='bit-btn'
+        onClick={sendNear}>
+        Send{" "}
+      </button>
       <Link
         to='/homescreen'
         className='border-b w-fit self-center bit-btn'>

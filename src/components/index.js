@@ -10,3 +10,8 @@ export {default as Sidebar} from "./Sidebar/Sidebar";
 export {default as HomeScreen} from "./HomeScreen/HomeScreen";
 export {default as Send} from "./HomeScreen/Send/Send";
 export {default as Receive} from "./HomeScreen/Receive/Receive";
+export {default as Dropdown} from "./Dropdown/Dropdown";
+export {default as AboutUs} from "./Sidebar/AboutUs/About";
+export {default as PrivacyPolicy} from "./Sidebar/PrivacyPolicy/PrivacyPolicy";
+export {default as Terms} from "./Sidebar/Terms&Conditions/Terms";
+export {default as Logout} from "./Sidebar/Logout/Logout";

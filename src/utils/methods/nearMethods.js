@@ -2,27 +2,40 @@ import {KeyPair} from "near-api-js";
 const nearAPI = require("near-api-js");
 const sha256 = require("js-sha256");
 
-export const fetchBalance = async networkType => {
+export const fetchBalance = async (networkType, accountId) => {
   const provider = new nearAPI.providers.JsonRpcProvider(
     `https://rpc.${networkType}.near.org`
   );
-  const response = await provider.query({
-    request_type: "view_account",
-    finality: "final",
-    account_id: "48d7f2d39b7140d430cb92803d35c0e408559b7cb811974df3e6cfca9f50f50c"
-  });
-  console.log(response);
+  try {
+    const response = await provider.query({
+      request_type: "view_account",
+      finality: "final",
+      account_id: accountId
+    });
+
+    let amountInNear = response.amount / 10 ** 24;
+    return parseFloat(amountInNear).toFixed(4) - 0.049;
+  } catch (error) {
+    // console.log(`Erorr occured:${error}`);
+    return 0;
+  }
 };
 
-export const transferNear = async (signer, receiver, networkType, amount, privateKey) => {
-  const amount = nearAPI.utils.format.parseNearAmount(amount);
+export const transferNear = async (
+  signer,
+  receiver,
+  networkType,
+  nearAmount,
+  privateKey
+) => {
+  const amount = nearAPI.utils.format.parseNearAmount(nearAmount);
   const provider = new nearAPI.providers.JsonRpcProvider(
     `https://rpc.${networkType}.near.org`
   );
 
   const keyPair = KeyPair.fromString(privateKey);
   const pubKey = keyPair.getPublicKey();
-  const accessKey = await provider.query(`access_key/${sender}/${pubKey.toString()}`, "");
+  const accessKey = await provider.query(`access_key/${signer}/${pubKey.toString()}`, "");
 
   const nonce = ++accessKey.nonce;
   const actions = [nearAPI.transactions.transfer(amount)];

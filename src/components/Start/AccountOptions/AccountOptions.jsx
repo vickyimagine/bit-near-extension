@@ -1,10 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {IoMdArrowRoundBack} from "react-icons/io";
 import {FaUserPlus} from "react-icons/fa";
 import {BiImport} from "react-icons/bi";
 import {Link} from "react-router-dom";
 
 const AccountOptions = () => {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <>
       <div className='flex flex-col items-center w-full justify-between'>

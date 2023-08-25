@@ -1,30 +1,27 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate, Routes, Route} from "react-router-dom";
-import {fetchKeys} from "../../utils/fetchKeyStore";
-
-import {Sidebar, HomeScreen, Send, Receive} from "../../components";
-
+import React, {useState, useEffect} from "react";
+import {Routes, Route} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setAccountId} from "../../Store/wallet/wallet-slice";
+import {fetchKeys} from "../../utils";
+import {Sidebar, HomeScreen, Send, Receive, Dropdown} from "../../components";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {bitLogo} from "../../Assets";
 
 const Home = () => {
-  const [accountId, setAccountId] = useState(null);
-
+  //hooks
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // New state for sidebar
 
+  const dispatch = useDispatch();
   const keyStore = fetchKeys();
-  const navigate = useNavigate();
-
+  //functions
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  //useEffect
   useEffect(() => {
-    if (!keyStore) {
-      navigate("/account-options");
-    }
-    setAccountId(keyStore?.accountId);
-  }, []);
+    dispatch(setAccountId(keyStore?.accountId));
+  });
 
   return (
     <div className='w-full'>
@@ -40,15 +37,7 @@ const Home = () => {
           }`}>
           <Sidebar setSidebarOpen={setIsSidebarOpen} />
         </div>
-        <select className='select select-ghost w-40 max-w-xs border border-gray-600 focus:outline-none'>
-          <option
-            disabled
-            defaultChecked>
-            Select Network
-          </option>
-          <option>Near Mainnet</option>
-          <option>Near Testnet</option>
-        </select>
+        <Dropdown />
         <img
           className='w-16 h-16 object-contain cursor-pointer hover:scale-110 transition-all duration-300'
           src={bitLogo}
@@ -57,16 +46,16 @@ const Home = () => {
       </div>
       <Routes>
         <Route
-          path='/homescreen'
-          element={<HomeScreen accountId={accountId && accountId} />}
+          path='/*'
+          element={<HomeScreen />}
         />
         <Route
           path='/send'
-          element={<Send accountId={accountId && accountId} />}
+          element={<Send />}
         />
         <Route
           path='/receive'
-          element={<Receive accountId={accountId && accountId} />}
+          element={<Receive />}
         />
       </Routes>
     </div>

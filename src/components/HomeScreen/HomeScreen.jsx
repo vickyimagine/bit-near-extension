@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 import {Balances, Collectibles} from "../../components";
 
-const HomeScreen = ({accountId}) => {
+const HomeScreen = () => {
   const [btnText, setBtnText] = useState("Balances");
 
   const activeStyle =
@@ -26,11 +26,7 @@ const HomeScreen = ({accountId}) => {
           Collectibles
         </div>
       </div>
-      {btnText === "Balances" ? (
-        <Balances accountId={accountId && accountId} />
-      ) : (
-        <Collectibles />
-      )}
+      {btnText === "Balances" ? <Balances /> : <Collectibles />}
     </div>
   );
 };

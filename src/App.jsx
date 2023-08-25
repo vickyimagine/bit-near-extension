@@ -1,6 +1,6 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-
+import {PrivacyPolicy, Terms, AboutUs, Logout} from "./components";
 import {Home, CreateAccount} from "./container/index";
 
 const App = () => {
@@ -14,6 +14,22 @@ const App = () => {
         <Route
           path='/*'
           element={<Home />}
+        />
+        <Route
+          path='/about'
+          element={<AboutUs />}
+        />
+        <Route
+          path='/privacy'
+          element={<PrivacyPolicy />}
+        />
+        <Route
+          path='/terms'
+          element={<Terms />}
+        />
+        <Route
+          path='/logout'
+          element={<Logout />}
         />
       </Routes>
     </div>

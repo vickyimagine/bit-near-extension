@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {IoMdArrowRoundBack} from "react-icons/io";
-import {shuffle} from "../../../utils/shuffleArray";
+import {shuffle} from "../../../utils";
 import {useNavigate} from "react-router-dom";
 
 const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
@@ -37,6 +37,7 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
           accountId: keyStore.accountId
         })
       );
+
       navigate("/login/password");
     }
   };
