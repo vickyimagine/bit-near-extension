@@ -27,10 +27,6 @@ const CreateAccount = () => {
         path='/import-account'
         element={<ImportAccount />}
       />
-      <Route
-        path='/password'
-        element={<CreatePassword />}
-      />
     </Routes>
   );
 };

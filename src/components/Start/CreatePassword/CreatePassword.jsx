@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
 
-const EnterPassword = () => {
+const EnterPassword = ({setNextPage}) => {
   const [checked, setChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [finalPassword, setFinalPassword] = useState("");
@@ -30,15 +30,15 @@ const EnterPassword = () => {
 
   return (
     <div className='flex flex-col w-full items-center space-y-8'>
-      <Link
+      <button
         className='bit-btn self-start px-4'
-        to='/login/new-account'
         onClick={() => {
+          setNextPage(false);
           localStorage.removeItem("keyStore");
         }}>
         <IoMdArrowRoundBack fontSize={21} />
         <p>Back</p>
-      </Link>
+      </button>
       <div className='flex flex-col w-full space-y-4 gap-y-3 border border-white p-6 rounded-md h-fit'>
         <input
           type='password'

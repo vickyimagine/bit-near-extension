@@ -41,7 +41,11 @@ const AccountOptions = () => {
             <BiImport fontSize={21} />
           </button>
         </Link>
-        <Link className='text-white'>Terms & Conditions</Link>
+        <Link
+          to='/terms'
+          className='text-white'>
+          Terms & Conditions
+        </Link>
       </div>
     </>
   );

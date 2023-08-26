@@ -1,13 +1,12 @@
 import React, {useState} from "react";
 import {IoMdArrowRoundBack} from "react-icons/io";
 import {shuffle} from "../../../utils";
-import {useNavigate} from "react-router-dom";
+import {CreatePassword} from "../../../components";
 
 const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
   const [originalArray, setOriginalArray] = useState(phrase);
   const [checkedArray, setCheckedArray] = useState([]);
-
-  const navigate = useNavigate();
+  const [nextPage, setNextPage] = useState(false);
 
   //Add element in the above box array
   const updateCheckedArray = word => {
@@ -37,12 +36,13 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
           accountId: keyStore.accountId
         })
       );
-
-      navigate("/login/password");
     }
+    setNextPage(true);
   };
 
-  return (
+  return nextPage ? (
+    <CreatePassword setNextPage={setNextPage} />
+  ) : (
     <div className='flex flex-col w-full justify-between items-center'>
       <button
         className='bit-btn self-start px-4'

@@ -1,10 +1,12 @@
 const bs58 = require("bs58");
 const nacl = require("tweetnacl");
 
-export const genFromSecret = () => {
+export const genFromSecret = privateKey => {
+  if (privateKey.length === 96) {
+    privateKey.slice(8);
+  }
   // Private key in base58 format
-  const privateKeyBase58 =
-    "2tQzCqmshhQu7oEchX3Vnh7dS5E5PhCaUUAY1ZdHwHSPtQavToGVrVUHE9dvXFcM4TN5VYdi4SoCGnZHbyUvZn4f";
+  const privateKeyBase58 = privateKey;
 
   // Decode base58 private key to bytes
   const privateKeyBytes = bs58.decode(privateKeyBase58);
@@ -16,12 +18,13 @@ export const genFromSecret = () => {
   const publicKey = keyPair.publicKey;
 
   // Encode the public key in base58
-  const publicKeyBase58 = bs58.encode(publicKey);
+  const pubKeyBase = bs58.encode(publicKey);
 
-  // Format the public key
-  const formattedPublicKey = `ed25519:${publicKeyBase58}`;
+  const accId = getAccountId(pubKeyBase);
+  const privKey = `ed25519:${privateKey}`;
+  const pubKey = `ed25519:${pubKeyBase}`;
 
-  console.log("Generated Public Key:", formattedPublicKey);
+  return {accId, pubKey, privKey};
 };
 
 export const getAccountId = publicKey => {
