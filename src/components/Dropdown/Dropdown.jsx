@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {networks} from "../../Data/networks";
+import {networks} from "../../Constants/networks";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentNetwork} from "../../Store/wallet/wallet-slice";
 

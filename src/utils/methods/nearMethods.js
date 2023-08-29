@@ -2,32 +2,34 @@ import {KeyPair} from "near-api-js";
 const nearAPI = require("near-api-js");
 const sha256 = require("js-sha256");
 
-export const fetchBalance = async (networkType, accountId) => {
-  const provider = new nearAPI.providers.JsonRpcProvider(
-    `https://rpc.${networkType}.near.org`
-  );
+export const fetchBalance = async (accountId, networkType, privateKey) => {
+  if (privateKey?.length === 96) {
+    privateKey = privateKey.slice(8);
+  }
+  const connection = await nearConnection(accountId, networkType, privateKey);
   try {
-    const response = await provider.query({
-      request_type: "view_account",
-      finality: "final",
-      account_id: accountId
-    });
-
-    let amountInNear = response.amount / 10 ** 24;
-    return parseFloat(amountInNear).toFixed(4) - 0.049;
+    // gets account balance
+    const account = await connection.account(accountId);
+    const balance = ((await account.getAccountBalance()).available / 10 ** 24).toFixed(4);
+    // console.log(balance);
+    return balance;
   } catch (error) {
-    // console.log(`Erorr occured:${error}`);
+    // console.log(`Error occured:${error}`);
     return 0;
   }
 };
 
 export const transferNear = async (
   signer,
-  receiver,
   networkType,
-  nearAmount,
-  privateKey
+  privateKey,
+  receiver,
+  nearAmount
 ) => {
+  if (privateKey.length === 96) {
+    privateKey = privateKey.slice(8);
+  }
+  console.log(privateKey);
   const amount = nearAPI.utils.format.parseNearAmount(nearAmount);
   const provider = new nearAPI.providers.JsonRpcProvider(
     `https://rpc.${networkType}.near.org`
@@ -73,4 +75,49 @@ export const transferNear = async (
   } catch (e) {
     console.log(e);
   }
+};
+
+export const fetchAccountNFT = async (
+  accountId,
+  networkType,
+  privateKey,
+  contractId,
+  tokenId
+) => {
+  //near connection
+  const connection = await nearConnection(accountId, networkType, privateKey);
+  const account = await connection.account(accountId);
+  //Interacting with contract
+  const contract = new nearAPI.Contract(
+    account, // the account object that is connecting
+    contractId,
+    {
+      // name of contract you're connecting to
+      viewMethods: ["get_nft_token"], // view methods do not change state but usually return a value
+      changeMethods: [] // change methods modify state
+    }
+  );
+  const res = await contract.get_nft_token({
+    token_id: tokenId // argument name and value - pass empty object if no args required
+  });
+  return res;
+};
+
+const nearConnection = async (accountId, networkType, privateKey) => {
+  const keyPair = nearAPI.utils.KeyPair.fromString(privateKey);
+
+  const keyStore = new nearAPI.keyStores.InMemoryKeyStore();
+  keyStore.setKey(networkType, accountId, keyPair);
+  const config = {
+    keyStore, // instance of InMemoryKeyStore
+    networkId: networkType,
+    nodeUrl: `https://rpc.${networkType}.near.org`,
+    walletUrl: `https://wallet.${networkType}.near.org`,
+    helperUrl: `https://helper.${networkType}.near.org`,
+    explorerUrl: `https://explorer.${networkType}.near.org`
+  };
+
+  // inside an async function
+  const nearConnection = await nearAPI.connect(config);
+  return nearConnection;
 };

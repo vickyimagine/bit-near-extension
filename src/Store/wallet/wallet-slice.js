@@ -1,10 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {networks} from "../../Data/networks";
+import {networks} from "../../Constants/networks";
 
 const initialState = {
   currentNetwork: networks[0],
   accountId: null,
-  balance: null
+  balance: null,
+  secretKey: null
 };
 
 const walletSlice = createSlice({
@@ -19,10 +20,14 @@ const walletSlice = createSlice({
     },
     setBalance(state, action) {
       state.balance = action.payload;
+    },
+    setSecretKey(state, action) {
+      state.secretKey = action.payload;
     }
   }
 });
 
-export const {setCurrentNetwork, setAccountId, setBalance} = walletSlice.actions;
+export const {setCurrentNetwork, setAccountId, setBalance, setSecretKey} =
+  walletSlice.actions;
 
 export default walletSlice.reducer;

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Routes, Route} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {setAccountId} from "../../Store/wallet/wallet-slice";
+import {setAccountId, setSecretKey} from "../../Store/wallet/wallet-slice";
 import {fetchKeys} from "../../utils";
 import {Sidebar, HomeScreen, Send, Receive, Dropdown} from "../../components";
 import {GiHamburgerMenu} from "react-icons/gi";
@@ -21,6 +21,7 @@ const Home = () => {
   //useEffect
   useEffect(() => {
     dispatch(setAccountId(keyStore?.accountId));
+    dispatch(setSecretKey(keyStore?.secretKey));
   });
 
   return (

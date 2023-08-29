@@ -1,27 +1,28 @@
 import React, {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
 import {useSelector} from "react-redux";
 
-import {transferNear, fetchKeys} from "../../../utils";
+import {transferNear} from "../../utils";
 
 const ReceiverDetails = ({setNextStep, amount}) => {
-  const {accountId, currentNetwork} = useSelector(state => state.wallet);
+  const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
   const [recipient, setRecipient] = useState(null);
 
-  const keyStore = fetchKeys();
+  const navigate = useNavigate();
 
   const sendNear = async () => {
     try {
       setRecipient("");
       const txn = await transferNear(
         accountId,
-        recipient,
         currentNetwork?.type,
-        amount,
-        keyStore?.keys.secretKey.slice(8)
+        secretKey,
+        recipient,
+        amount
       );
       console.log(txn);
+      navigate("/");
     } catch (error) {
       console.log(`Error occured:${error}`);
     }
@@ -48,6 +49,7 @@ const ReceiverDetails = ({setNextStep, amount}) => {
           onChange={e => {
             setRecipient(e.target.value);
           }}
+          value={recipient}
         />
       </div>
       <button

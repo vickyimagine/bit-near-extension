@@ -12,14 +12,16 @@ import {setBalance} from "../../../Store/wallet/wallet-slice";
 
 const Balances = () => {
   //hooks
-  const {accountId, balance, currentNetwork} = useSelector(state => state.wallet);
+  const {accountId, balance, currentNetwork, secretKey} = useSelector(
+    state => state.wallet
+  );
   const dispatch = useDispatch();
   const keyStore = fetchKeys();
   const navigate = useNavigate();
 
   //functions
   const fetchAccountBal = async () => {
-    const accountBalance = await fetchBalance(currentNetwork?.type, accountId);
+    const accountBalance = await fetchBalance(accountId, currentNetwork.type, secretKey);
     dispatch(setBalance(accountBalance));
   };
 

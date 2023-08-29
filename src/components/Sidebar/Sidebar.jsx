@@ -1,5 +1,5 @@
 import React from "react";
-import {sidebarLinks} from "../../Data/sidebarData";
+import {sidebarLinks} from "../../Constants/sidebarData";
 import {AiFillCloseSquare} from "react-icons/ai";
 import {useNavigate} from "react-router-dom";
 
