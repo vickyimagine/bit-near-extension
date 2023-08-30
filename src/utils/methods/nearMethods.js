@@ -26,7 +26,6 @@ export const transferNear = async (
   if (privateKey.length === 96) {
     privateKey = privateKey.slice(8);
   }
-  console.log(privateKey);
   const amount = nearAPI.utils.format.parseNearAmount(nearAmount);
   const provider = new nearAPI.providers.JsonRpcProvider(
     `https://rpc.${networkType}.near.org`

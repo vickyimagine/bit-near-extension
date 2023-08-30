@@ -2,10 +2,14 @@ import React from "react";
 import {Routes, Route} from "react-router-dom";
 import {PrivacyPolicy, Terms, AboutUs, Logout} from "./components";
 import {Home, CreateAccount} from "./container/index";
+import {Toaster} from "react-hot-toast";
 
 const App = () => {
   return (
     <div className='bg-bitBg rounded-md h-[500px] w-[500px] flex justify-center mx-auto p-5'>
+      <div>
+        <Toaster />
+      </div>
       <Routes>
         <Route
           path='/login/*'

@@ -62,8 +62,8 @@ const Send = () => {
             <span className='font-semibold text-xl'>{balance} NEAR</span>
           </div>
           <button
-            className={`bit-btn disabled:hover:scale-100 disabled:hover:cursor-not-allowed disabled:opacity-75 disabled:ring-red-500 disabled:bg-red-500 disabled:text-white `}
-            disabled={inputLength === 0 || balance === 0 || amount > balance}
+            className={`bit-btn disabled:hover:scale-100 disabled:hover:cursor-not-allowed disabled:opacity-75 disabled:text-bitBg `}
+            disabled={amount === 0 || balance === 0 || Number(amount) > Number(balance)}
             onClick={() => {
               setNextStep(true);
             }}>

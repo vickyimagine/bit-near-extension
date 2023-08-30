@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
 import {useSelector} from "react-redux";
+import {toast} from "react-hot-toast";
 
 import {transferNear} from "../../utils";
 
@@ -12,6 +13,7 @@ const ReceiverDetails = ({setNextStep, amount}) => {
   const navigate = useNavigate();
 
   const sendNear = async () => {
+    toast.loading("Transferring...");
     try {
       setRecipient("");
       const txn = await transferNear(
@@ -21,9 +23,15 @@ const ReceiverDetails = ({setNextStep, amount}) => {
         recipient,
         amount
       );
-      console.log(txn);
+
+      const {
+        transaction: {hash}
+      } = txn;
+      toast.dismiss();
+      toast.success(`Hash: ${hash.slice(0, 5)}...${hash.slice(-4)}`);
       navigate("/");
     } catch (error) {
+      toast.dismiss();
       console.log(`Error occured:${error}`);
     }
   };
