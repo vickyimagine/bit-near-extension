@@ -3,9 +3,6 @@ const nearAPI = require("near-api-js");
 const sha256 = require("js-sha256");
 
 export const fetchBalance = async (accountId, networkType, privateKey) => {
-  if (privateKey?.length === 96) {
-    privateKey = privateKey.slice(8);
-  }
   const connection = await nearConnection(accountId, networkType, privateKey);
   try {
     // gets account balance

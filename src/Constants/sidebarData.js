@@ -8,26 +8,33 @@ export const sidebarLinks = [
   {
     logo: <TbInfoSquareRounded fontSize={21} />,
     title: "about us",
-    destination: "/about"
+    destination: "/about",
+    handler: () => {}
   },
   {
     logo: <LiaFileSignatureSolid fontSize={21} />,
     title: "terms & conditions",
-    destination: "/terms"
+    destination: "/terms",
+    handler: () => {}
   },
   {
     logo: <MdPrivacyTip fontSize={21} />,
     title: "privacy policy",
-    destination: "/privacy"
+    destination: "/privacy",
+    handler: () => {}
   },
   {
     logo: <IoExit fontSize={21} />,
     title: "log out",
-    destination: "/logout"
+    destination: "/logout",
+    handler: () => {}
   },
   {
     logo: <BiReset fontSize={21} />,
     title: "reset",
-    destination: "/login/account-options"
+    destination: "/login/welcome",
+    handler: () => {
+      localStorage.clear();
+    }
   }
 ];

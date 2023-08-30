@@ -21,18 +21,25 @@ const Balances = () => {
 
   //functions
   const fetchAccountBal = async () => {
-    const accountBalance = await fetchBalance(accountId, currentNetwork.type, secretKey);
-    dispatch(setBalance(accountBalance));
+    if (secretKey && accountId) {
+      //To ensure no null value is passed in the function
+      const accountBalance = await fetchBalance(
+        accountId,
+        currentNetwork?.type,
+        secretKey
+      );
+      dispatch(setBalance(accountBalance));
+    }
   };
 
   //useEffects
   useEffect(() => {
     fetchAccountBal();
-  }, [currentNetwork]);
+  }, [currentNetwork, accountId]);
 
   useEffect(() => {
     if (!keyStore) {
-      navigate("/login/account-options");
+      navigate("/login/welcome");
     }
   });
 

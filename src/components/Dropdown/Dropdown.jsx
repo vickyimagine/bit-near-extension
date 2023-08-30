@@ -23,12 +23,12 @@ const Dropdown = () => {
   return (
     <div className='relative inline-block text-left '>
       <button
-        className='select-button select-button-ghost w-40 max-w-xs border border-gray-600 focus:outline-none rounded-md p-2'
+        className='select-button select-button-ghost w-40 max-w-xs border text-white border-gray-600 focus:outline-none rounded-md p-2'
         onClick={toggleDropdown}>
         {currentNetwork.networkName}
       </button>
       {isOpen && (
-        <div className='origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 '>
+        <div className='origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
           {networks.map(item => (
             <button
               key={item.networkName}

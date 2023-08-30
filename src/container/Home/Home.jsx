@@ -33,7 +33,7 @@ const Home = () => {
           onClick={toggleSidebar}
         />
         <div
-          className={`sidebar fixed top-0 left-0 h-full w-60 bg-white shadow-lg transition-transform duration-300 transform ${
+          className={`absolute sidebar z-10 top-0 left-0 h-full w-60 bg-white shadow-lg transition-transform duration-300 transform ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}>
           <Sidebar setSidebarOpen={setIsSidebarOpen} />

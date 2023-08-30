@@ -28,7 +28,7 @@ const Collectibles = () => {
                 })}
             </div>
             <div className='flex flex-col items-center justify-center space-y-3'>
-              <p>Don't see your Collectibles</p>
+              <p className='text-white font-semibold'>Don't see your Collectibles</p>
               <button
                 className='bit-btn'
                 onClick={() => {

@@ -7,7 +7,7 @@ const Sidebar = ({setSidebarOpen}) => {
   const navigate = useNavigate();
 
   return (
-    <div className='flex flex-col text-bitBg font-semibold p-4'>
+    <div className='absolute flex flex-col text-bitBg font-semibold p-4 z-10'>
       <span
         className='self-end mb-3 cursor-pointer'
         onClick={() => {
@@ -21,6 +21,7 @@ const Sidebar = ({setSidebarOpen}) => {
             key={index}
             className='capitalize  flex items-center gap-x-3 mb-5 cursor-pointer font-semibold text-lg hover:border-b hover:border-bitBg p-1 transition-all duration-200'
             onClick={() => {
+              item.handler();
               navigate(item.destination);
             }}>
             {item.logo}
