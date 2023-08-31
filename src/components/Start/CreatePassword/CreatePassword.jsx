@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
+const Cryptr = require("cryptr");
 
 const EnterPassword = ({setNextPage}) => {
   const [checked, setChecked] = useState(false);
@@ -9,15 +10,22 @@ const EnterPassword = ({setNextPage}) => {
 
   const navigate = useNavigate();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Retrieve the stored JSON string from local storage
     const storedJSON = localStorage.getItem("keyStore");
 
     // Parse the JSON string into an object
     const storedObject = JSON.parse(storedJSON);
 
+    //Hash the password and store it in DB
+    const cryptr = new Cryptr("bit-wallet-password", {
+      pbkdf2Iterations: 1000,
+      saltLength: 10
+    });
+    const encryptedString = cryptr.encrypt(password);
+
     // Modify the object by adding a new field
-    storedObject.password = password;
+    storedObject.password = encryptedString;
 
     // Stringify the updated object
     const updatedJSON = JSON.stringify(storedObject);

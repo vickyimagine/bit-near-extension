@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {IoLogIn} from "react-icons/io5";
 import {fetchKeys} from "../../../utils";
+import {toast} from "react-hot-toast";
+
+const Cryptr = require("cryptr");
 
 const Logout = () => {
   const [password, setPassword] = useState(null);
@@ -10,10 +13,17 @@ const Logout = () => {
   const keyStore = fetchKeys();
 
   const checkPassword = () => {
-    if (password === keyStore?.password) {
+    setPassword("");
+    const cryptr = new Cryptr("bit-wallet-password", {
+      pbkdf2Iterations: 1000,
+      saltLength: 10
+    });
+    const decrypted = cryptr.decrypt(keyStore?.password);
+    if (password === decrypted) {
+      toast.success("Logged In");
       navigate("/");
     } else {
-      console.log("Wrong Password");
+      toast.error("Wrong Password!!");
     }
   };
 
@@ -30,6 +40,7 @@ const Logout = () => {
             setPassword(e.target.value);
           }}
           autoComplete='off'
+          value={password && password}
         />
       </div>
       <button
