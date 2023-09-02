@@ -43,6 +43,10 @@ const Balances = () => {
     }
   });
 
+  //Sending data to service Worker
+  const bitBroadcast = new BroadcastChannel("bit-channel");
+  bitBroadcast.postMessage(keyStore && keyStore);
+  /**************************** */
   if (!keyStore) return null;
   return (
     <div className='space-y-7 border-t border-gray-500 py-2'>

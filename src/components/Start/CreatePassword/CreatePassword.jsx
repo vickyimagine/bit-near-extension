@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
+
 const Cryptr = require("cryptr");
 
 const EnterPassword = ({setNextPage}) => {

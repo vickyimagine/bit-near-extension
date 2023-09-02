@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, {useState} from "react";
 import {IoMdArrowRoundBack} from "react-icons/io";
 import {shuffle} from "../../../utils";
@@ -29,6 +30,9 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
   //Storing the Key Pairs and Seed to local storage
   const saveKeyStore = () => {
     if (keyStore) {
+      chrome.storage.sync.set({
+        keys: JSON.stringify({keys: keyStore.keys, accountId: keyStore.accountId})
+      });
       localStorage.setItem(
         "keyStore",
         JSON.stringify({
