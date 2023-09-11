@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bit Wallet Connection Request</title>
+    <script type="text/javascript" src="connection-popup.js"></script>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      button {
+        /* padding: 10px; */
+        width: 150px;
+        border-radius: 20px;
+        background-color: #1976d2;
+        color: white;
+      }
+      h1 {
+        color: #1976d2;
+        font-size: 70px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>BitWallet</h1>
+      <h2>Connection Request</h2>
+
+      <h2 id="origin"></h2>
+      <h3>wants to connect</h3>
+
+      <button id="connectButton">
+        <h2>Connect</h2>
+      </button>
+      <button id="rejectButton"><h2>Reject</h2></button>
+    </div>
+  </body>
+</html>
