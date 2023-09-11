@@ -35,6 +35,7 @@ const EnterPassword = ({setNextPage}) => {
     localStorage.setItem("keyStore", updatedJSON);
 
     navigate("/homescreen");
+    console.log("Test");
   };
 
   return (
