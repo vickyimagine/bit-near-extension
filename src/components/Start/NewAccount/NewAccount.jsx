@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {generateSeedPhrase} from "near-seed-phrase";
 import {getAccountId} from "../../../utils";
 import EnterPhrase from "../EnterPhrase/EnterPhrase";
+import {encrypt} from "n-krypta"; //For es6
 
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {IoMdArrowRoundBack} from "react-icons/io";
@@ -15,7 +16,8 @@ const NewAccount = () => {
   const generateStore = () => {
     let keys = generateSeedPhrase();
     setKeyStore({
-      keys: keys,
+      publicKey: keys.publicKey,
+      secretKey: encrypt(keys.secretKey.slice(8), keys.publicKey),
       accountId: getAccountId(keys.publicKey.slice(8))
     });
     setPhrase(keys.seedPhrase);

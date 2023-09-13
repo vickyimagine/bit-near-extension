@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.from === "Bit-wallet-connection-popup") {
     if (request.message === "accept") {
       contentScriptToBackgroundScript("acceptConnection", {
-        origin: request.origin,
+        origin: request.origin
       });
     }
     if (request.message === "reject") {
@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.from === "Bit-wallet-password-popup") {
     if (request.message === "password") {
       contentScriptToBackgroundScript("enterPassword", {
-        password: request.data.password,
+        password: request.data.password
       });
     }
   }
@@ -22,18 +22,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 // Communicating with Background Script
 const contentScriptToBackgroundScript = (message, data) => {
   chrome.runtime.sendMessage(
-    { from: "Bit-wallet-content-script", message, data },
+    {from: "Bit-wallet-content-script", message, data},
     function (response) {
       if (response.from === "Bit-wallet-background-script") {
-        if (
-          response.message === "checkAccountCreated" &&
-          response.data.status
-        ) {
+        if (response.message === "checkAccountCreated" && response.data.status) {
           contentScriptToInjectScript("checkAccountCreated", response.data);
-        } else if (
-          response.message === "acceptConnection" &&
-          response.data.status
-        ) {
+        } else if (response.message === "acceptConnection" && response.data.status) {
           contentScriptToInjectScript("accepted", response.data);
         } else if (response.message === "checkIsLoggedIn") {
           if (response.data.status) {
@@ -49,13 +43,13 @@ const contentScriptToBackgroundScript = (message, data) => {
 };
 
 // Listening to Inject Script
-window.addEventListener("message", (e) => {
+window.addEventListener("message", e => {
   if (e.data.from === "Bit-wallet-inject-script") {
     let message = e.data.message;
     let origin = e.origin;
     if (message === "checkAccountCreated") {
       contentScriptToBackgroundScript("checkAccountCreated", {
-        origin,
+        origin
       });
     }
     if (message === "connectionRequest") {
@@ -64,14 +58,14 @@ window.addEventListener("message", (e) => {
   }
 });
 
-const checkIsLoggedIn = (origin) => {
+const checkIsLoggedIn = origin => {
   contentScriptToBackgroundScript("checkIsLoggedIn", {
-    origin,
+    origin
   });
 };
 
 // Opening connection-popup
-const injectConnectionScript = (origin) => {
+const injectConnectionScript = origin => {
   let leftpos = (parseInt(screen.width) - 360).toString();
   let params =
     "scrollbars=no,resizeable=no,status=no,location=no,toolbar=no,menubar=no,width=350,height=550,left=" +
@@ -79,18 +73,14 @@ const injectConnectionScript = (origin) => {
     ",top=0";
   let newURL = chrome.runtime.getURL("connection-popup.html");
   window.open(newURL, "Bit-wallet", params);
-  chrome.runtime.onMessage.addListener(function (
-    request,
-    sender,
-    sendResponse
-  ) {
+  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "connectRequestOrigin") {
-      sendResponse({ origin });
+      sendResponse({origin});
     }
   });
 };
 // Opening password-popup
-const injectPasswordScript = (password) => {
+const injectPasswordScript = password => {
   let leftpos = (parseInt(screen.width) - 360).toString();
   let params =
     "scrollbars=no,resizeable=no,status=no,location=no,toolbar=no,menubar=no,width=350,height=600,left=" +
@@ -98,13 +88,9 @@ const injectPasswordScript = (password) => {
     ",top=0";
   let newURL = chrome.runtime.getURL("password-popup.html");
   window.open(newURL, "Bit-wallet", params);
-  chrome.runtime.onMessage.addListener(function (
-    request,
-    sender,
-    sendResponse
-  ) {
+  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "getPassword") {
-      sendResponse({ password });
+      sendResponse({password});
     }
   });
 };
@@ -126,5 +112,5 @@ injectInitialScript();
 
 /// Sending messages
 const contentScriptToInjectScript = (message, data) => {
-  window.postMessage({ from: "Bit-wallet-content-script", message, data });
+  window.postMessage({from: "Bit-wallet-content-script", message, data});
 };

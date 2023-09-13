@@ -57,7 +57,7 @@ const ReceiverDetails = ({setNextStep, amount}) => {
           onChange={e => {
             setRecipient(e.target.value);
           }}
-          value={recipient}
+          value={recipient && recipient}
         />
       </div>
       <button

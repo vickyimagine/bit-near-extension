@@ -1,9 +1,11 @@
+/*global chrome*/
 import React, {useState} from "react";
 import {IoMdArrowRoundBack} from "react-icons/io";
 import {Link} from "react-router-dom";
 import {genFromSecret, getAccountId} from "../../../utils";
 import {parseSeedPhrase} from "near-seed-phrase";
 import {CreatePassword} from "../../../components";
+import {encrypt} from "n-krypta";
 
 const ImportAccount = () => {
   const [inputData, setInputData] = useState({
@@ -27,23 +29,24 @@ const ImportAccount = () => {
     if (inputData.method === "secretKey") {
       const {accId, pubKey, privKey} = genFromSecret(inputData.value);
       accountId = accId;
-      publicKey = pubKey;
-      secretKey = privKey;
+      publicKey = pubKey.slice(8);
+      secretKey = privKey.slice(8);
     } else {
       const keyStore = parseSeedPhrase(inputData.value);
-      console.log(keyStore);
       accountId = getAccountId(keyStore.publicKey.slice(8));
-      publicKey = keyStore.publicKey;
-      secretKey = keyStore.secretKey;
+      publicKey = keyStore.publicKey.slice(8);
+      secretKey = keyStore.secretKey.slice(8);
     }
-    localStorage.setItem(
-      "keyStore",
-      JSON.stringify({
-        accountId: accountId,
-        publicKey: publicKey,
-        secretKey: secretKey
-      })
-    );
+    const newStore = JSON.stringify({
+      accountId: accountId,
+      publicKey: publicKey,
+      secretKey: encrypt(secretKey, publicKey)
+    });
+    localStorage.setItem("keyStore", newStore);
+    chrome.storage.sync.set({
+      keyStore: newStore
+    });
+
     setInputData(prev => {
       return {
         ...prev,

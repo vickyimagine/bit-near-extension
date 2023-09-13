@@ -1,36 +1,37 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     connectedSites: [],
-    loggedIn: true,
+    loggedIn: true
   });
 });
 
 chrome.runtime.onStartup.addListener(() => {
   chrome.storage.sync.set({
-    loggedIn: false,
+    loggedIn: false
   });
 });
 
 const getAccountId = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("keys", (keystore) => {
+    chrome.storage.sync.get("keyStore", keystore => {
       if (chrome.runtime.lastError) {
         reject(false);
       } else {
-        const keys = JSON.parse(keystore["keys"]);
+        const keys = JSON.parse(keystore["keyStore"]);
         const accountId = keys["accountId"];
         resolve(accountId);
       }
     });
   });
 };
+
 const getPassword = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("keys", (keystore) => {
+    chrome.storage.sync.get("keyStore", keystore => {
       if (chrome.runtime.lastError) {
         reject(false);
       } else {
-        const keys = JSON.parse(keystore["keys"]);
+        const keys = JSON.parse(keystore["keyStore"]);
 
         const password = keys["password"];
         resolve(password);
@@ -38,9 +39,10 @@ const getPassword = () => {
     });
   });
 };
+
 const checkLoggedIn = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("loggedIn", (loggedIn) => {
+    chrome.storage.sync.get("loggedIn", loggedIn => {
       if (chrome.runtime.lastError) {
         reject(false);
       } else {
@@ -53,7 +55,7 @@ const checkLoggedIn = () => {
 // Background script
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   const sendGoodResponse = (message, data) => {
-    sendResponse({ from: "Bit-wallet-background-script", message, data });
+    sendResponse({from: "Bit-wallet-background-script", message, data});
   };
 
   if (request.from === "Bit-wallet-content-script") {
@@ -71,40 +73,42 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
           }
           sendGoodResponse("checkAccountCreated", {
             status: true,
-            accountId: accountId,
+            accountId: accountId
           });
         } catch {
           sendGoodResponse("checkAccountCreated", {
-            status: false,
+            status: false
           });
         }
       };
       asyncResponse();
       return true;
     }
+
     // Connection request
     else if (message === "acceptConnection") {
       const asyncResponse = async () => {
         let connectedSites = await chrome.storage.sync.get("connectedSites");
         connectedSites.connectedSites.push(request.data.origin);
         await chrome.storage.sync.set({
-          connectedSites: connectedSites.connectedSites,
+          connectedSites: connectedSites.connectedSites
         });
         try {
           let accountId = await getAccountId();
           sendGoodResponse("acceptConnection", {
             status: true,
-            accountId: accountId,
+            accountId: accountId
           });
         } catch {
           sendGoodResponse("acceptConnection", {
-            status: false,
+            status: false
           });
         }
       };
       asyncResponse();
       return true;
     }
+
     // Logged In  Check
     else if (message === "checkIsLoggedIn") {
       const asyncResponse = async () => {
@@ -113,11 +117,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         try {
           sendGoodResponse("checkIsLoggedIn", {
             status: loggedIn,
-            password: password,
+            password: password
           });
         } catch {
           sendGoodResponse("checkIsLoggedIn", {
-            status: false,
+            status: false
           });
         }
       };
@@ -131,22 +135,22 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         let enteredPassword = request.data.password;
         if (password === enteredPassword) {
           chrome.storage.sync.set({
-            loggedIn: true,
+            loggedIn: true
           });
           try {
             let accountId = await getAccountId();
             sendGoodResponse("acceptConnection", {
               status: true,
-              accountId: accountId,
+              accountId: accountId
             });
           } catch {
             sendGoodResponse("acceptConnection", {
-              status: false,
+              status: false
             });
           }
         } else {
           sendGoodResponse("acceptConnection", {
-            status: false,
+            status: false
           });
         }
       };

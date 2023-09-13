@@ -1,8 +1,8 @@
 const sendMessage = (message, data) => {
-  window.postMessage({ from: "Bit-wallet-inject-script", message, data });
+  window.postMessage({from: "Bit-wallet-inject-script", message, data});
 };
 
-window.addEventListener("message", (e) => {
+window.addEventListener("message", e => {
   if (e.data.from === "Bit-wallet-content-script") {
     let message = e.data.message;
     let data = e.data.data;
@@ -15,8 +15,8 @@ window.addEventListener("message", (e) => {
 // check if account created
 sendMessage("checkAccountCreated", null);
 
-const createProvider = async (data) => {
-  const provider = { accountId: data.accountId };
+const createProvider = async data => {
+  const provider = {accountId: data.accountId};
   provider.connect = (args, kwargs) => {
     sendMessage("connectionRequest", null);
     return connectionRequest;
@@ -25,13 +25,13 @@ const createProvider = async (data) => {
 };
 
 const connectionRequest = new Promise((resolve, reject) => {
-  window.addEventListener("message", (e) => {
+  window.addEventListener("message", e => {
     if (e.data.from === "Bit-wallet-content-script") {
       let message = e.data.message;
       let data = e.data.data;
       if (message === "accepted" && data.status) {
         createProvider(data);
-        resolve(data.publickey);
+        resolve(data.accountId);
       } else if (message === "rejected" && data.status) {
         reject("User denied connection.");
       }

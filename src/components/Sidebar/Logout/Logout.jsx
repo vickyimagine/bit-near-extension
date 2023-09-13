@@ -1,10 +1,9 @@
+/*global chrome*/
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {IoLogIn} from "react-icons/io5";
 import {fetchKeys} from "../../../utils";
 import {toast} from "react-hot-toast";
-
-const Cryptr = require("cryptr");
 
 const Logout = () => {
   const [password, setPassword] = useState(null);
@@ -13,17 +12,15 @@ const Logout = () => {
   const keyStore = fetchKeys();
 
   const checkPassword = () => {
-    setPassword("");
-    const cryptr = new Cryptr("bit-wallet-password", {
-      pbkdf2Iterations: 1000,
-      saltLength: 10
-    });
-    const decrypted = cryptr.decrypt(keyStore?.password);
-    if (password === decrypted) {
-      toast.success("Logged In");
-      navigate("/");
-    } else {
-      toast.error("Wrong Password!!");
+    if (keyStore) {
+      if (keyStore.password === password) {
+        toast.success("Logged In");
+        chrome.storage.sync.set({loggedIn: true});
+        navigate("/");
+      } else {
+        toast.error("Wrong Password !");
+      }
+      setPassword("");
     }
   };
 

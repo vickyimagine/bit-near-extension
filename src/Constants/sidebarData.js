@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import {TbInfoSquareRounded} from "react-icons/tb";
 import {LiaFileSignatureSolid} from "react-icons/lia";
 import {MdPrivacyTip} from "react-icons/md";
@@ -27,7 +29,9 @@ export const sidebarLinks = [
     logo: <IoExit fontSize={21} />,
     title: "log out",
     destination: "/logout",
-    handler: () => {}
+    handler: () => {
+      chrome.storage.sync.set({loggedIn: false});
+    }
   },
   {
     logo: <BiReset fontSize={21} />,
@@ -35,6 +39,10 @@ export const sidebarLinks = [
     destination: "/login/welcome",
     handler: () => {
       localStorage.clear();
+      chrome.storage.sync.clear();
+      chrome.storage.sync.set({
+        loggedIn: true
+      });
     }
   }
 ];

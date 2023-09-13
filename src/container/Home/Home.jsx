@@ -6,6 +6,7 @@ import {fetchKeys} from "../../utils";
 import {Sidebar, HomeScreen, Send, Receive, Dropdown} from "../../components";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {bitLogo} from "../../Assets";
+import {decrypt} from "n-krypta";
 
 const Home = () => {
   //hooks
@@ -20,9 +21,12 @@ const Home = () => {
 
   //useEffect
   useEffect(() => {
-    dispatch(setAccountId(keyStore?.accountId));
-    dispatch(setSecretKey(keyStore?.secretKey));
-  });
+    if (keyStore) {
+      let decryptedKey = decrypt(keyStore?.secretKey, keyStore?.publicKey);
+      dispatch(setAccountId(keyStore?.accountId));
+      dispatch(setSecretKey(decryptedKey));
+    }
+  }, []);
 
   return (
     <div className='w-full'>

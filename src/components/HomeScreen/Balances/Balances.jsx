@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import React, {useEffect} from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {HiOutlineClipboardCopy} from "react-icons/hi";
@@ -18,7 +20,6 @@ const Balances = () => {
   const dispatch = useDispatch();
   const keyStore = fetchKeys();
   const navigate = useNavigate();
-
   //functions
   const fetchAccountBal = async () => {
     if (secretKey && accountId) {
@@ -41,12 +42,17 @@ const Balances = () => {
     if (!keyStore) {
       navigate("/login/welcome");
     }
-  });
+  }, []);
 
-  //Sending data to service Worker
-  const bitBroadcast = new BroadcastChannel("bit-channel");
-  bitBroadcast.postMessage(keyStore && keyStore);
-  /**************************** */
+  useEffect(() => {
+    chrome.storage.sync.get("loggedIn").then(res => {
+      if (!res.loggedIn) {
+        console.log(res.loggedIn);
+        navigate("/logout");
+      }
+    });
+  }, []);
+
   if (!keyStore) return null;
   return (
     <div className='space-y-7 border-t border-gray-500 py-2'>

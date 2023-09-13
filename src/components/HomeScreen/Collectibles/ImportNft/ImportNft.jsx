@@ -39,6 +39,14 @@ const ImportNft = ({setImport, setNfts}) => {
     setImport(false);
   };
 
+  //secret key encryption
+  //wallet connection
+  //NFT showcase
+  //log in issue
+
+  //metadata, title, decrp, media, issuer
+  //media->tokenId, issuer=>onlclick-> description(entire)
+
   return (
     <div className='flex flex-col items-center space-y-7 mt-6'>
       <button
