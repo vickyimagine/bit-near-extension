@@ -4,6 +4,8 @@ import {IoMdArrowRoundBack} from "react-icons/io";
 
 import {useSelector} from "react-redux/es/hooks/useSelector";
 import {fetchAccountNFT} from "../../../../utils";
+import toast from "react-hot-toast";
+// import {nftData} from "../../../../Constants/dummyNFT";
 
 const ImportNft = ({setImport, setNfts}) => {
   const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
@@ -22,16 +24,37 @@ const ImportNft = ({setImport, setNfts}) => {
   }, [setImport]);
 
   const importNFT = async () => {
-    const result = await fetchAccountNFT(
-      accountId,
-      currentNetwork?.type,
-      secretKey,
-      nftParams.contractId,
-      nftParams.tokenId
-    );
-    setNfts(prev => {
-      return [...prev, result];
-    });
+    try {
+      const nftData = localStorage.getItem("nfts");
+      const result = await fetchAccountNFT(
+        accountId,
+        currentNetwork?.type,
+        secretKey,
+        nftParams.contractId,
+        nftParams.tokenId
+      );
+
+      if (result === null) {
+        setNftParams({
+          contractId: "",
+          tokenId: ""
+        });
+        return toast.error("NFT doesn't exist.");
+      }
+
+      // Parse the existing data or initialize an empty array
+      const existingData = nftData ? JSON.parse(nftData) : [];
+
+      // Push the new NFT data
+      existingData.push(result);
+
+      // Store the updated data in local storage
+      localStorage.setItem("nfts", JSON.stringify(existingData));
+    } catch (error) {
+      toast.error(`Account ${nftParams.contractId} doesn't exist on this network.`);
+    }
+
+    // Reset form and state
     setNftParams({
       contractId: "",
       tokenId: ""
@@ -39,13 +62,8 @@ const ImportNft = ({setImport, setNfts}) => {
     setImport(false);
   };
 
-  //secret key encryption
   //wallet connection
   //NFT showcase
-  //log in issue
-
-  //metadata, title, decrp, media, issuer
-  //media->tokenId, issuer=>onlclick-> description(entire)
 
   return (
     <div className='flex flex-col items-center space-y-7 mt-6'>

@@ -6,6 +6,7 @@ import {genFromSecret, getAccountId} from "../../../utils";
 import {parseSeedPhrase} from "near-seed-phrase";
 import {CreatePassword} from "../../../components";
 import {encrypt} from "n-krypta";
+import {toast} from "react-hot-toast";
 
 const ImportAccount = () => {
   const [inputData, setInputData] = useState({
@@ -22,38 +23,58 @@ const ImportAccount = () => {
       };
     });
   };
+  //Check if input phrase is valid or not
+
+  function checkInputPhrase(input) {
+    // Split the input phrase into words using space as the delimiter
+    const words = input.trim().split(" ");
+
+    // Check if the number of words is equal to 12
+    if (words.length !== 12) {
+      throw new Error("Input phrase must contain exactly 12 words.");
+    }
+
+    // If the number of words is 12, return true or perform further processing
+    return true;
+  }
 
   const importAccount = () => {
-    let accountId, publicKey, secretKey;
+    try {
+      let accountId, publicKey, secretKey;
 
-    if (inputData.method === "secretKey") {
-      const {accId, pubKey, privKey} = genFromSecret(inputData.value);
-      accountId = accId;
-      publicKey = pubKey.slice(8);
-      secretKey = privKey.slice(8);
-    } else {
-      const keyStore = parseSeedPhrase(inputData.value);
-      accountId = getAccountId(keyStore.publicKey.slice(8));
-      publicKey = keyStore.publicKey.slice(8);
-      secretKey = keyStore.secretKey.slice(8);
+      if (inputData.method === "secretKey") {
+        if (inputData.value.length !== 96 && inputData.value.length !== 88) {
+          throw new Error("Invalid Secret Key");
+        }
+        const {accId, pubKey, privKey} = genFromSecret(inputData.value);
+        accountId = accId;
+        publicKey = pubKey.slice(8);
+        secretKey = privKey.slice(8);
+      } else {
+        if (!checkInputPhrase(inputData.value)) {
+          throw new Error(checkInputPhrase(inputData.value));
+        }
+        const keyStore = parseSeedPhrase(inputData.value);
+        accountId = getAccountId(keyStore.publicKey.slice(8));
+        publicKey = keyStore.publicKey.slice(8);
+        secretKey = keyStore.secretKey.slice(8);
+      }
+
+      const newStore = JSON.stringify({
+        accountId: accountId,
+        publicKey: publicKey,
+        secretKey: encrypt(secretKey, publicKey)
+      });
+      localStorage.setItem("keyStore", newStore);
+      setNextPage(true);
+    } catch (error) {
+      // Handle the error (e.g., display a toast error message)
+      toast.error(error.message);
     }
-    const newStore = JSON.stringify({
-      accountId: accountId,
-      publicKey: publicKey,
-      secretKey: encrypt(secretKey, publicKey)
-    });
-    localStorage.setItem("keyStore", newStore);
-    chrome.storage.sync.set({
-      keyStore: newStore
-    });
-
-    setInputData(prev => {
-      return {
-        ...prev,
-        value: ""
-      };
-    });
-    setNextPage(true);
+    setInputData(prev => ({
+      ...prev,
+      value: ""
+    }));
   };
 
   return nextPage ? (

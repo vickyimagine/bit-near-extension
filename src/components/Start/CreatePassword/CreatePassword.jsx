@@ -2,15 +2,24 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
+import {AiFillEye} from "react-icons/ai";
+import Terms from "../../Sidebar/Terms&Conditions/Terms";
+import toast from "react-hot-toast";
 
 const EnterPassword = ({setNextPage}) => {
   const [checked, setChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [finalPassword, setFinalPassword] = useState("");
+  const [terms, setTerms] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSave = async () => {
+    if (!password.length > 8) {
+      toast.error("Password length should be greater than 8 characters");
+      return;
+    }
     // Retrieve the stored JSON string from local storage
     const storedJSON = localStorage.getItem("keyStore");
 
@@ -33,7 +42,9 @@ const EnterPassword = ({setNextPage}) => {
     navigate("/homescreen");
   };
 
-  return (
+  return terms ? (
+    <Terms setTerms={setTerms} />
+  ) : (
     <div className='flex flex-col w-full items-center space-y-8'>
       <button
         className='bit-btn self-start px-4'
@@ -45,13 +56,26 @@ const EnterPassword = ({setNextPage}) => {
         <p>Back</p>
       </button>
       <div className='flex flex-col w-full space-y-4 gap-y-3 border border-white p-6 rounded-md h-fit'>
-        <input
-          type='password'
-          placeholder='Password'
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          className={`p-2 px-4 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white`}
-        />
+        <div className='flex items-center relative'>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder='Password'
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className={`p-2 px-4 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white w-full`}
+          />
+          <AiFillEye
+            fontSize={28}
+            color='white'
+            className='absolute z-10 right-0 cursor-pointer'
+            onMouseDown={() => {
+              setShowPassword(true);
+            }}
+            onMouseUp={() => {
+              setShowPassword(false);
+            }}
+          />
+        </div>
         <input
           type='text'
           placeholder='Confirm Password'
@@ -71,22 +95,33 @@ const EnterPassword = ({setNextPage}) => {
               setChecked(e.target.checked);
             }}
           />
-          <p>
+          <p className='text-white'>
             Accept{" "}
-            <span className='font-semibold text-white cursor-pointer border-b'>
+            <button
+              className='font-bold text-white cursor-pointer border-b'
+              onClick={() => {
+                setTerms(true);
+              }}>
               Terms & Conditions
-            </span>
+            </button>
           </p>
         </div>
       </div>
+
       <button
         className={`bit-btn px-8 ${
           (finalPassword.length === 0 ||
             password.length === 0 ||
-            !checked ||
+            checked === false ||
             password !== finalPassword) &&
           "opacity-70 cursor-not-allowed"
         }`}
+        disabled={
+          finalPassword.length === 0 ||
+          password.length === 0 ||
+          checked === false ||
+          password !== finalPassword
+        }
         onClick={() => {
           handleSave();
         }}>

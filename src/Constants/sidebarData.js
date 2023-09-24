@@ -5,6 +5,7 @@ import {LiaFileSignatureSolid} from "react-icons/lia";
 import {MdPrivacyTip} from "react-icons/md";
 import {IoExit} from "react-icons/io5";
 import {BiReset} from "react-icons/bi";
+import {FiKey} from "react-icons/fi";
 
 export const sidebarLinks = [
   {
@@ -26,11 +27,17 @@ export const sidebarLinks = [
     handler: () => {}
   },
   {
+    logo: <FiKey fontSize={21} />,
+    title: "reveal secret key",
+    destination: "/reveal",
+    handler: () => {}
+  },
+  {
     logo: <IoExit fontSize={21} />,
     title: "log out",
     destination: "/logout",
     handler: () => {
-      chrome.storage.sync.set({loggedIn: false});
+      // chrome.storage.sync.set({loggedIn: false});
     }
   },
   {
@@ -39,10 +46,10 @@ export const sidebarLinks = [
     destination: "/login/welcome",
     handler: () => {
       localStorage.clear();
-      chrome.storage.sync.clear();
-      chrome.storage.sync.set({
-        loggedIn: true
-      });
+      // chrome.storage.sync.clear();
+      // chrome.storage.sync.set({
+      //   loggedIn: true
+      // });
     }
   }
 ];

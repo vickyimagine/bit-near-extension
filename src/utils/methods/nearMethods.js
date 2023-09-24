@@ -93,6 +93,7 @@ export const fetchAccountNFT = async (
       changeMethods: [] // change methods modify state
     }
   );
+
   const res = await contract.get_nft_token({
     token_id: tokenId // argument name and value - pass empty object if no args required
   });

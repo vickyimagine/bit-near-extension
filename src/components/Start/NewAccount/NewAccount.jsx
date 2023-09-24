@@ -53,8 +53,8 @@ const NewAccount = () => {
         </div>
       </CopyToClipboard>
       <p className='text-white font-semibold text-center'>
-        Copy the secret phrase and save it at a secure location.You 'll be asked to enter
-        the secret phrase next.
+        Copy the secret phrase by clicking on the above box and save it at a secure
+        location.You 'll be asked to enter the secret phrase next.
       </p>
       <button
         className='bit-btn px-8'

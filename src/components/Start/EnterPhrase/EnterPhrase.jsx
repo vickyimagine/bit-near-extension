@@ -27,6 +27,12 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
     });
   };
 
+  //Reset the phrase to let user enter the phrase again
+  const resetPhrase = () => {
+    setCheckedArray([]);
+    setOriginalArray([...phrase]);
+  };
+
   //Storing the Key Pairs and Seed to local storage
   const saveKeyStore = () => {
     if (keyStore) {
@@ -85,12 +91,9 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
       </div>
 
       <button
-        className={`bit-btn disabled:opacity-75 disabled:hover:scale-100 ${
-          checkedArray.length !== 12 && "hidden"
-        }`}
-        disabled={checkedArray.join("") !== phrase.join("")}
-        onClick={saveKeyStore}>
-        {checkedArray.join("") === phrase.join("") ? "Next" : "Incorrect Order, Retry"}
+        className={`bit-btn ${checkedArray.length !== 12 && "hidden"} cursor-pointer`}
+        onClick={checkedArray.join("") === phrase.join("") ? saveKeyStore : resetPhrase}>
+        {checkedArray.join("") === phrase.join("") ? "Next" : "Retry"}
       </button>
     </div>
   );

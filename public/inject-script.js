@@ -1,3 +1,4 @@
+window.bit = {accountId: ""};
 const sendMessage = (message, data) => {
   window.postMessage({from: "Bit-wallet-inject-script", message, data});
 };

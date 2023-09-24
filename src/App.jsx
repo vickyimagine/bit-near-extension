@@ -1,6 +1,6 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-import {PrivacyPolicy, Terms, AboutUs, Logout} from "./components";
+import {PrivacyPolicy, Terms, AboutUs, Logout, RevealKey} from "./components";
 import {Home, CreateAccount} from "./container/index";
 import {Toaster} from "react-hot-toast";
 
@@ -30,6 +30,10 @@ const App = () => {
         <Route
           path='/terms'
           element={<Terms />}
+        />
+        <Route
+          path='/reveal'
+          element={<RevealKey />}
         />
         <Route
           path='/logout'

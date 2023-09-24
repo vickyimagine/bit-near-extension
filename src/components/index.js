@@ -15,3 +15,4 @@ export {default as AboutUs} from "./Sidebar/AboutUs/About";
 export {default as PrivacyPolicy} from "./Sidebar/PrivacyPolicy/PrivacyPolicy";
 export {default as Terms} from "./Sidebar/Terms&Conditions/Terms";
 export {default as Logout} from "./Sidebar/Logout/Logout";
+export {default as RevealKey} from "./Sidebar/RevealKey/RevealKey";

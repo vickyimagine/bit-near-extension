@@ -2,14 +2,23 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
 
-const Terms = () => {
+const Terms = ({setTerms}) => {
   return (
     <div className='flex flex-col items-start w-full'>
-      <Link
-        to='/homescreen'
-        className='bit-btn w-fit self-start'>
-        <IoMdArrowRoundBack fontSize={21} />
-      </Link>
+      {setTerms !== (null || undefined) ? (
+        <button
+          className='bit-btn w-fit self-start'
+          onClick={() => setTerms(false)}>
+          <IoMdArrowRoundBack fontSize={21} />
+        </button>
+      ) : (
+        <Link
+          to='/homescreen'
+          className='bit-btn w-fit self-start'>
+          <IoMdArrowRoundBack fontSize={21} />
+        </Link>
+      )}
+
       <h1 className='text-5xl text-white font-semibold'>Terms & Conditions</h1>
 
       <div className='terms text-white overflow-y-scroll cursor-default space-y-3'>

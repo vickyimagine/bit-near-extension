@@ -47,7 +47,6 @@ const Balances = () => {
   useEffect(() => {
     chrome.storage.sync.get("loggedIn").then(res => {
       if (!res.loggedIn) {
-        console.log(res.loggedIn);
         navigate("/logout");
       }
     });

@@ -28,9 +28,11 @@ const getAccountId = () => {
 const getPassword = () => {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get("keyStore", keystore => {
+      console.log(keystore);
       if (chrome.runtime.lastError) {
         reject(false);
       } else {
+        console.log(keystore["keyStore"]);
         const keys = JSON.parse(keystore["keyStore"]);
 
         const password = keys["password"];
