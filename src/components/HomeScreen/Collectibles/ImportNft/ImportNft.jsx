@@ -33,7 +33,7 @@ const ImportNft = ({setImport, setNfts}) => {
         nftParams.contractId,
         nftParams.tokenId
       );
-
+      // console.log(result);
       if (result === null) {
         setNftParams({
           contractId: "",
@@ -41,15 +41,18 @@ const ImportNft = ({setImport, setNfts}) => {
         });
         return toast.error("NFT doesn't exist.");
       }
+      if (result.owner_id === accountId) {
+        // Parse the existing data or initialize an empty array
+        const existingData = nftData ? JSON.parse(nftData) : [];
 
-      // Parse the existing data or initialize an empty array
-      const existingData = nftData ? JSON.parse(nftData) : [];
+        // Push the new NFT data
+        existingData.push(result);
 
-      // Push the new NFT data
-      existingData.push(result);
-
-      // Store the updated data in local storage
-      localStorage.setItem("nfts", JSON.stringify(existingData));
+        // Store the updated data in local storage
+        localStorage.setItem("nfts", JSON.stringify(existingData));
+      } else {
+        toast.error("NFT doesn't belong to this account.");
+      }
     } catch (error) {
       toast.error(`Account ${nftParams.contractId} doesn't exist on this network.`);
     }
@@ -86,7 +89,8 @@ const ImportNft = ({setImport, setNfts}) => {
         value={nftParams.tokenId}
       />
       <button
-        className='bit-btn'
+        className='bit-btn disabled:cursor-not-allowed disabled:opacity-75'
+        disabled={nftParams.contractId === "" || nftParams.tokenId === ""}
         onClick={importNFT}>
         Import
       </button>

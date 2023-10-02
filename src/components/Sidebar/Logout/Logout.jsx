@@ -17,7 +17,7 @@ const Logout = () => {
     if (keyStore) {
       if (keyStore.password === password && password) {
         toast.success("Logged In");
-        // chrome.storage.sync.set({loggedIn: true});
+        chrome.storage.sync.set({loggedIn: true});
         navigate("/");
       } else {
         toast.error("Wrong Password !");

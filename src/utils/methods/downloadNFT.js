@@ -1,15 +1,15 @@
 export const nftDownload = async url => {
   let fileName = url.split("/")[url.split("/").length - 1];
-  console.log(fileName);
+  // console.log(fileName);
   let req = new XMLHttpRequest();
   req.open("GET", url, true);
   req.responseType = "blob";
   req.onload = function () {
     //Convert the Byte Data to BLOB object.
     var blob = new Blob([req.response], {
-      type: "application/octetstream"
+      type: "image/png"
     });
-    console.log(blob);
+    // console.log(blob);
 
     //Check the Browser type and download the File.
     var isIE = false || !!document.documentMode;

@@ -5,6 +5,7 @@ import {CopyToClipboard} from "react-copy-to-clipboard";
 import {HiOutlineClipboardCopy} from "react-icons/hi";
 import {HiOutlineArrowUturnDown} from "react-icons/hi2";
 import {LuSend} from "react-icons/lu";
+import toast from "react-hot-toast";
 
 import {Link, useNavigate} from "react-router-dom";
 import {fetchBalance, fetchKeys} from "../../../utils";
@@ -58,7 +59,11 @@ const Balances = () => {
       <div className='flex items-center justify-between py-2'>
         <span className='font-semibold text-xl text-white'>Wallet ID</span>
         <CopyToClipboard text={accountId}>
-          <div className='flex items-center justify-between gap-x-3 bg-white font-bold text-bitBg rounded-md px-3 p-1 cursor-pointer active:scale-105'>
+          <div
+            className='flex items-center justify-between gap-x-3 bg-white font-bold text-bitBg rounded-md px-3 p-1 cursor-pointer active:scale-105'
+            onClick={() => {
+              toast.success("Copied");
+            }}>
             {`${accountId?.slice(0, 4)}...${accountId?.slice(-6)}`}
             <HiOutlineClipboardCopy fontSize={21} />
           </div>

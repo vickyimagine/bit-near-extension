@@ -43,10 +43,10 @@ const ImportAccount = () => {
       let accountId, publicKey, secretKey;
 
       if (inputData.method === "secretKey") {
-        if (inputData.value.length !== 96 && inputData.value.length !== 88) {
-          throw new Error("Invalid Secret Key");
+        const {accId, pubKey, privKey, privateKeyBytes} = genFromSecret(inputData.value);
+        if (privateKeyBytes.length !== 64) {
+          return toast.error("Invalid Secret Key");
         }
-        const {accId, pubKey, privKey} = genFromSecret(inputData.value);
         accountId = accId;
         publicKey = pubKey.slice(8);
         secretKey = privKey.slice(8);
@@ -66,10 +66,15 @@ const ImportAccount = () => {
         secretKey: encrypt(secretKey, publicKey)
       });
       localStorage.setItem("keyStore", newStore);
+      chrome.storage.sync.set({
+        keyStore: newStore
+      });
       setNextPage(true);
     } catch (error) {
       // Handle the error (e.g., display a toast error message)
-      toast.error(error.message);
+      toast.error(
+        error.message.charAt(0).toUpperCase() + error.message.slice(1).toLowerCase()
+      );
     }
     setInputData(prev => ({
       ...prev,

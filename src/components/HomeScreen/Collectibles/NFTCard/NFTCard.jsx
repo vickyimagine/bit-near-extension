@@ -21,7 +21,7 @@ const NFTCard = ({nft, setCardOpen}) => {
           <button
             className='bit-btn w-fit h-fit '
             onClick={() => {
-              nftDownload(nft?.metadata.media);
+              nftDownload(nft?.metadata?.media);
             }}>
             Download
           </button>

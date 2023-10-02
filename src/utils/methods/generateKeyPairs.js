@@ -2,18 +2,15 @@ const bs58 = require("bs58");
 const nacl = require("tweetnacl");
 
 export const genFromSecret = privateKey => {
-  if (privateKey.length === 96) {
-    privateKey.slice(8);
+  if (privateKey.startsWith("ed25519:")) {
+    privateKey = privateKey.substring(8); // Remove the first 8 characters (including "ed25519:")
   }
   // Private key in base58 format
   const privateKeyBase58 = privateKey;
-
   // Decode base58 private key to bytes
   const privateKeyBytes = bs58.decode(privateKeyBase58);
-
   // Generate key pair from private key
   const keyPair = nacl.sign.keyPair.fromSecretKey(privateKeyBytes);
-
   // Get the public key
   const publicKey = keyPair.publicKey;
 
@@ -24,7 +21,7 @@ export const genFromSecret = privateKey => {
   const privKey = `ed25519:${privateKey}`;
   const pubKey = `ed25519:${pubKeyBase}`;
 
-  return {accId, pubKey, privKey};
+  return {accId, pubKey, privKey, privateKeyBytes};
 };
 
 export const getAccountId = publicKey => {

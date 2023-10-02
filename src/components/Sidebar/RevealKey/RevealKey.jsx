@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {IoMdArrowRoundBack} from "react-icons/io";
@@ -17,7 +19,6 @@ const RevealKey = () => {
     if (keyStore) {
       if (keyStore.password === password && password) {
         toast.success("Revealed");
-        chrome.storage.sync.set({loggedIn: true});
         setIsKey(true);
       } else {
         toast.error("Wrong Password !");

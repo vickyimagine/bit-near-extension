@@ -2,9 +2,9 @@ const connectionScript = () => {
   console.log("Started connection");
   function poppulateOrigin() {
     chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-      console.log(tabs);
+      // console.log(tabs);
       chrome.tabs.sendMessage(tabs[0].id, {message: "connectRequestOrigin"}, res => {
-        console.log(res);
+        // console.log(res);
         document.getElementById("origin").innerHTML = res.origin;
       });
     });
