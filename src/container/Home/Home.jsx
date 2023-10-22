@@ -43,11 +43,15 @@ const Home = () => {
           <Sidebar setSidebarOpen={setIsSidebarOpen} />
         </div>
         <Dropdown />
-        <img
-          className='w-16 h-16 object-contain cursor-pointer hover:scale-110 transition-all duration-300'
-          src={bitLogo}
-          alt=''
-        />
+        <a
+          href='https://www.bitmemoir.com/'
+          target='_blank'>
+          <img
+            className='w-16 h-16 object-contain cursor-pointer hover:scale-110 transition-all duration-300'
+            src={bitLogo}
+            alt=''
+          />
+        </a>
       </div>
       <Routes>
         <Route

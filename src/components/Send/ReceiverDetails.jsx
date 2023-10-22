@@ -8,7 +8,7 @@ import {transferNear} from "../../utils";
 
 const ReceiverDetails = ({setNextStep, amount}) => {
   const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
-  const [recipient, setRecipient] = useState(null);
+  const [recipient, setRecipient] = useState("");
 
   const navigate = useNavigate();
 

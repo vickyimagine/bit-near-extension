@@ -6,6 +6,8 @@ export {default as EnterPhrase} from "./Start/EnterPhrase/EnterPhrase";
 export {default as CreatePassword} from "./Start/CreatePassword/CreatePassword";
 export {default as Balances} from "./HomeScreen/Balances/Balances";
 export {default as Collectibles} from "./HomeScreen/Collectibles/Collectibles";
+export {default as Certificates} from "./HomeScreen/Certificates/Certificates";
+export {default as RecentTrxns} from "./HomeScreen/RecentTrxns/RecentTrxns";
 export {default as Sidebar} from "./Sidebar/Sidebar";
 export {default as HomeScreen} from "./HomeScreen/HomeScreen";
 export {default as Send} from "./Send/Send";

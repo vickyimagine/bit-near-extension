@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ImportNft from "./ImportNft/ImportNft";
 import NFTCard from "./NFTCard/NFTCard";
+import {useSelector} from "react-redux/es/hooks/useSelector";
 
 const Collectibles = () => {
   const [NFTs, setNFTs] = useState([]);
@@ -8,17 +9,19 @@ const Collectibles = () => {
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [nftCard, setNFTCard] = useState();
 
+  const {currentNetwork} = useSelector(state => state.wallet);
+
   const fetchStoreNFT = () => {
-    if (localStorage.getItem("nfts") !== (undefined || null)) {
-      let nfts = localStorage.getItem("nfts");
-      setNFTs(JSON.parse(nfts));
-    }
-    return;
+    const storedNFTs = JSON.parse(localStorage.getItem("nfts")) || [];
+    const filteredNFTs = storedNFTs.filter(
+      item => item.network.type === currentNetwork.type
+    );
+    setNFTs(filteredNFTs);
   };
 
   useEffect(() => {
     fetchStoreNFT();
-  }, [localStorage.getItem("nfts")]);
+  }, [localStorage.getItem("nfts"), currentNetwork]);
 
   return (
     <div className='h-80'>
@@ -41,20 +44,22 @@ const Collectibles = () => {
             <div
               className={`${
                 NFTs.length !== 0 ? "grid" : "hidden"
-              } grid-cols-5 gap-7 h-4/6 overflow-auto p-2`}>
+              } grid-cols-3 gap-6 h-4/6 overflow-auto p-2`}>
               {NFTs.length !== 0 &&
                 NFTs?.map((nft, index) => {
                   return (
-                    <img
-                      key={index}
-                      src={nft?.metadata?.media}
-                      alt=''
-                      className='h-28 w-28 object-contain ring ring-white rounded-md'
-                      onClick={() => {
-                        setNFTCard(nft);
-                        setIsCardOpen(true);
-                      }}
-                    />
+                    <>
+                      <img
+                        key={index}
+                        src={nft?.metadata?.media}
+                        alt=''
+                        className='h-40 w-40 object-contain cursor-pointer'
+                        onClick={() => {
+                          setNFTCard(nft);
+                          setIsCardOpen(true);
+                        }}
+                      />
+                    </>
                   );
                 })}
             </div>

@@ -41,7 +41,7 @@ const Send = () => {
               inputLength < 6 ? "text-5xl" : inputLength < 11 ? "text-4xl" : "text-3xl"
             } text-center outline-none font-semibold h-20 bg-transparent input-field text-white placeholder:text-white`}
             type='text'
-            maxlength={18}
+            maxLength={18}
             placeholder='0'
             value={amount}
             onChange={e => {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Bitwallet Testnet",
-  "version": "1.0",
+  "name": "Bitwallet",
+  "version": "4.1",
   "permissions": ["activeTab", "storage", "background"],
   "background": {
     "service_worker": "background.js"
