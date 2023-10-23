@@ -14,7 +14,7 @@ const Transaction = ({data}) => {
 
   return (
     <div>
-      <div className='bit-btn cursor-pointer '>
+      <div className='bit-btn cursor-pointer text-base'>
         <div className='w-fit '>
           {isAccessKey ? (
             <IoMdKey fontSize={21} />

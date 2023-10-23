@@ -60,7 +60,7 @@ const Certificates = () => {
           <div
             className={`${
               certificates.length !== 0 ? "grid" : "hidden"
-            } grid-cols-3 gap-6 h-4/6 overflow-auto p-2`}>
+            } grid-cols-3 gap-x-4 h-5/6 overflow-auto p-2`}>
             {certificates.length !== 0 &&
               certificates?.map((certificate, index) => {
                 return (
