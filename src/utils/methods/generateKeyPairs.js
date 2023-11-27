@@ -9,8 +9,10 @@ export const genFromSecret = privateKey => {
   const privateKeyBase58 = privateKey;
   // Decode base58 private key to bytes
   const privateKeyBytes = bs58.decode(privateKeyBase58);
+
   // Generate key pair from private key
   const keyPair = nacl.sign.keyPair.fromSecretKey(privateKeyBytes);
+
   // Get the public key
   const publicKey = keyPair.publicKey;
 

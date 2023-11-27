@@ -35,6 +35,15 @@ const Balances = () => {
   };
 
   //useEffects
+
+  useEffect(() => {
+    chrome.storage.sync.get("loggedIn").then(res => {
+      if (!res.loggedIn) {
+        navigate("/logout");
+      }
+    });
+  }, []);
+
   useEffect(() => {
     fetchAccountBal();
   }, [currentNetwork, accountId]);
@@ -43,14 +52,6 @@ const Balances = () => {
     if (!keyStore) {
       navigate("/login/welcome");
     }
-  }, []);
-
-  useEffect(() => {
-    chrome.storage.sync.get("loggedIn").then(res => {
-      if (!res.loggedIn) {
-        navigate("/logout");
-      }
-    });
   }, []);
 
   if (!keyStore) return null;

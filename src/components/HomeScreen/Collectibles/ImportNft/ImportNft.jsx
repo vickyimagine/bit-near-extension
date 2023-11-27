@@ -6,7 +6,7 @@ import {useSelector} from "react-redux/es/hooks/useSelector";
 import {fetchAccountNFT} from "../../../../utils";
 import toast from "react-hot-toast";
 
-const ImportNft = ({setImport, setNfts}) => {
+const ImportNft = ({setImport}) => {
   const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
   const [nftParams, setNftParams] = useState({
     contractId: "",

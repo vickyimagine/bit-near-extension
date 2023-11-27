@@ -47,6 +47,7 @@ const ImportAccount = () => {
         if (privateKeyBytes.length !== 64) {
           return toast.error("Invalid Secret Key");
         }
+
         accountId = accId;
         publicKey = pubKey.slice(8);
         secretKey = privKey.slice(8);
@@ -55,6 +56,7 @@ const ImportAccount = () => {
           throw new Error(checkInputPhrase(inputData.value));
         }
         const keyStore = parseSeedPhrase(inputData.value);
+        console.log(keyStore);
         accountId = getAccountId(keyStore.publicKey.slice(8));
         publicKey = keyStore.publicKey.slice(8);
         secretKey = keyStore.secretKey.slice(8);
@@ -69,6 +71,7 @@ const ImportAccount = () => {
       chrome.storage.sync.set({
         keyStore: newStore
       });
+
       setNextPage(true);
     } catch (error) {
       // Handle the error (e.g., display a toast error message)

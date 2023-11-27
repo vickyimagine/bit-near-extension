@@ -15,6 +15,7 @@ const RecentTrxns = () => {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const visibleData = transactions.slice(startIndex, endIndex);
+  const API_KEY = process.env.REACT_APP_NEARBLOCKS_APIKEY; // Replace with your actual API key
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -30,7 +31,6 @@ const RecentTrxns = () => {
 
   const getTrxnData = async () => {
     setIsLoader(true);
-    const API_KEY = process.env.REACT_APP_NEARBLOCKS_APIKEY; // Replace with your actual API key
     const endpoint =
       currentNetwork.type === "testnet"
         ? `https://api-testnet.nearblocks.io/v1/account/${accountId}/txns`
@@ -55,16 +55,54 @@ const RecentTrxns = () => {
       const filteredData = data.txns.filter(item => {
         return item.predecessor_account_id !== "system";
       });
-      setIsLoader(false);
+
+      return filteredData;
       //   console.log(filteredData);
-      setTransactions(filteredData);
+      // setTransactions(filteredData);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  const getNftTxns = async () => {
+    const endpoint =
+      currentNetwork.type === "testnet"
+        ? `https://api-testnet.nearblocks.io/v1/account/${accountId}/nft-txns`
+        : `https://api.nearblocks.io/v1/account/${accountId}/nft-txns`;
+
+    const headers = {
+      Authorization: `Bearer ${API_KEY}`
+    };
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      // console.log(data)
+      return data.txns;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const fetchAllTrxns = async () => {
+    const nativeTrxns = await getTrxnData();
+    const nftTrxns = await getNftTxns();
+    // console.log(nftTrxns);
+    const allTrxns = nativeTrxns?.concat(nftTrxns && nftTrxns);
+    setTransactions(allTrxns);
+    setIsLoader(false);
+  };
+
   useEffect(() => {
-    getTrxnData();
+    fetchAllTrxns();
   }, [accountId, currentNetwork]);
 
   return (
@@ -108,7 +146,9 @@ const RecentTrxns = () => {
               disabled={currentPage === 1}>
               Previous
             </button>
-            <p className='text-white mx-1 font-bold'>{currentPage}</p>
+            <p className='text-white mx-1 font-bold'>
+              {currentPage} of {totalPages}
+            </p>
             <button
               onClick={handleNextPage}
               className={`bit-btn px-3 p-1 ${
