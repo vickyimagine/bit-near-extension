@@ -30,6 +30,7 @@ const Balances = () => {
         currentNetwork?.type,
         secretKey
       );
+      chrome.storage.sync.set({balance: accountBalance});
       dispatch(setBalance(accountBalance));
     }
   };

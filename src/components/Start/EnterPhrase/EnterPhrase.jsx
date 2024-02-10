@@ -8,6 +8,7 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
   const [originalArray, setOriginalArray] = useState(phrase);
   const [checkedArray, setCheckedArray] = useState([]);
   const [nextPage, setNextPage] = useState(false);
+  const [keyVault, setkeyVault] = useState();
 
   //Add element in the above box array
   const updateCheckedArray = word => {
@@ -36,21 +37,21 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
   //Storing the Key Pairs and Seed to local storage
   const saveKeyStore = () => {
     if (keyStore) {
-      const newStore = JSON.stringify({
+      const newStore = {
         publicKey: keyStore.publicKey,
         secretKey: keyStore.secretKey,
         accountId: keyStore.accountId
-      });
-      chrome.storage.sync.set({
-        keyStore: newStore
-      });
-      localStorage.setItem("keyStore", newStore);
+      };
+      setkeyVault(newStore);
     }
     setNextPage(true);
   };
 
   return nextPage ? (
-    <CreatePassword setNextPage={setNextPage} />
+    <CreatePassword
+      setNextPage={setNextPage}
+      keyStore={keyVault}
+    />
   ) : (
     <div className='flex flex-col w-full justify-between items-center'>
       <button

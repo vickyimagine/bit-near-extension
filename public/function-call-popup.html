@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Function Call</title>
+    <style>
+        body {
+            background-color: #001E24;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 50px;
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 18px;
+        }
+
+        .bal-div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid white;
+            padding-bottom: 10px;
+        }
+
+        .bal-para {
+            font-size: 20px;
+            font-weight: bold;
+
+        }
+
+        button {
+            /* padding: 10px; */
+            margin-top: 30px;
+            width: 150px;
+            border-radius: 20px;
+            background-color: white;
+            color: #001E24;
+        }
+
+        .estimated-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .estimation-parent {
+            border: 2px solid white;
+            padding: 5px;
+            padding-right: 10px;
+            padding-left: 10px;
+            border-radius: 10px;
+            margin: 5px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>BitWallet</h1>
+        <h2>Function Call</h2>
+
+        <div class="bal-div">
+            <h2>Account Balance</h2>
+            <p class="bal-para"></p>
+        </div>
+
+        <div class="estimation-parent">
+            <div class="estimated-div">
+                <h2>Estimated Fee</h2>
+                <p class="bal-para">200</p>
+            </div>
+            <div class="estimated-div">
+                <h2>Total Fee</h2>
+                <p class="bal-para">200</p>
+            </div>
+        </div>
+
+        <button id="approveButton">
+            <h2>Approve</h2>
+        </button>
+        <button id="denyButton">
+            <h2>Deny</h2>
+        </button>
+    </div>
+</body>
+
+<script src="function-call-popup.js"></script>
+
+</html>

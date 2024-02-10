@@ -100,9 +100,12 @@ export const fetchAccountNFT = async (
   return res;
 };
 
-const nearConnection = async (accountId, networkType, privateKey) => {
+export const nearConnection = async (accountId, networkType, privateKey) => {
+  console.log("in nearConnection");
+  console.log(privateKey);
   const keyPair = nearAPI.utils.KeyPair.fromString(privateKey);
 
+  console.log(keyPair);
   const keyStore = new nearAPI.keyStores.InMemoryKeyStore();
   keyStore.setKey(networkType, accountId, keyPair);
   const config = {

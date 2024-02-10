@@ -5,8 +5,10 @@ import {IoMdArrowRoundBack} from "react-icons/io";
 import {AiFillEye} from "react-icons/ai";
 import Terms from "../../Sidebar/Terms&Conditions/Terms";
 import toast from "react-hot-toast";
+import {encrypt} from "n-krypta";
+import {walletObject} from "../../../utils/methods/walletDapp";
 
-const EnterPassword = ({setNextPage}) => {
+const EnterPassword = ({setNextPage, keyStore}) => {
   const [checked, setChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [finalPassword, setFinalPassword] = useState("");
@@ -15,22 +17,27 @@ const EnterPassword = ({setNextPage}) => {
 
   const navigate = useNavigate();
 
+  const storeWalletObject = async secretKey => {
+    chrome.storage.sync.set({
+      secretKey
+    });
+  };
+
   const handleSave = async () => {
     if (!password.length > 8) {
       toast.error("Password length should be greater than 8 characters");
       return;
     }
-    // Retrieve the stored JSON string from local storage
-    const storedJSON = localStorage.getItem("keyStore");
+    await storeWalletObject(keyStore.secretKey);
+    let {secretKey, publicKey} = keyStore;
 
-    // Parse the JSON string into an object
-    const storedObject = JSON.parse(storedJSON);
-
+    let encSecretKey = encrypt(secretKey, publicKey);
     // Modify the object by adding a new field
-    storedObject.password = password;
+    keyStore.password = password;
+    keyStore.secretKey = encSecretKey;
 
     // Stringify the updated object
-    const updatedJSON = JSON.stringify(storedObject);
+    const updatedJSON = JSON.stringify(keyStore);
 
     // Store the updated JSON string back into local storage
     localStorage.setItem("keyStore", updatedJSON);
@@ -38,7 +45,6 @@ const EnterPassword = ({setNextPage}) => {
     chrome.storage.sync.set({
       keyStore: updatedJSON
     });
-
     navigate("/homescreen");
   };
 

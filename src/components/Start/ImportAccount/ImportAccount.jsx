@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {genFromSecret, getAccountId} from "../../../utils";
 import {parseSeedPhrase} from "near-seed-phrase";
 import {CreatePassword} from "../../../components";
-import {encrypt} from "n-krypta";
+
 import {toast} from "react-hot-toast";
 
 const ImportAccount = () => {
@@ -13,6 +13,8 @@ const ImportAccount = () => {
     method: "secretKey",
     value: ""
   });
+  const [keyStore, setKeyStore] = useState();
+
   const [nextPage, setNextPage] = useState(false);
 
   const handleInput = e => {
@@ -56,21 +58,18 @@ const ImportAccount = () => {
           throw new Error(checkInputPhrase(inputData.value));
         }
         const keyStore = parseSeedPhrase(inputData.value);
-        console.log(keyStore);
+        // console.log(keyStore);
         accountId = getAccountId(keyStore.publicKey.slice(8));
         publicKey = keyStore.publicKey.slice(8);
         secretKey = keyStore.secretKey.slice(8);
       }
 
-      const newStore = JSON.stringify({
+      const newStore = {
         accountId: accountId,
         publicKey: publicKey,
-        secretKey: encrypt(secretKey, publicKey)
-      });
-      localStorage.setItem("keyStore", newStore);
-      chrome.storage.sync.set({
-        keyStore: newStore
-      });
+        secretKey: secretKey
+      };
+      setKeyStore(newStore);
 
       setNextPage(true);
     } catch (error) {
@@ -86,7 +85,10 @@ const ImportAccount = () => {
   };
 
   return nextPage ? (
-    <CreatePassword setNextPage={setNextPage} />
+    <CreatePassword
+      setNextPage={setNextPage}
+      keyStore={keyStore}
+    />
   ) : (
     <div className='flex flex-col justify-between w-full'>
       <Link
