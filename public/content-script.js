@@ -13,17 +13,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.from === "Bit-wallet-password-popup") {
     if (request.message === "password") {
       contentScriptToBackgroundScript("enterPassword", {
-        password: request.data.password,
-        siteOrigin: request.data.siteOrigin,
-        functionMessage: request.data.functionMessage
+        password: request.data.password
       });
-    }
-  }
-  if (request.from === "Bit-wallet-function-popup") {
-    if (request.message === "approve") {
-      contentScriptToBackgroundScript("getNearConnectionFromContent", {});
-    } else if (request.message === "deny") {
-      contentScriptToInjectScript("Denied", {status: false});
     }
   }
 });
@@ -38,35 +29,12 @@ const contentScriptToBackgroundScript = (message, data) => {
           contentScriptToInjectScript("checkAccountCreated", response.data);
         } else if (response.message === "acceptConnection" && response.data.status) {
           contentScriptToInjectScript("accepted", response.data);
-        } else if (response.message === "passwordToConnection" && response.data.status) {
-          if (!response.data.isSiteConnected) {
+        } else if (response.message === "checkIsLoggedIn") {
+          if (response.data.status) {
             injectConnectionScript(origin);
-          } else if (response.data.isSiteConnected) {
-            contentScriptToInjectScript("accepted", response.data);
-          }
-        } else if (response.message === "passwordToFunction" && response.data.status) {
-          injectFunctionCallScript(response.data.accountBalance);
-        } else if (
-          response.message === "nearConnectionFromBackground" &&
-          response.data.status
-        ) {
-          contentScriptToInjectScript("nearObjectFromContentToInject", response.data);
-        } else if (response.message === "checkIsLoggedInFromBackground") {
-          if (response.data.message === "forWalletConnection") {
-            if (response.data.loginStatus && !response.data.isSiteConnected) {
-              injectConnectionScript(origin);
-              // injectPasswordScript(response.data.password);
-            } else if (response.data.loginStatus && response.data.isSiteConnected) {
-              contentScriptToInjectScript("accepted", response.data);
-            } else if (!response.data.loginStatus) {
-              injectPasswordScript(response.data.password, origin);
-            }
-          } else if (response.data.message === "forFunctionCall") {
-            if (response.data.loginStatus) {
-              injectFunctionCallScript(response.data.accountBalance);
-            } else if (!response.data.loginStatus) {
-              injectPasswordScript(response.data.password, origin, "functionMessage");
-            }
+            // injectPasswordScript(response.data.password);
+          } else {
+            injectPasswordScript(response.data.password);
           }
         }
       }
@@ -85,19 +53,14 @@ window.addEventListener("message", e => {
       });
     }
     if (message === "connectionRequest") {
-      console.log("connection in content");
-      checkIsLoggedIn(origin, "forWalletConnection");
-    }
-    if (message === "getNearConnectionFromInject") {
-      checkIsLoggedIn(origin, "forFunctionCall");
+      checkIsLoggedIn(origin);
     }
   }
 });
 
-const checkIsLoggedIn = (origin, message) => {
-  contentScriptToBackgroundScript("checkIsLoggedInFromContent", {
-    origin,
-    message
+const checkIsLoggedIn = origin => {
+  contentScriptToBackgroundScript("checkIsLoggedIn", {
+    origin
   });
 };
 
@@ -117,7 +80,7 @@ const injectConnectionScript = origin => {
   });
 };
 // Opening password-popup
-const injectPasswordScript = (password, origin, funcMessage) => {
+const injectPasswordScript = password => {
   let leftpos = (parseInt(screen.width) - 360).toString();
   let params =
     "scrollbars=no,resizeable=no,status=no,location=no,toolbar=no,menubar=no,width=350,height=600,left=" +
@@ -127,23 +90,7 @@ const injectPasswordScript = (password, origin, funcMessage) => {
   window.open(newURL, "Bit-wallet", params);
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "getPassword") {
-      sendResponse({password, origin, funcMessage});
-    }
-  });
-};
-
-// Opening function-call-popup
-const injectFunctionCallScript = balance => {
-  let leftpos = (parseInt(screen.width) - 360).toString();
-  let params =
-    "scrollbars=no,resizeable=no,status=no,location=no,toolbar=no,menubar=no,width=350,height=600,left=" +
-    leftpos +
-    ",top=0";
-  let newURL = chrome.runtime.getURL("function-call-popup.html");
-  window.open(newURL, "Bit-wallet", params);
-  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.message === "getBalance") {
-      sendResponse({balance});
+      sendResponse({password});
     }
   });
 };

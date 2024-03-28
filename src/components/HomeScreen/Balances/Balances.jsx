@@ -1,5 +1,4 @@
 /*global chrome*/
-
 import React, {useEffect} from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {HiOutlineClipboardCopy} from "react-icons/hi";

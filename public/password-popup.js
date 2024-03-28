@@ -2,28 +2,24 @@ const connectionScript = () => {
   async function getPassword() {
     return new Promise((resolve, reject) => {
       chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {message: "getPassword"}, res => {
-          resolve(res);
+        chrome.tabs.sendMessage(tabs[1].id, {message: "getPassword"}, res => {
+          resolve(res.password);
         });
       });
     });
   }
 
   async function handleSubmit() {
-    let {password, origin, funcMessage} = await getPassword();
+    let password = await getPassword();
     let enteredPassword = document.getElementById("password").value;
     if (password !== enteredPassword) {
       document.getElementById("status").innerHTML = "Password Invalid!";
     } else {
       chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {
+        chrome.tabs.sendMessage(tabs[1].id, {
           from: "Bit-wallet-password-popup",
           message: "password",
-          data: {
-            password: enteredPassword,
-            siteOrigin: origin,
-            functionMessage: funcMessage
-          },
+          data: {password: enteredPassword},
           origin: origin
         });
         window.close();
