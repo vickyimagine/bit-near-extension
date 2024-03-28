@@ -48,18 +48,16 @@ const Collectibles = () => {
               {NFTs.length !== 0 &&
                 NFTs?.map((nft, index) => {
                   return (
-                    <>
-                      <img
-                        key={index}
-                        src={nft?.metadata?.media}
-                        alt=''
-                        className='h-40 w-40 object-contain cursor-pointer'
-                        onClick={() => {
-                          setNFTCard(nft);
-                          setIsCardOpen(true);
-                        }}
-                      />
-                    </>
+                    <img
+                      key={index}
+                      src={nft?.metadata?.media}
+                      alt=''
+                      className='h-40 w-40 object-contain cursor-pointer'
+                      onClick={() => {
+                        setNFTCard(nft);
+                        setIsCardOpen(true);
+                      }}
+                    />
                   );
                 })}
             </div>

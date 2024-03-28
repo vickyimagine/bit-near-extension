@@ -42,6 +42,7 @@ const ImportNft = ({setImport}) => {
           toast.error("NFT doesn't exist.");
         } else if (result.owner_id === accountId) {
           result.network = currentNetwork;
+          result.contractId = nftParams.contractId;
           nftData.push(result);
           localStorage.setItem("nfts", JSON.stringify(nftData));
         } else {

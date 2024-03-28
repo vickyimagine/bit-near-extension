@@ -1,6 +1,7 @@
 import {KeyPair} from "near-api-js";
 const nearAPI = require("near-api-js");
 const sha256 = require("js-sha256");
+const BN = require("bn.js");
 
 export const fetchBalance = async (accountId, networkType, privateKey) => {
   const connection = await nearConnection(accountId, networkType, privateKey);
@@ -100,12 +101,49 @@ export const fetchAccountNFT = async (
   return res;
 };
 
+export const transferNFT = async (
+  tokenId,
+  ownerId,
+  contractId,
+  recipient,
+  networkType,
+  privateKey
+) => {
+  const connection = await nearConnection(ownerId, networkType, privateKey);
+  const account = await connection.account(ownerId);
+  //Interacting with contract
+  const contract = new nearAPI.Contract(
+    account, // the account object that is connecting
+    contractId,
+    {
+      // name of contract you're connecting to
+      viewMethods: [], // view methods do not change state but usually return a value
+      changeMethods: ["nft_transfer"] // change methods modify state
+    }
+  );
+  try {
+    const res = await contract.nft_transfer(
+      {
+        receiver_id: recipient,
+        token_id: tokenId
+      },
+      30_000_000_000_000, // attached GAS (optional)
+      new BN("1")
+    );
+
+    return {status: true, data: res};
+  } catch (error) {
+    console.log(`Error occured while transferring NFT:${error}`);
+    return {status: false, data: error};
+  }
+};
+
 export const nearConnection = async (accountId, networkType, privateKey) => {
-  console.log("in nearConnection");
-  console.log(privateKey);
+  // console.log("in nearConnection");
+  // console.log(privateKey);
   const keyPair = nearAPI.utils.KeyPair.fromString(privateKey);
 
-  console.log(keyPair);
+  // console.log(keyPair);
   const keyStore = new nearAPI.keyStores.InMemoryKeyStore();
   keyStore.setKey(networkType, accountId, keyPair);
   const config = {

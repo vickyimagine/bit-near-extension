@@ -13,10 +13,10 @@ const ReceiverDetails = ({setNextStep, amount}) => {
   const navigate = useNavigate();
 
   const sendNear = async () => {
-    if (recipient.length !== 64) {
-      setRecipient("");
-      return toast.error("Invalid Account Id");
-    }
+    // if (recipient.length !== 64) {
+    //   setRecipient("");
+    //   return toast.error("Invalid Account Id");
+    // }
     if (recipient === accountId) {
       setRecipient("");
       return toast.error("Same Account Id found");

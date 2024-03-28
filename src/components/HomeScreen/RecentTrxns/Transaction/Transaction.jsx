@@ -14,6 +14,8 @@ const Transaction = ({data}) => {
   const isIncoming = (!isNftTxn && data?.receiver_account_id === accountId) || "";
   const trxnAmount = (!isNftTxn && data?.actions_agg.deposit / 10 ** 24) || "";
   const isAccessKey = (!isNftTxn && data?.actions[0].action === "ADD_KEY") || "";
+  const isMint = (isNftTxn && data.event_kind === "MINT") || "";
+  const isNFTIncoming = (isNftTxn && data.token_new_owner_account_id === accountId) || "";
 
   return (
     <div>
@@ -33,7 +35,7 @@ const Transaction = ({data}) => {
         <div className=' w-2/3 '>
           {isNftTxn ? (
             <p>
-              {data.event_kind} {data?.nft?.name}
+              {data.event_kind} {data?.nft?.symbol}
             </p>
           ) : isAccessKey ? (
             <p>Access Key Added</p>
@@ -42,9 +44,21 @@ const Transaction = ({data}) => {
           )}
 
           {isNftTxn ? (
-            <p>{`from ${data.nft.contract.slice(0, 4)}...${data.nft.contract.slice(
-              -7
-            )}`}</p>
+            isMint ? (
+              <p>{`from ${data.nft.contract.slice(0, 4)}...${data.nft.contract.slice(
+                -7
+              )}`}</p>
+            ) : isNFTIncoming ? (
+              <p>{`from ${data.token_old_owner_account_id.slice(
+                0,
+                4
+              )}...${data.token_old_owner_account_id.slice(-7)}`}</p>
+            ) : (
+              <p>{`to ${data.token_new_owner_account_id.slice(
+                0,
+                4
+              )}...${data.token_new_owner_account_id.slice(-7)}`}</p>
+            )
           ) : isAccessKey ? (
             <p className='font-bold'>{`for ${data.predecessor_account_id.slice(
               0,

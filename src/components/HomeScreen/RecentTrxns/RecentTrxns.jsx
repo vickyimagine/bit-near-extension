@@ -4,10 +4,11 @@ import {useSelector} from "react-redux";
 import {Oval} from "react-loader-spinner";
 
 const RecentTrxns = () => {
-  const pageSize = 4; // Number of transactions per page
+  const pageSize = 3; // Number of transactions per page
   const [currentPage, setCurrentPage] = useState(1);
   const [transactions, setTransactions] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
+  const [btnText, setBtnText] = useState("Native");
 
   const {accountId, currentNetwork} = useSelector(state => state.wallet);
 
@@ -16,6 +17,12 @@ const RecentTrxns = () => {
   const endIndex = startIndex + pageSize;
   const visibleData = transactions.slice(startIndex, endIndex);
   const API_KEY = process.env.REACT_APP_NEARBLOCKS_APIKEY; // Replace with your actual API key
+  const isNativeTxn = btnText === "Native";
+
+  const activeStyle =
+    "flex items-center justify-center w-1/2 text-center bg-white text-bitBg font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md p-2";
+  const inActiveStyle =
+    "flex items-center justify-center w-1/2 text-center text-white font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md";
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -93,20 +100,36 @@ const RecentTrxns = () => {
   };
 
   const fetchAllTrxns = async () => {
-    const nativeTrxns = await getTrxnData();
-    const nftTrxns = await getNftTxns();
-    // console.log(nftTrxns);
-    const allTrxns = nativeTrxns?.concat(nftTrxns && nftTrxns);
-    setTransactions(allTrxns);
+    if (isNativeTxn) {
+      setTransactions(await getTrxnData());
+    } else {
+      setTransactions(await getNftTxns());
+    }
+
     setIsLoader(false);
   };
 
   useEffect(() => {
+    setCurrentPage(1);
     fetchAllTrxns();
-  }, [accountId, currentNetwork]);
+  }, [accountId, currentNetwork, btnText]);
 
   return (
     <>
+      <div className='flex justify-center h-10  my-3 space-x-3'>
+        <div
+          className={btnText === "Native" ? activeStyle : inActiveStyle}
+          onClick={e => {
+            setBtnText(e.target.textContent);
+          }}>
+          Native
+        </div>
+        <div
+          className={btnText === "Tokens" ? activeStyle : inActiveStyle}
+          onClick={e => setBtnText(e.target.textContent)}>
+          Tokens
+        </div>
+      </div>
       {isLoader ? (
         <div className='flex flex-col space-y-2 justify-center items-center h-72'>
           <Oval
@@ -129,7 +152,7 @@ const RecentTrxns = () => {
         </div>
       ) : (
         <div className='h-full space-y-2'>
-          <div className='space-y-2 h-72 overflow-y-clip'>
+          <div className='space-y-2 h-56 overflow-y-clip'>
             {visibleData?.map((item, index) => (
               <Transaction
                 key={index}
