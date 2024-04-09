@@ -8,7 +8,7 @@ export const fetchBalance = async (accountId, networkType, privateKey) => {
   try {
     // gets account balance
     const account = await connection.account(accountId);
-    const balance = ((await account.getAccountBalance()).available / 10 ** 24).toFixed(4);
+    const balance = ((await account.getAccountBalance()).available / 10 ** 24).toFixed(2);
     // console.log(balance);
     return balance;
   } catch (error) {
@@ -157,5 +157,6 @@ export const nearConnection = async (accountId, networkType, privateKey) => {
 
   // inside an async function
   const nearConnection = await nearAPI.connect(config);
+  // console.log(nearConnection);
   return nearConnection;
 };

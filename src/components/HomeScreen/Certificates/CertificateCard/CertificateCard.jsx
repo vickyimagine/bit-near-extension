@@ -1,51 +1,187 @@
-import React from "react";
+import React, {useState} from "react";
 import {nftDownload} from "../../../../utils/methods/downloadNFT";
-import {IoMdArrowRoundBack} from "react-icons/io";
+import {TbExternalLink} from "react-icons/tb";
+import {CopyToClipboard} from "react-copy-to-clipboard";
+import {BiSolidCopy} from "react-icons/bi";
+import {HiOutlineDownload} from "react-icons/hi";
+import {LuSend} from "react-icons/lu";
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import toast from "react-hot-toast";
+import TransferNft from "../../Collectibles/TransferNft/TransferNft";
 
 const CertificateCard = ({card, setCardOpen}) => {
+  const [isExpandedName, setIsExpandedName] = useState(false);
+  const [isExpandedOrgName, setIsExpandedOrgName] = useState(false);
+  const [isExpandedDescription, setIsExpandedDescription] = useState(false);
+  const [isExpandedAddress, setIsExpandedAddress] = useState(false);
+  const [isTransfer, setIsTransfer] = useState(false);
+
+  const toggleExpandedName = () => {
+    setIsExpandedName(!isExpandedName);
+  };
+
+  const toggleExpandedOrgName = () => {
+    setIsExpandedOrgName(!isExpandedOrgName);
+  };
+
+  const toggleExpandedDescription = () => {
+    setIsExpandedDescription(!isExpandedDescription);
+  };
+  const toggleExpandedAddress = () => {
+    setIsExpandedAddress(!isExpandedAddress);
+  };
+
+  const truncateText = (text, isExpanded) => {
+    return isExpanded ? text : `${text?.split(" ")?.slice(0, 5)?.join(" ")}`;
+  };
+
+  console.log(process.env.REACT_APP_BIT_CONTRACT);
   return (
-    <div>
-      <button
-        className='bit-btn w-fit px-5'
-        onClick={() => {
-          setCardOpen(false);
-        }}>
-        <IoMdArrowRoundBack fontSize={21} />
-      </button>
-      <div className='flex flex-col items-center space-y-10 mt-4'>
-        <div className='flex items-center justify-between space-x-6 px-4 '>
-          <img
-            src={card?.image}
-            alt=''
-            className='h-44 w-44 mx-auto object-contain'
-          />
-          <div className='flex flex-col overflow-y-auto max-h-36'>
-            <div className='flex space-x-2'>
-              <h2 className='font-bold text-white capitalize'>Name</h2>
-              <p className='text-white '>{card?.name}</p>
-            </div>
-            <div className='flex space-x-2'>
-              <h2 className='font-bold text-white capitalize'>Token Id</h2>
-              <p className='text-white '>{card?.id}</p>
-            </div>
-            <div className='flex space-x-2'>
-              <h2 className='font-bold text-white capitalize'>CID</h2>
-              <p className='text-white '>{card?.cid}</p>
+    <>
+      {isTransfer ? (
+        <TransferNft
+          setIsTransfer={setIsTransfer}
+          nft={card}
+          setCardOpen={setCardOpen}
+          certTransfer={true}
+        />
+      ) : (
+        <div className='flex flex-col items-center mt-2 space-y-7'>
+          <div className='flex flex-col justify-start w-full space-y-2 gap-x-5'>
+            <button
+              className='w-fit px-5 self-start pb-3'
+              onClick={() => {
+                setCardOpen(false);
+              }}>
+              <PiArrowBendUpLeftBold
+                fontSize={28}
+                color='white'
+              />
+            </button>
+            <div className='flex px-5 space-x-8'>
+              <img
+                src={card?.image}
+                alt={card?.name}
+                className='h-24 w-40 object-cover cursor-pointer bg-gradient-to-b from-white to-[#B3E1FF] p-[6px] py-[8px] rounded-xl'
+              />
+              <div className='flex flex-col space-y-2 w-2/3'>
+                <div className='flex justify-start w-full text-white border-b border-white'>
+                  <p className='text-xl font-bold w-1/2 border-r border-white'>
+                    Token Id{" "}
+                  </p>
+                  <p className='flex items-center justify-evenly font-inter gap-x-4 text-lg font-bold w-1/2 '>
+                    {card?.token_id}
+                    <div className='flex'>
+                      <a
+                        className='border-r border-white mr-1 pr-1'
+                        href={`https://nearblocks.io/nft-token/${card?.contractId}/${card?.token_id}`}
+                        target='_blank'
+                        rel='noopener noreferrer'>
+                        <TbExternalLink fontSize={21} />
+                      </a>
+                      <CopyToClipboard
+                        text={card?.contractId}
+                        onCopy={() => {
+                          toast.success("Contract ID copied to clipboard!");
+                        }}>
+                        <BiSolidCopy
+                          fontSize={21}
+                          className='cursor-pointer'
+                        />
+                      </CopyToClipboard>
+                    </div>
+                  </p>
+                </div>
+                <div className='h-36 overflow-scroll text-white space-y-2 flex flex-col items-start '>
+                  <div className='flex gap-x-3  w-full'>
+                    <p className='w-1/2 '>Name</p>
+                    <p className='flex flex-col w-1/2 font-inter font-light'>
+                      {card?.name}
+                    </p>
+                  </div>
+                  <div className='flex gap-x-3 w-full '>
+                    <p className='w-1/2 '>CID</p>
+                    <p className='w-1/2 font-inter font-light flex-wrap flex'>
+                      {`${card?.cid?.slice(0, 4)}...${card?.cid?.slice(-5)}`}
+                    </p>
+                  </div>
+                  <div className='flex gap-x-3 w-full '>
+                    <p className='w-1/2 '>Org Name</p>
+                    <p className='flex flex-col w-1/2 font-inter font-light'>
+                      {truncateText(card?.orgName, isExpandedOrgName)}
+                      {card?.orgName?.split(" ")?.length > 5 &&
+                        !isExpandedOrgName &&
+                        `...`}
+                      {card?.orgName?.split(" ")?.length > 5 && (
+                        <button
+                          onClick={toggleExpandedOrgName}
+                          className='text-white text-xs self-end -translate-y-4'>
+                          {isExpandedOrgName ? "Read less" : "Read more"}
+                        </button>
+                      )}
+                    </p>
+                  </div>
+                  <div className='flex gap-x-3 w-full '>
+                    <p className='w-1/2 '>Address</p>
+                    <p className='flex flex-col w-1/2 font-inter font-light '>
+                      {truncateText(card?.address, isExpandedAddress)}
+                      {card?.address?.split(" ")?.length > 5 &&
+                        !isExpandedAddress &&
+                        `...`}
+                      {card?.address?.split(" ")?.length > 5 && (
+                        <button
+                          onClick={toggleExpandedAddress}
+                          className='text-white text-xs self-end -translate-y-4'>
+                          {isExpandedAddress ? "Read less" : "Read more"}
+                        </button>
+                      )}
+                    </p>
+                  </div>
+                  <div className='flex gap-x-3 w-full '>
+                    <p className='w-1/2 '>Description</p>
+                    <p className='flex flex-col w-1/2 font-inter font-light'>
+                      {truncateText(card?.description, isExpandedDescription)}
+                      {card?.description?.split(" ")?.length > 5 &&
+                        !isExpandedDescription &&
+                        `...`}
+                      {card?.description?.split(" ")?.length > 5 && (
+                        <button
+                          onClick={toggleExpandedDescription}
+                          className='text-white text-xs self-end -translate-y-4'>
+                          {isExpandedDescription ? "Read less" : "Read more"}
+                        </button>
+                      )}
+                    </p>
+                  </div>
+                  <div className='flex gap-x-3 w-full '>
+                    <p className='w-1/2 '>Is Verified</p>
+                    <p className='w-1/2 font-inter font-light'>
+                      {card?.isVerified ? "Yes" : "No"}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          <div className='max-h-36 flex space-x-6'>
+            <button
+              className='bit-btn w-fit h-fit gap-x-3 flex items-center justify-center px-5 font-bold'
+              onClick={() => {
+                nftDownload(card?.image);
+              }}>
+              Download <HiOutlineDownload fontSize={22} />
+            </button>
+            <button
+              className='bit-btn w-fit h-fit gap-x-3  flex items-center justify-center px-5 font-bold'
+              onClick={() => {
+                setIsTransfer(true);
+              }}>
+              Transfer <LuSend fontSize={22} />
+            </button>
+          </div>
         </div>
-
-        <div className='overflow-auto max-h-36'>
-          <button
-            className='bit-btn w-fit h-fit'
-            onClick={() => {
-              nftDownload(card?.image);
-            }}>
-            Download
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

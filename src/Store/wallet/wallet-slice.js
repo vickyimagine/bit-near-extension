@@ -16,7 +16,7 @@ const walletSlice = createSlice({
   reducers: {
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
-      chrome.storage.sync.set({network: action.payload});
+      // chrome.storage.sync.set({network: action.payload});
       localStorage.setItem("network", JSON.stringify(action.payload));
     },
     setAccountId(state, action) {

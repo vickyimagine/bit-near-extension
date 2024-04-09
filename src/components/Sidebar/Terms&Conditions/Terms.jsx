@@ -1,25 +1,31 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {IoMdArrowRoundBack} from "react-icons/io";
 
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
 const Terms = ({setTerms}) => {
   return (
     <div className='flex flex-col items-start w-full'>
       {setTerms !== (null || undefined) ? (
         <button
-          className='bit-btn w-fit self-start'
+          className=' w-fit self-start'
           onClick={() => setTerms(false)}>
-          <IoMdArrowRoundBack fontSize={21} />
+          <PiArrowBendUpLeftBold
+            fontSize={28}
+            color='white'
+          />
         </button>
       ) : (
         <Link
           to='/homescreen'
-          className='bit-btn w-fit self-start'>
-          <IoMdArrowRoundBack fontSize={21} />
+          className=' w-fit self-start'>
+          <PiArrowBendUpLeftBold
+            fontSize={28}
+            color='white'
+          />
         </Link>
       )}
 
-      <h1 className='text-5xl text-white font-semibold'>Terms & Conditions</h1>
+      <h1 className='text-5xl text-white font-semibold mt-3'>Terms & Conditions</h1>
 
       <div className='terms text-white overflow-y-scroll cursor-default space-y-3'>
         <p>

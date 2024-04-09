@@ -2,23 +2,23 @@ import React, {useState} from "react";
 
 import {Balances, Collectibles, Certificates, RecentTrxns} from "..";
 
-const HomeScreen = () => {
-  const [btnText, setBtnText] = useState("Balances");
+const HomeScreen = ({isSideBar, setIsSidebar}) => {
+  const [btnText, setBtnText] = useState("Balance");
 
   const activeStyle =
-    "flex items-center justify-center w-1/2 text-center bg-white text-bitBg font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md p-2";
+    "flex items-center justify-center w-1/2 text-center bit-btn  text-bitBg  cursor-pointer transition-all duration-300 font-bold rounded-xl px-5 ";
   const inActiveStyle =
-    "flex items-center justify-center w-1/2 text-center text-white font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md";
+    "flex items-center justify-center w-1/2 text-center  text-white  cursor-pointer transition-all duration-300 rounded-xl";
 
   return (
-    <div>
-      <div className='flex justify-center h-10  my-3 space-x-3'>
+    <div className={isSideBar && "pointer-events-none"}>
+      <div className='flex  justify-center h-10  my-3 space-x-5'>
         <div
-          className={btnText === "Balances" ? activeStyle : inActiveStyle}
+          className={btnText === "Balance" ? activeStyle : inActiveStyle}
           onClick={e => {
             setBtnText(e.target.textContent);
           }}>
-          Balances
+          Balance
         </div>
         <div
           className={btnText === "Collectibles" ? activeStyle : inActiveStyle}
@@ -36,7 +36,7 @@ const HomeScreen = () => {
           Transactions
         </div>
       </div>
-      {btnText === "Balances" ? (
+      {btnText === "Balance" ? (
         <Balances />
       ) : btnText === "Collectibles" ? (
         <Collectibles />

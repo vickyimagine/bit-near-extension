@@ -3,6 +3,7 @@ import {BsSendFill, BsArrow90DegDown} from "react-icons/bs";
 import {IoMdKey} from "react-icons/io";
 import {TbExternalLink} from "react-icons/tb";
 import {RiNftLine} from "react-icons/ri";
+import {MdOutlineImage} from "react-icons/md";
 import {useSelector} from "react-redux";
 
 import {getElapsedTime} from "../../../../utils/methods/unixToElapsed";
@@ -10,80 +11,89 @@ import {getElapsedTime} from "../../../../utils/methods/unixToElapsed";
 const Transaction = ({data}) => {
   const {accountId, currentNetwork} = useSelector(state => state.wallet);
 
-  const isNftTxn = data.nft !== undefined;
+  const isNftTxn = data?.nft !== undefined;
   const isIncoming = (!isNftTxn && data?.receiver_account_id === accountId) || "";
   const trxnAmount = (!isNftTxn && data?.actions_agg.deposit / 10 ** 24) || "";
   const isAccessKey = (!isNftTxn && data?.actions[0].action === "ADD_KEY") || "";
-  const isMint = (isNftTxn && data.event_kind === "MINT") || "";
-  const isNFTIncoming = (isNftTxn && data.token_new_owner_account_id === accountId) || "";
+  const isMint = (isNftTxn && data?.cause === "MINT") || "";
+  const isNFTIncoming =
+    (isNftTxn && data?.token_new_owner_account_id === accountId) || "";
 
+  console.log(data);
   return (
     <div>
-      <div className='bit-btn cursor-pointer text-base'>
-        <div className='w-fit '>
+      <div className='bit-btn  rounded-xl bg-white font-inter cursor-pointer text-sm'>
+        <div className='w-fit mr-1'>
           {isNftTxn ? (
-            <RiNftLine fontSize={21} />
+            <MdOutlineImage fontSize={28} />
           ) : isAccessKey ? (
             <IoMdKey fontSize={21} />
           ) : isIncoming ? (
-            <BsArrow90DegDown fontSize={21} />
+            <BsSendFill
+              fontSize={21}
+              className='rotate-180 text-green-500'
+            />
           ) : (
-            <BsSendFill fontSize={21} />
+            <BsSendFill
+              fontSize={21}
+              className='text-red-500'
+            />
           )}
         </div>
 
-        <div className=' w-2/3 '>
+        <div className=' w-2/3'>
           {isNftTxn ? (
-            <p>
-              {data.event_kind} {data?.nft?.symbol}
+            <p className='font-bold'>
+              {data?.cause} {data?.nft?.symbol}
             </p>
           ) : isAccessKey ? (
-            <p>Access Key Added</p>
+            <p className='font-bold'>Access Key Added</p>
           ) : (
-            <p>{isIncoming ? "Receive" : "Sent"} NEAR</p>
+            <p className='font-bold'>{isIncoming ? "Receive" : "Sent"} NEAR</p>
           )}
 
           {isNftTxn ? (
             isMint ? (
-              <p>{`from ${data.nft.contract.slice(0, 4)}...${data.nft.contract.slice(
-                -7
-              )}`}</p>
+              <p className=''>{`from ${data?.nft.contract.slice(
+                0,
+                4
+              )}...${data?.nft.contract?.slice(-7)}`}</p>
             ) : isNFTIncoming ? (
-              <p>{`from ${data.token_old_owner_account_id.slice(
+              <p className=''>{`from ${data?.token_old_owner_account_id?.slice(
                 0,
                 4
-              )}...${data.token_old_owner_account_id.slice(-7)}`}</p>
+              )}...${data?.token_old_owner_account_id?.slice(-7)}`}</p>
             ) : (
-              <p>{`to ${data.token_new_owner_account_id.slice(
+              <p className=''>{`to ${data?.token_new_owner_account_id?.slice(
                 0,
                 4
-              )}...${data.token_new_owner_account_id.slice(-7)}`}</p>
+              )}...${data?.token_new_owner_account_id?.slice(-7)}`}</p>
             )
           ) : isAccessKey ? (
-            <p className='font-bold'>{`for ${data.predecessor_account_id.slice(
+            <p className=''>{`for ${data?.predecessor_account_id?.slice(
               0,
               4
-            )}...${data.predecessor_account_id.slice(-7)}`}</p>
+            )}...${data?.predecessor_account_id?.slice(-7)}`}</p>
           ) : (
-            <p className='font-bold'>
+            <p className=''>
               {isIncoming
-                ? `from ${data.predecessor_account_id.slice(
+                ? `from ${data?.predecessor_account_id?.slice(
                     0,
                     4
-                  )}...${data.predecessor_account_id.slice(-7)}`
-                : `to ${data.receiver_account_id.slice(
+                  )}...${data?.predecessor_account_id?.slice(-7)}`
+                : `to ${data?.receiver_account_id?.slice(
                     0,
                     4
-                  )}...${data.predecessor_account_id.slice(-7)}`}
+                  )}...${data?.predecessor_account_id?.slice(-7)}`}
             </p>
           )}
         </div>
 
-        <div className=' w-2/3 '>
+        <div className=' w-2/3 pl-5 '>
           {isNftTxn ? (
             <p className={`text-blue-800 font-bold`}>
               Token Id:
-              {data.token_id}
+              {data?.token_id}
             </p>
           ) : (
             !isAccessKey && (
@@ -94,7 +104,7 @@ const Transaction = ({data}) => {
               </p>
             )
           )}
-          <p>{getElapsedTime(Number(data.block_timestamp))}</p>
+          <p>{getElapsedTime(Number(data?.block_timestamp))}</p>
         </div>
         <a
           href={
@@ -103,7 +113,7 @@ const Transaction = ({data}) => {
               : `https://testnet.nearblocks.io/txns/${data?.transaction_hash}`
           }
           target='_blank'>
-          <TbExternalLink fontSize={21} />
+          <TbExternalLink fontSize={28} />
         </a>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {IoMdArrowRoundBack} from "react-icons/io";
-import {FaUserPlus} from "react-icons/fa";
-import {BiImport} from "react-icons/bi";
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import {CgUserAdd} from "react-icons/cg";
+import {LuDownload} from "react-icons/lu";
 import {Link} from "react-router-dom";
 
 const AccountOptions = () => {
@@ -13,37 +13,32 @@ const AccountOptions = () => {
     <>
       <div className='flex flex-col items-center w-full justify-between'>
         <Link
-          className='bit-btn self-start px-4'
+          className=' self-start px-4 mt-3'
           to='/login/welcome'>
-          <IoMdArrowRoundBack fontSize={21} />
-          <p>Back</p>
+          <PiArrowBendUpLeftBold
+            fontSize={28}
+            color='white'
+          />
         </Link>
-        <Link
-          className='flex flex-col items-center space-y-3 border-2 border-white p-2 rounded-md '
-          to='/login/new-account'>
-          <p className='text-center text-white '>
-            If you have not created wallet before, you can choose below option
-          </p>
-          <button className='bit-btn w-3/5'>
-            <p>Create Account</p>
-            <FaUserPlus fontSize={21} />
-          </button>
-        </Link>
-        <Link
-          className='flex flex-col items-center space-y-3 border-2 border-white p-2 rounded-md
-        '
-          to='/login/import-account'>
-          <p className='text-center text-white '>
-            If you have created wallet before, you can choose below option
-          </p>
-          <button className='bit-btn w-3/5'>
-            <p>Import Account</p>
-            <BiImport fontSize={21} />
-          </button>
-        </Link>
+
+        <div className='flex flex-col items-center gap-y-2'>
+          <Link to='/login/new-account'>
+            <button className='bit-btn px-28 py-4 font-bold'>
+              <p>Create Account</p>
+              <CgUserAdd fontSize={21} />
+            </button>
+          </Link>
+          <p className='text-col_1'>OR</p>
+          <Link to='/login/import-account'>
+            <button className='bit-btn bg-white px-28 py-4 font-bold'>
+              <p>Import Account</p>
+              <LuDownload fontSize={21} />
+            </button>
+          </Link>
+        </div>
         <Link
           to='/terms'
-          className='text-white'>
+          className='text-white underline'>
           Terms & Conditions
         </Link>
       </div>

@@ -31,7 +31,7 @@ const connectionRequest = new Promise((resolve, reject) => {
       let data = e.data.data;
       if (message === "accepted" && data.status) {
         createProvider(data);
-        resolve(data.publickey);
+        resolve(data.accountId);
       } else if (message === "rejected" && data.status) {
         reject("User denied connection.");
       }

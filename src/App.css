@@ -5,3 +5,11 @@
   box-shadow: 0px 0px 10px 2px #888888;
   border-radius: 10px;
 }
+
+.bg-stars {
+  background: url("./Assets/stars_2.svg"), url("./Assets/e1.svg"), url("./Assets/e2.svg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  filter: brightness(100%);
+}

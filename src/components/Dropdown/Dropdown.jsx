@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {networks} from "../../Constants/networks";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentNetwork} from "../../Store/wallet/wallet-slice";
+import {IoIosArrowDown} from "react-icons/io";
 
 const Dropdown = () => {
   const {currentNetwork} = useSelector(state => state.wallet);
@@ -23,16 +24,24 @@ const Dropdown = () => {
   return (
     <div className='relative inline-block text-left '>
       <button
-        className='select-button select-button-ghost w-40 max-w-xs border text-white border-gray-600 focus:outline-none rounded-md p-2'
+        className='select-button flex justify-center items-center gap-x-2 select-button-ghost w-36 max-w-xs border text-black bg-white border-gray-600 focus:outline-none rounded-full p-1 py-2 font-bold '
         onClick={toggleDropdown}>
-        {currentNetwork.networkName}
+        {currentNetwork.networkName}{" "}
+        <IoIosArrowDown
+          fontSize={24}
+          className={`hover:scale-105 ${
+            isOpen && "rotate-180"
+          } transition-all duration-300`}
+        />
       </button>
       {isOpen && (
-        <div className='origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
-          {networks.map(item => (
+        <div className=' absolute rounded-md mt-2 w-36 bg-white px-2'>
+          {networks.map((item, idx) => (
             <button
               key={item.networkName}
-              className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left'
+              className={`flex items-center rounded-md justify-center py-2 font-bold bg-white ${
+                idx === 0 && " border-b-[#7e787880] rounded-b-none border-[white] border"
+              }  text-black hover:bg-gray-100 w-full `}
               onClick={() => {
                 selectNetwork(item);
               }}>

@@ -7,7 +7,7 @@ import {Sidebar, HomeScreen, Send, Receive, Dropdown} from "../../components";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {bitLogo} from "../../Assets";
 import {decrypt} from "n-krypta";
-
+import {RxHamburgerMenu} from "react-icons/rx";
 const Home = () => {
   //hooks
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // New state for sidebar
@@ -22,23 +22,27 @@ const Home = () => {
   //useEffect
   useEffect(() => {
     if (keyStore) {
-      let decryptedKey = decrypt(keyStore?.secretKey, keyStore?.publicKey);
+      console.log(keyStore);
       dispatch(setAccountId(keyStore?.accountId));
-      dispatch(setSecretKey(decryptedKey));
+      dispatch(setSecretKey(decrypt(keyStore?.secretKey, keyStore?.publicKey)));
     }
   }, []);
 
   return (
-    <div className='w-full'>
-      <div className='flex items-center justify-between border-b border-gray-700 py-2'>
-        <GiHamburgerMenu
+    <div
+      className={`w-full `}
+      onClick={() => {
+        isSidebarOpen && setIsSidebarOpen(false);
+      }}>
+      <div className='flex items-center justify-between py-2 px-4'>
+        <RxHamburgerMenu
           fontSize={27}
           className='cursor-pointer text-white '
           onClick={toggleSidebar}
         />
         <div
-          className={`absolute sidebar z-10 top-0 left-0 h-full w-60 bg-white shadow-lg transition-transform duration-300 transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          className={`absolute sidebar z-10 top-12 left-3 h-fit w-72  rounded-xl transition-transform duration-300 transform ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-[330px]"
           }`}>
           <Sidebar setSidebarOpen={setIsSidebarOpen} />
         </div>

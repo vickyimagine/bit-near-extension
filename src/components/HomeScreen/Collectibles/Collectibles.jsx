@@ -24,7 +24,7 @@ const Collectibles = () => {
   }, [localStorage.getItem("nfts"), currentNetwork]);
 
   return (
-    <div className='h-80'>
+    <div className='h-80  border-t border-gray-500 '>
       {isCardOpen ? (
         <NFTCard
           nft={nftCard}
@@ -44,27 +44,29 @@ const Collectibles = () => {
             <div
               className={`${
                 NFTs.length !== 0 ? "grid" : "hidden"
-              } grid-cols-3 gap-6 h-4/6 overflow-auto p-2`}>
+              } grid-cols-3 gap-4 h-4/6 overflow-auto p-2`}>
               {NFTs.length !== 0 &&
                 NFTs?.map((nft, index) => {
                   return (
-                    <img
-                      key={index}
-                      src={nft?.metadata?.media}
-                      alt=''
-                      className='h-40 w-40 object-contain cursor-pointer'
-                      onClick={() => {
-                        setNFTCard(nft);
-                        setIsCardOpen(true);
-                      }}
-                    />
+                    nft?.metadata?.media && (
+                      <img
+                        key={index}
+                        src={nft?.metadata?.media}
+                        alt='NFT'
+                        className='h-24 w-40 object-cover cursor-pointer bg-gradient-to-b from-white to-[#B3E1FF] p-[6px] py-[8px] rounded-xl '
+                        onClick={() => {
+                          setNFTCard(nft);
+                          setIsCardOpen(true);
+                        }}
+                      />
+                    )
                   );
                 })}
             </div>
             <div className='flex flex-col items-center justify-center space-y-3'>
-              <p className='text-white font-semibold'>Don't see your Collectibles</p>
+              <p className='text-white font-medium'>Don't see your Collectibles ?</p>
               <button
-                className='bit-btn'
+                className='bit-btn px-24 font-bold'
                 onClick={() => {
                   setIsImport(true);
                 }}>

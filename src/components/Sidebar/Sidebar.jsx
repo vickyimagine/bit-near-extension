@@ -3,29 +3,25 @@ import {sidebarLinks} from "../../Constants/sidebarData";
 import {AiFillCloseSquare} from "react-icons/ai";
 import {useNavigate} from "react-router-dom";
 
-const Sidebar = ({setSidebarOpen}) => {
+const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='flex flex-col text-bitBg font-semibold p-4 z-10'>
-      <span
-        className='self-end mb-3 cursor-pointer'
-        onClick={() => {
-          setSidebarOpen(false);
-        }}>
-        <AiFillCloseSquare fontSize={28} />
-      </span>
+    <div className='flex flex-col   py-6 z-10 rounded-xl bg-white'>
       <div>
         {sidebarLinks?.map((item, index) => {
           return (
             <span
               key={index}
-              className='capitalize  flex items-center gap-x-3 mb-5 cursor-pointer font-semibold text-lg hover:underline p-1 transition-all duration-400'
+              className='capitalize hover:bg-col_1 flex items-center gap-x-3 py-6 cursor-pointer font-semibold text-lg pl-5 pt-2 p-1  transition-all duration-400'
               onClick={() => {
                 item.handler();
                 navigate(item.destination);
               }}>
-              {item.logo}
+              <img
+                src={item.logo}
+                alt='Img  '
+              />
               {item.title}
             </span>
           );

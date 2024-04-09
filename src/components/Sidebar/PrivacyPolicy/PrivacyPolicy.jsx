@@ -1,14 +1,17 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {IoMdArrowRoundBack} from "react-icons/io";
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
 
 const PrivacyPolicy = () => {
   return (
     <div className='flex flex-col items-start w-full space-y-3'>
       <Link
         to='/homescreen'
-        className='bit-btn w-fit self-start'>
-        <IoMdArrowRoundBack fontSize={21} />
+        className=' w-fit self-start'>
+        <PiArrowBendUpLeftBold
+          fontSize={28}
+          color='white'
+        />
       </Link>
       <h1 className='text-5xl text-white font-semibold'>Privacy Policy</h1>
       <p className='text-xl font-semibold text-white'>

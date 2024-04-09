@@ -5,6 +5,8 @@ import {IoMdArrowRoundBack} from "react-icons/io";
 import {useSelector} from "react-redux/es/hooks/useSelector";
 import {fetchAccountNFT} from "../../../../utils";
 import toast from "react-hot-toast";
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import {BiImport} from "react-icons/bi";
 
 const ImportNft = ({setImport}) => {
   const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
@@ -68,30 +70,36 @@ const ImportNft = ({setImport}) => {
   };
 
   return (
-    <div className='flex flex-col items-center space-y-7 mt-6'>
+    <div className='flex flex-col items-center space-y-10 mt-6'>
       <button
-        className='bit-btn self-start px-4'
+        className=' self-start pl-5 '
         onClick={handleBack}>
-        <IoMdArrowRoundBack fontSize={21} />
-        <p>Back</p>
+        <PiArrowBendUpLeftBold
+          fontSize={28}
+          color='white'
+        />
       </button>
-      <Input
-        name='contractId'
-        onChange={handleParams}
-        placeholder='Contract Id'
-        value={nftParams.contractId}
-      />
-      <Input
-        name='tokenId'
-        onChange={handleParams}
-        placeholder='Token Id'
-        value={nftParams.tokenId}
-      />
+      <div className='space-y-3'>
+        <Input
+          type='text'
+          name='contractId'
+          onChange={handleParams}
+          placeholder='Contract ID'
+          value={nftParams.contractId}
+        />
+        <Input
+          type='numer'
+          name='tokenId'
+          onChange={handleParams}
+          placeholder='Token ID'
+          value={nftParams.tokenId}
+        />
+      </div>
       <button
-        className='bit-btn disabled:cursor-not-allowed disabled:opacity-75'
+        className='bit-btn disabled:cursor-not-allowed px-7 '
         disabled={nftParams.contractId === "" || nftParams.tokenId === ""}
         onClick={importNFT}>
-        Import
+        <span className='font-bold'>Import</span>
       </button>
     </div>
   );
