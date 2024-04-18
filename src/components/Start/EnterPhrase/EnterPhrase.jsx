@@ -1,14 +1,26 @@
 /*global chrome*/
 import React, {useState} from "react";
-import {IoMdArrowRoundBack} from "react-icons/io";
+
 import {shuffle} from "../../../utils";
 import {CreatePassword} from "../../../components";
-
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import {BsArrowCounterclockwise} from "react-icons/bs";
+import {HiMiniArrowLongRight} from "react-icons/hi2";
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
+  const {lang} = useSelector(state => state.wallet);
   const [originalArray, setOriginalArray] = useState(phrase);
   const [checkedArray, setCheckedArray] = useState([]);
   const [nextPage, setNextPage] = useState(false);
   const [keyVault, setkeyVault] = useState();
+
+  const enterPhrsTxt = lang === "en" ? engJs.enterPhrsTxt1 : spainJs.enterPhrsTxt1;
+  const retryTxt = lang === "en" ? engJs.retry : spainJs.retry;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
+
+  const isPhraseCorrect = checkedArray.join("") === phrase.join("");
 
   //Add element in the above box array
   const updateCheckedArray = word => {
@@ -53,21 +65,23 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
       keyStore={keyVault}
     />
   ) : (
-    <div className='flex flex-col w-full justify-between items-center'>
+    <div className='flex flex-col w-full justify-start mt-3 space-y-7 items-center'>
       <button
-        className='bit-btn self-start px-4'
+        className='self-start px-4'
         onClick={() => {
           setIsEnterPhrase(false);
         }}>
-        <IoMdArrowRoundBack fontSize={21} />
-        <p>Back</p>
+        <PiArrowBendUpLeftBold
+          fontSize={28}
+          color='white'
+        />
       </button>
-      <div className='flex flex-wrap border border-white h-1/4 justify-center rounded-md w-full'>
+      <div className='grid grid-cols-6 border bg-col_1 border-white h-1/4 pt-2  justify-center rounded-lg w-full px-2'>
         {checkedArray &&
           checkedArray.map(item => (
             <button
               key={item}
-              className='flex justify-center items-center m-1 p-1 h-fit  text-bitBg bg-white rounded-md'
+              className='flex justify-center items-center m-1 p-2 h-fit  text-white bg-black rounded-md'
               onClick={() => {
                 deleteCheckedWord(item);
               }}>
@@ -75,14 +89,12 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
             </button>
           ))}
       </div>
-      <p className='text-white font-semibold'>
-        Select the words in order of the secret phrase.
-      </p>
-      <div className='flex flex-wrap border border-white h-1/4 w-full justify-center rounded-md'>
+      <p className='text-white '>{enterPhrsTxt}</p>
+      <div className='grid grid-cols-6 border pt-2 px-2 border-col_1 h-1/4  w-full  rounded-md'>
         {originalArray.map(item => (
           <button
             key={item}
-            className='flex justify-center items-center m-1 p-1 h-fit text-white border border-white rounded-md'
+            className='flex justify-center items-center p-2 h-fit m-1  text-white border border-white rounded-lg  text-sm '
             onClick={() => {
               updateCheckedArray(item);
             }}>
@@ -91,11 +103,25 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
         ))}
       </div>
 
-      <button
-        className={`bit-btn ${checkedArray.length !== 12 && "hidden"} cursor-pointer`}
-        onClick={checkedArray.join("") === phrase.join("") ? saveKeyStore : resetPhrase}>
-        {checkedArray.join("") === phrase.join("") ? "Next" : "Retry"}
-      </button>
+      {isPhraseCorrect ? (
+        <button
+          className={`bit-btn px-7 flex items-center gap-x-2 ${
+            checkedArray.length !== 12 && "hidden"
+          } cursor-pointer`}
+          onClick={saveKeyStore}>
+          {nextTxt}
+          <HiMiniArrowLongRight fontSize={24} />
+        </button>
+      ) : (
+        <button
+          className={`bit-btn  bg-white px-7 flex items-center gap-x-2 opacity-90 ${
+            checkedArray.length !== 12 && "hidden"
+          } cursor-pointer`}
+          onClick={resetPhrase}>
+          {retryTxt}
+          <BsArrowCounterclockwise fontSize={24} />
+        </button>
+      )}
     </div>
   );
 };

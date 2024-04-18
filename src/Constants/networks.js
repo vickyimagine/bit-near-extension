@@ -1,10 +1,10 @@
 export const networks = [
   {
-    networkName: "NEAR Mainnet",
+    networkName: "Mainnet",
     type: "mainnet"
   },
   {
-    networkName: "NEAR Testnet",
+    networkName: "Testnet",
     type: "testnet"
   }
 ];

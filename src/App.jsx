@@ -3,13 +3,25 @@ import {Routes, Route} from "react-router-dom";
 import {PrivacyPolicy, Terms, AboutUs, Logout, RevealKey} from "./components";
 import {Home, CreateAccount} from "./container/index";
 import {Toaster} from "react-hot-toast";
+import stars from "./Assets/stars.svg";
+
+import "./App.css";
 
 const App = () => {
   return (
-    <div className='bg-bitBg rounded-md h-[500px] w-[500px] flex justify-center mx-auto p-5'>
+    <div className='bg-stars rounded-md h-[500px] w-[500px] bg-contain flex justify-center mx-auto p-5 font-syne'>
       <div>
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            style: {
+              marginTop: "20px",
+              paddingLeft: "45px",
+              paddingRight: "35px"
+            }
+          }}
+        />
       </div>
+
       <Routes>
         <Route
           path='/login/*'

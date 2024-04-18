@@ -1,50 +1,55 @@
 import React, {useEffect} from "react";
-import {IoMdArrowRoundBack} from "react-icons/io";
-import {FaUserPlus} from "react-icons/fa";
-import {BiImport} from "react-icons/bi";
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import {CgUserAdd} from "react-icons/cg";
+import {LuDownload} from "react-icons/lu";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
+import {LangDrop} from "../..";
 
 const AccountOptions = () => {
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
+  const {lang} = useSelector(state => state.wallet);
 
+  const createAccountTxt = lang === "en" ? engJs.createAccount : spainJs.createAccount;
+  const orTxt = lang === "en" ? engJs.or : spainJs.or;
+  const importAccountTxt = lang === "en" ? engJs.importAccount : spainJs.importAccount;
+  const termsTxt = lang === "en" ? engJs.termsConds : spainJs.termsConds;
   return (
     <>
       <div className='flex flex-col items-center w-full justify-between'>
+        <LangDrop
+          isMainScreen={false}
+          classNames='mt-8 mr-3'
+        />
         <Link
-          className='bit-btn self-start px-4'
+          className=' self-start px-4 -mt-36'
           to='/login/welcome'>
-          <IoMdArrowRoundBack fontSize={21} />
-          <p>Back</p>
+          <PiArrowBendUpLeftBold
+            fontSize={28}
+            color='white'
+          />
         </Link>
-        <Link
-          className='flex flex-col items-center space-y-3 border-2 border-white p-2 rounded-md '
-          to='/login/new-account'>
-          <p className='text-center text-white '>
-            If you have not created wallet before, you can choose below option
-          </p>
-          <button className='bit-btn w-3/5'>
-            <p>Create Account</p>
-            <FaUserPlus fontSize={21} />
-          </button>
-        </Link>
-        <Link
-          className='flex flex-col items-center space-y-3 border-2 border-white p-2 rounded-md
-        '
-          to='/login/import-account'>
-          <p className='text-center text-white '>
-            If you have created wallet before, you can choose below option
-          </p>
-          <button className='bit-btn w-3/5'>
-            <p>Import Account</p>
-            <BiImport fontSize={21} />
-          </button>
-        </Link>
+
+        <div className='flex flex-col items-center gap-y-2'>
+          <Link to='/login/new-account'>
+            <button className='bit-btn px-28 py-4 font-bold'>
+              <p>{createAccountTxt}</p>
+              <CgUserAdd fontSize={21} />
+            </button>
+          </Link>
+          <p className='text-col_1'>{orTxt}</p>
+          <Link to='/login/import-account'>
+            <button className='bit-btn bg-white px-28 py-4 font-bold'>
+              <p>{importAccountTxt}</p>
+              <LuDownload fontSize={21} />
+            </button>
+          </Link>
+        </div>
         <Link
           to='/terms'
-          className='text-white'>
-          Terms & Conditions
+          className='text-white underline'>
+          {termsTxt}
         </Link>
       </div>
     </>

@@ -1,46 +1,72 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {useSelector} from "react-redux";
+import engJs from "../../Constants/en";
+import spainJs from "../../Constants/es";
 
 import {Balances, Collectibles, Certificates, RecentTrxns} from "..";
 
-const HomeScreen = () => {
-  const [btnText, setBtnText] = useState("Balances");
+const HomeScreen = ({isSideBar, setIsSidebar}) => {
+  const {lang} = useSelector(state => state.wallet);
+  const balanceTxt = lang === "en" ? engJs.balance : spainJs.balance;
+  const collectiblesTxt = lang === "en" ? engJs.collectibles : spainJs.collectibles;
+  const certificateTxt = lang === "en" ? engJs.certificates : spainJs.certificates;
+  const txnTxt = lang === "en" ? engJs.txn : spainJs.txn;
+
+  const buttons = [balanceTxt, collectiblesTxt, certificateTxt, txnTxt];
+
+  const [btnText, setBtnText] = useState(balanceTxt);
+  const [buttonId, setbuttonId] = useState(0);
+
+  useEffect(() => {
+    setBtnText(buttons[buttonId]);
+  }, [lang]);
 
   const activeStyle =
-    "flex items-center justify-center w-1/2 text-center bg-white text-bitBg font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md p-2";
+    "flex items-center justify-center w-1/2 text-center bit-btn text-lg text-bitBg  cursor-pointer transition-all duration-300 font-semibold rounded-xl px-4 ";
   const inActiveStyle =
-    "flex items-center justify-center w-1/2 text-center text-white font-bold text-xl  cursor-pointer transition-all duration-300 rounded-md";
+    "flex items-center justify-center w-1/2 text-lg text-center  text-white  cursor-pointer transition-all duration-300 rounded-xl";
 
   return (
-    <div>
-      <div className='flex justify-center h-10  my-3 space-x-3'>
+    <div className={isSideBar && "pointer-events-none"}>
+      <div className='flex  justify-center h-10  my-3 space-x-3 '>
         <div
-          className={btnText === "Balances" ? activeStyle : inActiveStyle}
+          className={btnText === balanceTxt ? activeStyle : inActiveStyle}
           onClick={e => {
+            setbuttonId(0);
             setBtnText(e.target.textContent);
           }}>
-          Balances
+          {balanceTxt}
         </div>
         <div
-          className={btnText === "Collectibles" ? activeStyle : inActiveStyle}
-          onClick={e => setBtnText(e.target.textContent)}>
-          Collectibles
+          className={btnText === collectiblesTxt ? activeStyle : inActiveStyle}
+          onClick={e => {
+            setbuttonId(1);
+            setBtnText(e.target.textContent);
+          }}>
+          {collectiblesTxt}
         </div>
         <div
-          className={btnText === "Certificates" ? activeStyle : inActiveStyle}
-          onClick={e => setBtnText(e.target.textContent)}>
-          Certificates
+          className={btnText === certificateTxt ? activeStyle : inActiveStyle}
+          onClick={e => {
+            setbuttonId(2);
+            setBtnText(e.target.textContent);
+          }}>
+          {certificateTxt}
         </div>
         <div
-          className={btnText === "Transactions" ? activeStyle : inActiveStyle}
-          onClick={e => setBtnText(e.target.textContent)}>
-          Transactions
+          className={btnText === txnTxt ? activeStyle : inActiveStyle}
+          onClick={e => {
+            setbuttonId(3);
+            setBtnText(e.target.textContent);
+          }}>
+          {txnTxt}
         </div>
       </div>
-      {btnText === "Balances" ? (
+      {btnText === balanceTxt ? (
         <Balances />
-      ) : btnText === "Collectibles" ? (
+      ) : btnText === collectiblesTxt ? (
         <Collectibles />
-      ) : btnText === "Certificates" ? (
+      ) : btnText === certificateTxt ? (
         <Certificates />
       ) : (
         <RecentTrxns />

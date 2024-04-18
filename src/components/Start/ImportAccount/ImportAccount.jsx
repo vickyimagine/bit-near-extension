@@ -5,18 +5,31 @@ import {Link} from "react-router-dom";
 import {genFromSecret, getAccountId} from "../../../utils";
 import {parseSeedPhrase} from "near-seed-phrase";
 import {CreatePassword} from "../../../components";
-
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import {toast} from "react-hot-toast";
+import {encrypt} from "n-krypta";
+import {IoIosArrowDown} from "react-icons/io";
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 
 const ImportAccount = () => {
+  const {lang} = useSelector(state => state.wallet);
+  const importAccountTxt = lang === "en" ? engJs.importAccount : spainJs.importAccount;
+  const secretKeyTxt = lang === "en" ? engJs.secretKey : spainJs.secretKey;
+  const phraseTxt = lang === "en" ? engJs.phrase : spainJs.phrase;
+  const enterSecretText = lang === "en" ? engJs.enterSecretKey : spainJs.enterSecretKey;
+  const enterPhraseText = lang === "en" ? engJs.enterPassphrase : spainJs.enterPassphrase;
+  const importTxt = lang === "en" ? engJs.import : spainJs.import;
+
   const [inputData, setInputData] = useState({
-    method: "secretKey",
+    method: secretKeyTxt,
     value: ""
   });
   const [keyStore, setKeyStore] = useState();
-
+  const [isOpen, setIsOpen] = useState(false);
   const [nextPage, setNextPage] = useState(false);
-
+  const methods = [secretKeyTxt, phraseTxt];
   const handleInput = e => {
     setInputData(prev => {
       return {
@@ -25,6 +38,19 @@ const ImportAccount = () => {
       };
     });
   };
+
+  const toggleDropdown = () => {
+    setIsOpen(prev => {
+      return !prev;
+    });
+  };
+
+  const selectMethod = method => {
+    // dispatch(setCurrentNetwork(network));
+    setInputData({method, value: ""});
+    setIsOpen(false);
+  };
+
   //Check if input phrase is valid or not
 
   function checkInputPhrase(input) {
@@ -44,7 +70,7 @@ const ImportAccount = () => {
     try {
       let accountId, publicKey, secretKey;
 
-      if (inputData.method === "secretKey") {
+      if (inputData.method === secretKeyTxt) {
         const {accId, pubKey, privKey, privateKeyBytes} = genFromSecret(inputData.value);
         if (privateKeyBytes.length !== 64) {
           return toast.error("Invalid Secret Key");
@@ -67,7 +93,7 @@ const ImportAccount = () => {
       const newStore = {
         accountId: accountId,
         publicKey: publicKey,
-        secretKey: secretKey
+        secretKey: encrypt(secretKey, publicKey)
       };
       setKeyStore(newStore);
 
@@ -93,49 +119,64 @@ const ImportAccount = () => {
     <div className='flex flex-col justify-between w-full'>
       <Link
         to='/login/account-options'
-        className='bit-btn self-start px-4'
-        onClick={() => {}}>
-        <IoMdArrowRoundBack fontSize={21} />
-        <p>Back</p>
-      </Link>
-      <div className='flex flex-col space-y-4'>
-        <h1 className='text-white text-5xl font-bold'>Import Wallet</h1>
-        <select
-          id='countries'
-          className='bg-transparent text-sm rounded-lg text-white p-3 border outline-none w-fit self-end'
-          onChange={e => {
-            setInputData({
-              value: "",
-              method: e.target.value
-            });
-          }}>
-          <option
-            value='secretKey'
-            className='text-black'>
-            Secret Key
-          </option>
-          <option
-            value='phrase'
-            className='text-black'>
-            Phrase
-          </option>
-        </select>
-        <input
-          type='text'
-          className='p-2 border outline-none bg-transparent rounded-md w-full text-white'
-          onChange={handleInput}
-          placeholder={
-            inputData.method === "secretKey" ? "Enter Secret Key" : "Enter Seed Phrase"
-          }
-          value={inputData.value}
+        className=' self-start px-4 pt-3'>
+        <PiArrowBendUpLeftBold
+          fontSize={28}
+          color='white'
         />
+      </Link>
+      <div className='flex flex-col space-y-2 gap-y-16'>
+        <h1 className='text-white text-4xl font-bold self-center'>{importAccountTxt}</h1>
+        <div className='flex flex-col space-y-2'>
+          <div className='relative inline-block text-right self-end'>
+            <button
+              className='select-button flex justify-center self-end items-center gap-x-2 select-button-ghost w-36 max-w-xs border text-white bg-transparent border-white focus:outline-none rounded-md p-1 '
+              onClick={toggleDropdown}>
+              {inputData.method}{" "}
+              <IoIosArrowDown
+                fontSize={24}
+                className={`hover:scale-105 ${
+                  isOpen && "rotate-180"
+                } transition-all duration-300`}
+              />
+            </button>
+            {isOpen && (
+              <div className=' absolute rounded-md mt-2 w-36 bg-white px-2'>
+                {methods.map((item, idx) => (
+                  <button
+                    key={item}
+                    className={`flex items-center rounded-md justify-center py-2 font-bold bg-white ${
+                      idx === 0 &&
+                      " border-b-[#7e787880] rounded-b-none border-[white] border"
+                    }  text-black hover:bg-gray-100 w-full `}
+                    onClick={() => {
+                      selectMethod(item);
+                    }}>
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <input
+            type='text'
+            className='p-2 border outline-none bg-transparent rounded-lg w-full text-white font-inter'
+            onChange={handleInput}
+            placeholder={
+              inputData.method === secretKeyTxt
+                ? `${enterSecretText}`
+                : `${enterPhraseText}`
+            }
+            value={inputData.value}
+          />
+        </div>
       </div>
       <div className=' flex justify-center mb-5'>
         <button
-          className='bit-btn px-4 disabled:cursor-not-allowed disabled:opacity-75'
+          className='bit-btn px-4 disabled:cursor-not-allowed'
           onClick={importAccount}
           disabled={inputData.value === ""}>
-          <p>Import</p>
+          <p>{importTxt}</p>
         </button>
       </div>
     </div>

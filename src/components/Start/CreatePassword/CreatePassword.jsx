@@ -1,137 +1,170 @@
 /*global chrome*/
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {IoMdArrowRoundBack} from "react-icons/io";
-import {AiFillEye} from "react-icons/ai";
+
 import Terms from "../../Sidebar/Terms&Conditions/Terms";
 import toast from "react-hot-toast";
-import {encrypt} from "n-krypta";
-import {walletObject} from "../../../utils/methods/walletDapp";
+import {decrypt} from "n-krypta";
+
+import {GoEye} from "react-icons/go";
+import {GoEyeClosed} from "react-icons/go";
+import {FaArrowRight} from "react-icons/fa6";
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
+import {LangDrop} from "../..";
 
 const EnterPassword = ({setNextPage, keyStore}) => {
+  const {lang} = useSelector(state => state.wallet);
+  const createPasswordText =
+    lang === "en" ? engJs.createPassword : spainJs.createPassword;
+  const passwordTxt = lang === "en" ? engJs.password : spainJs.password;
+  const confirmPasswordTxt =
+    lang === "en" ? engJs.confirmPassword : spainJs.confirmPassword;
+  const iAcceptTxt = lang === "en" ? engJs.iAcceptAll : spainJs.iAcceptAll;
+  const termsCondsTxt = lang === "en" ? engJs.termsConds : spainJs.termsConds;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
   const [checked, setChecked] = useState(false);
   const [password, setPassword] = useState("");
-  const [finalPassword, setFinalPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [terms, setTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
   const storeWalletObject = async secretKey => {
-    chrome.storage.sync.set({
-      secretKey
-    });
+    // console.log(secretKey);
+    // chrome.storage.sync.set({
+    //   secretKey
+    // });
   };
 
   const handleSave = async () => {
-    if (!password.length > 8) {
+    if (!(password.length >= 8)) {
       toast.error("Password length should be greater than 8 characters");
-      return;
+    } else if (password !== confirmPassword) {
+      toast.error("Password didn't match!", {
+        style: {
+          marginTop: "9px"
+        }
+      });
+    } else {
+      const decryptedKey = decrypt(keyStore.secretKey, keyStore.publicKey);
+      await storeWalletObject(decryptedKey);
+
+      // Modify the object by adding a new field
+      keyStore.password = password;
+
+      // Stringify the updated object
+      const updatedJSON = JSON.stringify(keyStore);
+
+      // Store the updated JSON string back into local storage
+      localStorage.setItem("keyStore", updatedJSON);
+
+      chrome.storage.sync.set({
+        keyStore: updatedJSON
+      });
+      toast.success("Welcome to Bitwallet", {
+        style: {
+          marginTop: "20px"
+        }
+      });
+      navigate("/homescreen");
     }
-    await storeWalletObject(keyStore.secretKey);
-    let {secretKey, publicKey} = keyStore;
-
-    let encSecretKey = encrypt(secretKey, publicKey);
-    // Modify the object by adding a new field
-    keyStore.password = password;
-    keyStore.secretKey = encSecretKey;
-
-    // Stringify the updated object
-    const updatedJSON = JSON.stringify(keyStore);
-
-    // Store the updated JSON string back into local storage
-    localStorage.setItem("keyStore", updatedJSON);
-
-    chrome.storage.sync.set({
-      keyStore: updatedJSON
-    });
-    navigate("/homescreen");
+    setPassword("");
+    setConfirmPassword("");
+    setChecked(false);
   };
 
   return terms ? (
     <Terms setTerms={setTerms} />
   ) : (
-    <div className='flex flex-col w-full items-center space-y-8'>
-      <button
-        className='bit-btn self-start px-4'
-        onClick={() => {
-          setNextPage(false);
-          localStorage.removeItem("keyStore");
-        }}>
-        <IoMdArrowRoundBack fontSize={21} />
-        <p>Back</p>
-      </button>
-      <div className='flex flex-col w-full space-y-4 gap-y-3 border border-white p-6 rounded-md h-fit'>
-        <div className='flex items-center relative'>
+    <div className='flex flex-col w-full items-center space-y-8 '>
+      <LangDrop isMainScreen={false} />
+      <div className='flex flex-col w-full space-y-4 p-6 mt-6 rounded-md h-fit '>
+        <h1 className='text-white text-3xl font-bold self-center mb-2 '>
+          {createPasswordText}
+        </h1>
+        <div className='flex items-center relative py-2 '>
           <input
             type={showPassword ? "text" : "password"}
-            placeholder='Password'
+            placeholder={passwordTxt}
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className={`p-2 px-4 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white w-full`}
+            className={`p-2 px-2 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white w-full font-inter placeholder:text-white placeholder:font-extralight`}
           />
-          <AiFillEye
-            fontSize={28}
-            color='white'
-            className='absolute z-10 right-0 cursor-pointer'
-            onMouseDown={() => {
-              setShowPassword(true);
-            }}
-            onMouseUp={() => {
-              setShowPassword(false);
-            }}
+
+          {showPassword ? (
+            <GoEyeClosed
+              fontSize={24}
+              color='white'
+              className='absolute z-20 right-0 cursor-pointer'
+              onClick={() => {
+                setShowPassword(false);
+              }}
+            />
+          ) : (
+            <GoEye
+              fontSize={24}
+              color='white'
+              className='absolute z-20 right-0 cursor-pointer'
+              onClick={() => {
+                setShowPassword(true);
+              }}
+            />
+          )}
+        </div>
+        <div className='flex items-center relative'>
+          <input
+            type='text'
+            placeholder={confirmPasswordTxt}
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            className={`p-2 px-2 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white w-full font-inter placeholder:text-white placeholder:font-extralight`}
           />
         </div>
-        <input
-          type='text'
-          placeholder='Confirm Password'
-          value={finalPassword}
-          onChange={e => setFinalPassword(e.target.value)}
-          className={`p-2 px-4 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white ${
-            finalPassword.length > 0 &&
-            finalPassword !== password &&
-            `border-b-2 border-red-600`
-          }`}
-        />
-        <div className='flex gap-x-3'>
-          <input
-            type='checkbox'
-            className='checkbox'
-            onClick={e => {
-              setChecked(e.target.checked);
-            }}
-          />
-          <p className='text-white'>
-            Accept{" "}
+
+        <div className='flex items-center gap-x-3 '>
+          <div
+            className={`flex items-center  mt-4 ${
+              !checked && "ring-1 ring-white"
+            } h-fit w-fit rounded-sm`}>
+            <input
+              checked={checked}
+              onChange={() => {
+                setChecked(!checked);
+              }}
+              id='yellow-checkbox'
+              type='checkbox'
+              className={`w-4 h-4  checked:accent-col_1 ${
+                checked ? "opacity-100" : "opacity-0"
+              } cursor-pointer`}
+            />
+          </div>
+          <p className='text-white mt-4'>
+            <span className='font-thin'>{iAcceptTxt} </span>
             <button
-              className='font-bold text-white cursor-pointer border-b'
+              className='font-medium text-white cursor-pointer pl-1 text-base'
               onClick={() => {
                 setTerms(true);
               }}>
-              Terms & Conditions
+              {termsCondsTxt}
             </button>
           </p>
         </div>
       </div>
 
       <button
-        className={`bit-btn px-8 ${
-          (finalPassword.length === 0 ||
-            password.length === 0 ||
-            checked === false ||
-            password !== finalPassword) &&
-          "opacity-70 cursor-not-allowed"
-        }`}
+        className={"bit-btn px-8 py-2 disabled:cursor-not-allowed"}
         disabled={
-          finalPassword.length === 0 ||
-          password.length === 0 ||
-          checked === false ||
-          password !== finalPassword
+          password.length === 0 || confirmPassword.length === 0 || checked === false
         }
         onClick={() => {
           handleSave();
         }}>
-        <p>Next</p>
+        <p className='text-lg font-bold'>{nextTxt}</p>
+        <FaArrowRight fontSize={22} />
       </button>
     </div>
   );

@@ -157,5 +157,6 @@ export const nearConnection = async (accountId, networkType, privateKey) => {
 
   // inside an async function
   const nearConnection = await nearAPI.connect(config);
+  // console.log(nearConnection);
   return nearConnection;
 };

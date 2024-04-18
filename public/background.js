@@ -13,11 +13,11 @@ chrome.runtime.onStartup.addListener(() => {
 
 const getAccountId = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("keys", keystore => {
+    chrome.storage.sync.get("keyStore", keystore => {
       if (chrome.runtime.lastError) {
         reject(false);
       } else {
-        const keys = JSON.parse(keystore["keys"]);
+        const keys = JSON.parse(keystore["keyStore"]);
         const accountId = keys["accountId"];
         resolve(accountId);
       }
@@ -26,11 +26,11 @@ const getAccountId = () => {
 };
 const getPassword = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("keys", keystore => {
+    chrome.storage.sync.get("keyStore", keystore => {
       if (chrome.runtime.lastError) {
         reject(false);
       } else {
-        const keys = JSON.parse(keystore["keys"]);
+        const keys = JSON.parse(keystore["keyStore"]);
 
         const password = keys["password"];
         resolve(password);

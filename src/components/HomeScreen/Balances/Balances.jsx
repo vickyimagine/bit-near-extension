@@ -1,34 +1,42 @@
 /*global chrome*/
 import React, {useEffect} from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard";
-import {HiOutlineClipboardCopy} from "react-icons/hi";
-import {HiOutlineArrowUturnDown} from "react-icons/hi2";
-import {LuSend} from "react-icons/lu";
+
 import toast from "react-hot-toast";
 
 import {Link, useNavigate} from "react-router-dom";
 import {fetchBalance, fetchKeys} from "../../../utils";
-
+import {GoArrowUpRight} from "react-icons/go";
+import {GoArrowDownLeft} from "react-icons/go";
+import {RiFileCopyLine} from "react-icons/ri";
 import {useDispatch, useSelector} from "react-redux";
 import {setBalance} from "../../../Store/wallet/wallet-slice";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 
 const Balances = () => {
   //hooks
-  const {accountId, balance, currentNetwork, secretKey} = useSelector(
+  const {accountId, balance, currentNetwork, secretKey, lang} = useSelector(
     state => state.wallet
   );
+  const sendTxt = lang === "en" ? engJs.send : spainJs.send;
+  const receiveTxt = lang === "en" ? engJs.receive : spainJs.receive;
+  const walletTxt = lang === "en" ? engJs.walletId : spainJs.walletId;
   const dispatch = useDispatch();
   const keyStore = fetchKeys();
   const navigate = useNavigate();
   //functions
   const fetchAccountBal = async () => {
+    // console.log(secretKey);/
     if (secretKey && accountId) {
       //To ensure no null value is passed in the function
+      // console.log(secretKey)/;
       const accountBalance = await fetchBalance(
         accountId,
         currentNetwork?.type,
         secretKey
       );
+      // console.log(accountBalance);
       chrome.storage.sync.set({balance: accountBalance});
       dispatch(setBalance(accountBalance));
     }
@@ -49,47 +57,56 @@ const Balances = () => {
   }, [currentNetwork, accountId]);
 
   useEffect(() => {
-    if (!keyStore) {
+    let isBitV4 = localStorage.getItem("isBitV4");
+    // console.log(isBitV4);
+    if (!keyStore || !isBitV4) {
       navigate("/login/welcome");
     }
   }, []);
 
   if (!keyStore) return null;
   return (
-    <div className='space-y-7 border-t border-gray-500 py-2'>
-      <div className='flex items-center justify-between py-2'>
-        <span className='font-semibold text-xl text-white'>Wallet ID</span>
+    <div className='h-80 space-y-8 border-t border-gray-500 py-2 '>
+      <div className='flex items-center justify-between px-5 py-1'>
+        <span className='font-semibold text-xl text-white'>{walletTxt}</span>
         <CopyToClipboard text={accountId}>
           <div
-            className='flex items-center justify-between gap-x-3 bg-white font-bold text-bitBg rounded-md px-3 p-1 cursor-pointer active:scale-105'
+            className='flex items-center justify-between gap-x-3 font-normal font-inter rounded-md px-3 p-1 cursor-pointer active:scale-105 text-white'
             onClick={() => {
-              toast.success("Copied");
+              toast.success("Wallet Id Copied !");
             }}>
             {`${accountId?.slice(0, 4)}...${accountId?.slice(-6)}`}
-            <HiOutlineClipboardCopy fontSize={21} />
+            <RiFileCopyLine
+              fontSize={21}
+              color='#D8DD00'
+            />
           </div>
         </CopyToClipboard>
       </div>
       <div className='flex flex-col text-white text-center'>
-        <span className=' text-6xl font-semibold'>{balance} NEAR</span>
-        <span className='opacity-90'>Available Balance</span>
+        <span className='flex flex-col items-center font-semibold '>
+          <span className='text-7xl font-syncopate bg-gradient-to-r from-[#a107d9] to-[#00B2FF] w-fit text-transparent bg-clip-text inline-block'>
+            {balance || 0}
+          </span>{" "}
+          <span className='font-syne font-light text-4xl'>NEAR</span>
+        </span>
       </div>
-      <div className='flex justify-around'>
+      <div className='flex justify-center items-center space-x-6 '>
         <Link
           to='/send'
           className='flex flex-col items-center space-y-2'>
-          <button className='bg-white text-bitBg p-3 rounded-2xl opacity-80 hover:opacity-100 hover:scale-105'>
-            <LuSend fontSize={27} />
+          <button className='bit-btn text-bitBg p-3 px-8 rounded-full hover:scale-105 gap-x-2 font-bold py-3'>
+            {sendTxt}
+            <GoArrowUpRight fontSize={24} />
           </button>
-          <span className='text-white'>Send</span>
         </Link>
         <Link
           to='/receive'
           className='flex flex-col items-center space-y-2'>
-          <button className='bg-white text-bitBg p-3 rounded-2xl opacity-80 hover:opacity-100 hover:scale-105'>
-            <HiOutlineArrowUturnDown fontSize={27} />
+          <button className='bit-btn text-bitBg p-3 px-6 gap-x-2  hover:scale-105 font-bold'>
+            {receiveTxt}
+            <GoArrowDownLeft fontSize={24} />
           </button>
-          <span className='text-white'>Receive</span>
         </Link>
       </div>
     </div>

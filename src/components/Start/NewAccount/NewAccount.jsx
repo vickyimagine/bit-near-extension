@@ -4,14 +4,26 @@ import {generateSeedPhrase} from "near-seed-phrase";
 import {getAccountId} from "../../../utils";
 import EnterPhrase from "../EnterPhrase/EnterPhrase";
 import {encrypt} from "n-krypta"; //For es6
+import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import {FaArrowRight} from "react-icons/fa6";
 
 import {CopyToClipboard} from "react-copy-to-clipboard";
-import {IoMdArrowRoundBack} from "react-icons/io";
+import toast from "react-hot-toast";
 
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 const NewAccount = () => {
+  const {lang} = useSelector(state => state.wallet);
+
   const [phrase, setPhrase] = useState(null);
   const [isEnterPhrase, setIsEnterPhrase] = useState(false);
   const [keyStore, setKeyStore] = useState(null);
+
+  const backupPhrsTxt = lang === "en" ? engJs.backupPhrs : spainJs.backupPhrs;
+  const backupPara1 = lang === "en" ? engJs.backupPhrsTxt1 : spainJs.backupPhrsTxt1;
+  const backupPara2 = lang === "en" ? engJs.backupPhrsTxt2 : spainJs.backupPhrsTxt2;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
 
   const generateStore = () => {
     let keys = generateSeedPhrase();
@@ -34,34 +46,41 @@ const NewAccount = () => {
       keyStore={keyStore}
     />
   ) : (
-    <div className='flex flex-col items-center w-full justify-between'>
+    <div className='flex flex-col items-center w-full justify-between mt-3'>
       <Link
-        className='bit-btn self-start px-4'
+        className='self-start px-4'
         to='/login/account-options'>
-        <IoMdArrowRoundBack fontSize={21} />
-        <p>Back</p>
+        <PiArrowBendUpLeftBold
+          fontSize={28}
+          color='white'
+        />
       </Link>
-      <h1 className='text-white text-4xl font-bold'>Backup Phrase</h1>
-      <p className='text-white text-center'>
-        Your secret phrase helps you to backup and restore your BIT wallet account.Keep
-        your seed phrase key confidential.Access of this key to any other person could
-        give them access of this wallet
+      <h1 className='text-white text-[28px] font-bold'>{backupPhrsTxt}</h1>
+      <p className='text-white text-center font-inter font-light text-sm leading-relaxed'>
+        {backupPara1}
       </p>
       <CopyToClipboard text={phrase && phrase}>
-        <div className='border border-white opacity-85 text-white text-center p-3 rounded-md cursor-pointer hover:bg-slate-300 hover:text-bitBg active:scale-95 transition-all duration-400'>
+        <div
+          className='border bg-white hover:bg-col_1  opacity-85 text-black font-semibold text-center p-2 text-xs rounded-xl cursor-pointer hover:text-bitBg active:scale-95 transition-all duration-400'
+          onClick={() => {
+            toast.success("Copied in your clipboard !");
+          }}>
           {phrase && phrase}
         </div>
       </CopyToClipboard>
-      <p className='text-white font-semibold text-center'>
-        Copy the secret phrase by clicking on the above box and save it at a secure
-        location.You 'll be asked to enter the secret phrase next.
-      </p>
+      <p className='text-white text-sm text-center'>{backupPara2}</p>
       <button
-        className='bit-btn px-8'
+        className='bit-btn px-7 mb-3'
         onClick={() => {
           setIsEnterPhrase(true);
         }}>
-        <p>Next</p>
+        <p className='flex gap-x-2 items-center  font-bold'>
+          {nextTxt}
+          <FaArrowRight
+            fontSize={22}
+            color='black'
+          />
+        </p>
       </button>
     </div>
   );

@@ -13,6 +13,7 @@ export {default as HomeScreen} from "./HomeScreen/HomeScreen";
 export {default as Send} from "./Send/Send";
 export {default as Receive} from "./Receive/Receive";
 export {default as Dropdown} from "./Dropdown/Dropdown";
+export {default as LangDrop} from "./LangDropdown/LangDrop";
 export {default as AboutUs} from "./Sidebar/AboutUs/About";
 export {default as PrivacyPolicy} from "./Sidebar/PrivacyPolicy/PrivacyPolicy";
 export {default as Terms} from "./Sidebar/Terms&Conditions/Terms";

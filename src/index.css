@@ -4,8 +4,29 @@
 
 @layer components {
   .bit-btn {
-    @apply flex justify-center space-x-3 items-center bg-white text-bitBg font-semibold p-2 rounded-md hover:scale-105 transition-all duration-200;
+    @apply flex justify-center space-x-3 items-center bg-col_1  font-semibold p-3 py-2 rounded-full hover:scale-105 transition-all duration-200;
   }
+}
+@font-face {
+  font-family: "Nico";
+  src: url("../public/fonts/NicoMoji-Regular.ttf");
+}
+@font-face {
+  font-family: "Syne";
+  src: url("../public/fonts/Syne.ttf");
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../public/fonts/Inter.ttf");
+}
+@font-face {
+  font-family: "Syncopate";
+  src: url("../public/fonts/Syncopate-Bold.ttf");
+}
+@font-face {
+  font-family: "Syncopate-Thin";
+  src: url("../public/fonts/Syncopate-Regular.ttf");
 }
 
 body {
