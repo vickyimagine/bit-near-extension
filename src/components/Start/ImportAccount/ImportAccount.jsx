@@ -9,17 +9,27 @@ import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import {toast} from "react-hot-toast";
 import {encrypt} from "n-krypta";
 import {IoIosArrowDown} from "react-icons/io";
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 
 const ImportAccount = () => {
+  const {lang} = useSelector(state => state.wallet);
+  const importAccountTxt = lang === "en" ? engJs.importAccount : spainJs.importAccount;
+  const secretKeyTxt = lang === "en" ? engJs.secretKey : spainJs.secretKey;
+  const phraseTxt = lang === "en" ? engJs.phrase : spainJs.phrase;
+  const enterSecretText = lang === "en" ? engJs.enterSecretKey : spainJs.enterSecretKey;
+  const enterPhraseText = lang === "en" ? engJs.enterPassphrase : spainJs.enterPassphrase;
+  const importTxt = lang === "en" ? engJs.import : spainJs.import;
+
   const [inputData, setInputData] = useState({
-    method: "Secret Key",
+    method: secretKeyTxt,
     value: ""
   });
   const [keyStore, setKeyStore] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [nextPage, setNextPage] = useState(false);
-
-  const methods = ["Secret Key", "Phrase"];
+  const methods = [secretKeyTxt, phraseTxt];
   const handleInput = e => {
     setInputData(prev => {
       return {
@@ -60,7 +70,7 @@ const ImportAccount = () => {
     try {
       let accountId, publicKey, secretKey;
 
-      if (inputData.method === "Secret Key") {
+      if (inputData.method === secretKeyTxt) {
         const {accId, pubKey, privKey, privateKeyBytes} = genFromSecret(inputData.value);
         if (privateKeyBytes.length !== 64) {
           return toast.error("Invalid Secret Key");
@@ -115,8 +125,8 @@ const ImportAccount = () => {
           color='white'
         />
       </Link>
-      <div className='flex flex-col space-y-5'>
-        <h1 className='text-white text-4xl font-bold self-center'>Import Wallet</h1>
+      <div className='flex flex-col space-y-2 gap-y-16'>
+        <h1 className='text-white text-4xl font-bold self-center'>{importAccountTxt}</h1>
         <div className='flex flex-col space-y-2'>
           <div className='relative inline-block text-right self-end'>
             <button
@@ -150,10 +160,12 @@ const ImportAccount = () => {
           </div>
           <input
             type='text'
-            className='p-2 border outline-none bg-transparent rounded-lg w-full text-white'
+            className='p-2 border outline-none bg-transparent rounded-lg w-full text-white font-inter'
             onChange={handleInput}
             placeholder={
-              inputData.method === "Secret Key" ? "Enter Secret Key" : "Enter Seed Phrase"
+              inputData.method === secretKeyTxt
+                ? `${enterSecretText}`
+                : `${enterPhraseText}`
             }
             value={inputData.value}
           />
@@ -164,7 +176,7 @@ const ImportAccount = () => {
           className='bit-btn px-4 disabled:cursor-not-allowed'
           onClick={importAccount}
           disabled={inputData.value === ""}>
-          <p>Import</p>
+          <p>{importTxt}</p>
         </button>
       </div>
     </div>

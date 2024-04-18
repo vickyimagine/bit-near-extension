@@ -10,9 +10,14 @@ import {useSelector} from "react-redux";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {BiSolidCopy} from "react-icons/bi";
 import toast from "react-hot-toast";
-
+import engJs from "../../../../Constants/en";
+import spainJs from "../../../../Constants/es";
 const NFTCard = ({nft, setCardOpen}) => {
-  const {currentNetwork} = useSelector(state => state.wallet);
+  const {currentNetwork, lang} = useSelector(state => state.wallet);
+
+  const downloadTxt = lang === "en" ? engJs.download : spainJs.download;
+  const transferTxt = lang === "en" ? engJs.transfer : spainJs.transfer;
+  const tokenIdTxt = lang === "en" ? engJs.tokenId : spainJs.tokenId;
 
   const [isTransfer, setIsTransfer] = useState(false);
   const [nftData, setNftData] = useState({
@@ -66,8 +71,8 @@ const NFTCard = ({nft, setCardOpen}) => {
                 />
                 <div className='flex flex-col space-y-3  w-2/3'>
                   <div className='flex justify-start w-full text-white  border-b border-white'>
-                    <p className='text-xl font-bold w-1/2  border-r border-white'>
-                      Token Id{" "}
+                    <p className='text-xl font-bold w-1/2   border-r border-white'>
+                      {tokenIdTxt}
                     </p>
                     <p className=' flex items-center justify-evenly font-inter gap-x-4 text-lg font-bold w-1/2 '>
                       {nftData?.tokenId}
@@ -116,12 +121,12 @@ const NFTCard = ({nft, setCardOpen}) => {
                 onClick={() => {
                   nftDownload(nftData?.media);
                 }}>
-                Download <HiOutlineDownload fontSize={22} />
+                {downloadTxt} <HiOutlineDownload fontSize={22} />
               </button>
               <button
                 className='bit-btn w-fit h-fit gap-x-3  flex items-center justify-center px-5 font-bold'
                 onClick={() => setIsTransfer(true)}>
-                Transfer <LuSend fontSize={22} />
+                {transferTxt} <LuSend fontSize={22} />
               </button>
             </div>
           </div>

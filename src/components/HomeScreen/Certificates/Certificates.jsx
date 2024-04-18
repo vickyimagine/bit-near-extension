@@ -2,9 +2,15 @@ import React, {useState, useEffect} from "react";
 import {useSelector} from "react-redux/es/hooks/useSelector";
 import CertificateCard from "./CertificateCard/CertificateCard";
 import {Oval} from "react-loader-spinner";
-
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 const Certificates = () => {
-  const {accountId, currentNetwork} = useSelector(state => state.wallet);
+  const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
+  const fetchCertsTxt = lang === "en" ? engJs.fetchingCerts : spainJs.fetchingCerts;
+  const noCertText = lang === "en" ? engJs.noCertIssue : spainJs.noCertIssue;
+  const certAvailMainTxt = lang === "en" ? engJs.certAvailMain : spainJs.certAvailMain;
+  const certAppreciationTxt =
+    lang === "en" ? engJs.certAppreciation : spainJs.certAppreciation;
 
   const [certificates, setCertificates] = useState([]);
 
@@ -15,8 +21,8 @@ const Certificates = () => {
   const getCerts = async () => {
     setIsLoader(true);
 
-    // const apiUrl = `https://bitmemoir.com/api/v2/certificate/getCertificate/?wallet=${accountId}`;
-    const apiUrl = `http://15.206.186.148/api/v2/certificate/getCertificate/?wallet=${accountId}`;
+    const apiUrl = `https://bitmemoir.com/api/v2/certificate/getCertificate/?wallet=${accountId}`;
+    // const apiUrl = `http://15.206.186.148/api/v2/certificate/getCertificate/?wallet=${accountId}`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -32,7 +38,7 @@ const Certificates = () => {
       const data = await response.json();
 
       if (data && data.certificates) {
-        console.log(data);
+        // console.log(data);
         const certData = data.certificates;
         certData.map(org =>
           org?.certificates?.map(certificate =>
@@ -40,7 +46,7 @@ const Certificates = () => {
               ...prev,
               {
                 name: certificate?.name,
-                token_id: certificate?.id,
+                token_id: String(certificate?.id),
                 image: certificate?.image,
                 cid: certificate?.cid,
                 address: org?.address,
@@ -65,7 +71,7 @@ const Certificates = () => {
     if (currentNetwork.type === "mainnet") {
       getCerts();
     }
-  }, [currentNetwork]);
+  }, [currentNetwork, cardOpen]);
 
   return (
     <div className=' border-t border-gray-500 '>
@@ -88,12 +94,14 @@ const Certificates = () => {
                 strokeWidth={2}
                 strokeWidthSecondary={2}
               />
-              <p className='font-bold text-white text-xl'>Fetching Certificates...</p>
+              <p className='font-bold text-white text-xl'>{fetchCertsTxt}</p>
             </div>
           ) : certificates?.length === 0 ? (
             <div className='h-72 flex items-center justify-center'>
               <button className='bit-btn font-bold flex top-20 hover:scale-100 cursor-default px-24'>
-                No Certificates Issued
+                {currentNetwork.type === "mainnet"
+                  ? `${noCertText}`
+                  : `${certAvailMainTxt}`}
               </button>
             </div>
           ) : (
@@ -123,7 +131,7 @@ const Certificates = () => {
                             className='h-2/3 w-40 object-cover rounded-xl'
                           />
                           <p className='text-sm h-1/3  text-center font-medium text-black'>
-                            Certificate of Appreciation
+                            {certAppreciationTxt}
                           </p>
                         </div>
                       </>

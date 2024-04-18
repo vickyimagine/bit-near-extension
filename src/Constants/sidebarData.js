@@ -43,7 +43,7 @@ export const sidebarLinks = [
     title: "log out",
     destination: "/logout",
     handler: () => {
-      // chrome.storage.sync.set({loggedIn: false});
+      chrome.storage.sync.set({loggedIn: false});
     }
   },
   {
@@ -52,10 +52,10 @@ export const sidebarLinks = [
     destination: "/login/welcome",
     handler: () => {
       localStorage.clear();
-      // chrome.storage.sync.clear();
-      // chrome.storage.sync.set({
-      //   loggedIn: true
-      // });
+      chrome.storage.sync.clear();
+      chrome.storage.sync.set({
+        loggedIn: true
+      });
     }
   }
 ];

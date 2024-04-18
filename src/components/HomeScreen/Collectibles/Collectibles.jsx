@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import ImportNft from "./ImportNft/ImportNft";
 import NFTCard from "./NFTCard/NFTCard";
 import {useSelector} from "react-redux/es/hooks/useSelector";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 
 const Collectibles = () => {
   const [NFTs, setNFTs] = useState([]);
@@ -9,7 +11,12 @@ const Collectibles = () => {
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [nftCard, setNFTCard] = useState();
 
-  const {currentNetwork} = useSelector(state => state.wallet);
+  const {currentNetwork, lang} = useSelector(state => state.wallet);
+
+  const collNotVisTxt =
+    lang === "en" ? engJs.dontSeeCollectibles : spainJs.dontSeeCollectibles;
+  const importCollTxt =
+    lang === "en" ? engJs.importCollectibles : spainJs.importCollectibles;
 
   const fetchStoreNFT = () => {
     const storedNFTs = JSON.parse(localStorage.getItem("nfts")) || [];
@@ -64,13 +71,13 @@ const Collectibles = () => {
                 })}
             </div>
             <div className='flex flex-col items-center justify-center space-y-3'>
-              <p className='text-white font-medium'>Don't see your Collectibles ?</p>
+              <p className='text-white font-medium'>{collNotVisTxt}</p>
               <button
                 className='bit-btn px-24 font-bold'
                 onClick={() => {
                   setIsImport(true);
                 }}>
-                Import Collectibles
+                {importCollTxt}
               </button>
             </div>
           </div>

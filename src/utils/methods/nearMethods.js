@@ -8,7 +8,7 @@ export const fetchBalance = async (accountId, networkType, privateKey) => {
   try {
     // gets account balance
     const account = await connection.account(accountId);
-    const balance = ((await account.getAccountBalance()).available / 10 ** 24).toFixed(2);
+    const balance = ((await account.getAccountBalance()).available / 10 ** 24).toFixed(4);
     // console.log(balance);
     return balance;
   } catch (error) {

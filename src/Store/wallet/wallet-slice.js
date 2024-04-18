@@ -7,7 +7,8 @@ const initialState = {
   currentNetwork: JSON.parse(localStorage.getItem("network")) || networks[0],
   accountId: null,
   balance: null,
-  secretKey: null
+  secretKey: null,
+  lang: localStorage.getItem("lang") || "en"
 };
 
 const walletSlice = createSlice({
@@ -16,7 +17,7 @@ const walletSlice = createSlice({
   reducers: {
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
-      // chrome.storage.sync.set({network: action.payload});
+      chrome.storage.sync.set({network: action.payload});
       localStorage.setItem("network", JSON.stringify(action.payload));
     },
     setAccountId(state, action) {
@@ -27,11 +28,16 @@ const walletSlice = createSlice({
     },
     setSecretKey(state, action) {
       state.secretKey = action.payload;
+    },
+    setLang(state, action) {
+      localStorage.setItem("lang", action.payload);
+      state.lang = action.payload;
+      chrome.storage.sync.set({lang: action.payload});
     }
   }
 });
 
-export const {setCurrentNetwork, setAccountId, setBalance, setSecretKey} =
+export const {setCurrentNetwork, setAccountId, setBalance, setSecretKey, setLang} =
   walletSlice.actions;
 
 export default walletSlice.reducer;

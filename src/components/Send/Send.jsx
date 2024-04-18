@@ -7,9 +7,15 @@ import {IoMdArrowRoundBack} from "react-icons/io";
 import {useSelector} from "react-redux";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 
+import engJs from "../../Constants/en";
+import spainJs from "../../Constants/es";
 const Send = () => {
   //hooks
-  const {balance} = useSelector(state => state.wallet);
+  const {balance, lang} = useSelector(state => state.wallet);
+
+  const useMaxTxt = lang === "en" ? engJs.useMax : spainJs.useMax;
+  const availToSendTxt = lang === "en" ? engJs.availToSend : spainJs.availToSend;
+  const continueTxt = lang === "en" ? engJs.continue : spainJs.continue;
 
   const [inputLength, setInputLength] = useState(0);
   const [amount, setAmount] = useState(0);
@@ -60,12 +66,12 @@ const Send = () => {
                 setInputLength(String(balance).length);
                 setAmount(balance);
               }}>
-              Use Max
+              {useMaxTxt}
             </button>
           </div>
           <div className='flex flex-col space-y-3'>
             <div className='flex justify-between items-center text-white '>
-              <span className='font-syne'>Available to Send</span>
+              <span className='font-syne'>{availToSendTxt}</span>
               <span className=' font-syncopate'>{balance} NEAR</span>
             </div>
             <button
@@ -74,7 +80,7 @@ const Send = () => {
               onClick={() => {
                 setNextStep(true);
               }}>
-              Continue
+              {continueTxt}
             </button>
           </div>
         </>

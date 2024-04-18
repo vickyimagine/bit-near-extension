@@ -6,11 +6,19 @@ import {CreatePassword} from "../../../components";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import {BsArrowCounterclockwise} from "react-icons/bs";
 import {HiMiniArrowLongRight} from "react-icons/hi2";
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
+  const {lang} = useSelector(state => state.wallet);
   const [originalArray, setOriginalArray] = useState(phrase);
   const [checkedArray, setCheckedArray] = useState([]);
   const [nextPage, setNextPage] = useState(false);
   const [keyVault, setkeyVault] = useState();
+
+  const enterPhrsTxt = lang === "en" ? engJs.enterPhrsTxt1 : spainJs.enterPhrsTxt1;
+  const retryTxt = lang === "en" ? engJs.retry : spainJs.retry;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
 
   const isPhraseCorrect = checkedArray.join("") === phrase.join("");
 
@@ -81,7 +89,7 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
             </button>
           ))}
       </div>
-      <p className='text-white '>Select the words in order of the secret phrase.</p>
+      <p className='text-white '>{enterPhrsTxt}</p>
       <div className='grid grid-cols-6 border pt-2 px-2 border-col_1 h-1/4  w-full  rounded-md'>
         {originalArray.map(item => (
           <button
@@ -101,7 +109,7 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
             checkedArray.length !== 12 && "hidden"
           } cursor-pointer`}
           onClick={saveKeyStore}>
-          Next
+          {nextTxt}
           <HiMiniArrowLongRight fontSize={24} />
         </button>
       ) : (
@@ -110,7 +118,7 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
             checkedArray.length !== 12 && "hidden"
           } cursor-pointer`}
           onClick={resetPhrase}>
-          Retry
+          {retryTxt}
           <BsArrowCounterclockwise fontSize={24} />
         </button>
       )}

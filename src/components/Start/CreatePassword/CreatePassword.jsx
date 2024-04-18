@@ -1,18 +1,29 @@
 /*global chrome*/
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {IoMdArrowRoundBack} from "react-icons/io";
-import {VscEye} from "react-icons/vsc";
-import {VscEyeClosed} from "react-icons/vsc";
+
 import Terms from "../../Sidebar/Terms&Conditions/Terms";
 import toast from "react-hot-toast";
 import {decrypt} from "n-krypta";
-import {PiArrowBendUpLeftBold} from "react-icons/pi";
+
 import {GoEye} from "react-icons/go";
 import {GoEyeClosed} from "react-icons/go";
 import {FaArrowRight} from "react-icons/fa6";
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
+import {LangDrop} from "../..";
 
 const EnterPassword = ({setNextPage, keyStore}) => {
+  const {lang} = useSelector(state => state.wallet);
+  const createPasswordText =
+    lang === "en" ? engJs.createPassword : spainJs.createPassword;
+  const passwordTxt = lang === "en" ? engJs.password : spainJs.password;
+  const confirmPasswordTxt =
+    lang === "en" ? engJs.confirmPassword : spainJs.confirmPassword;
+  const iAcceptTxt = lang === "en" ? engJs.iAcceptAll : spainJs.iAcceptAll;
+  const termsCondsTxt = lang === "en" ? engJs.termsConds : spainJs.termsConds;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
   const [checked, setChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -51,10 +62,10 @@ const EnterPassword = ({setNextPage, keyStore}) => {
       // Store the updated JSON string back into local storage
       localStorage.setItem("keyStore", updatedJSON);
 
-      // chrome.storage.sync.set({
-      //   keyStore: updatedJSON
-      // });
-      toast.success("Welcome to Bitwallet💜", {
+      chrome.storage.sync.set({
+        keyStore: updatedJSON
+      });
+      toast.success("Welcome to Bitwallet", {
         style: {
           marginTop: "20px"
         }
@@ -69,15 +80,16 @@ const EnterPassword = ({setNextPage, keyStore}) => {
   return terms ? (
     <Terms setTerms={setTerms} />
   ) : (
-    <div className='flex flex-col w-full items-center space-y-8'>
-      <div className='flex flex-col w-full space-y-4 p-6 mt-6 rounded-md h-fit'>
+    <div className='flex flex-col w-full items-center space-y-8 '>
+      <LangDrop isMainScreen={false} />
+      <div className='flex flex-col w-full space-y-4 p-6 mt-6 rounded-md h-fit '>
         <h1 className='text-white text-3xl font-bold self-center mb-2 '>
-          Create Password
+          {createPasswordText}
         </h1>
         <div className='flex items-center relative py-2 '>
           <input
             type={showPassword ? "text" : "password"}
-            placeholder='Password'
+            placeholder={passwordTxt}
             value={password}
             onChange={e => setPassword(e.target.value)}
             className={`p-2 px-2 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white w-full font-inter placeholder:text-white placeholder:font-extralight`}
@@ -106,7 +118,7 @@ const EnterPassword = ({setNextPage, keyStore}) => {
         <div className='flex items-center relative'>
           <input
             type='text'
-            placeholder='Confirm Password'
+            placeholder={confirmPasswordTxt}
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
             className={`p-2 px-2 focus:outline-none ring-bitBg  bg-transparent border-b caret-white text-white w-full font-inter placeholder:text-white placeholder:font-extralight`}
@@ -131,13 +143,13 @@ const EnterPassword = ({setNextPage, keyStore}) => {
             />
           </div>
           <p className='text-white mt-4'>
-            <span className='font-thin'>I Accept all </span>
+            <span className='font-thin'>{iAcceptTxt} </span>
             <button
               className='font-medium text-white cursor-pointer pl-1 text-base'
               onClick={() => {
                 setTerms(true);
               }}>
-              Terms & Conditions
+              {termsCondsTxt}
             </button>
           </p>
         </div>
@@ -151,7 +163,7 @@ const EnterPassword = ({setNextPage, keyStore}) => {
         onClick={() => {
           handleSave();
         }}>
-        <p className='text-lg font-bold'>Next</p>
+        <p className='text-lg font-bold'>{nextTxt}</p>
         <FaArrowRight fontSize={22} />
       </button>
     </div>

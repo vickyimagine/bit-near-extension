@@ -4,11 +4,18 @@ import {IoMdArrowRoundBack} from "react-icons/io";
 import {useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import engJs from "../../Constants/en";
+import spainJs from "../../Constants/es";
 
 import {transferNear} from "../../utils";
 
 const ReceiverDetails = ({setNextStep, amount}) => {
-  const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
+  const {accountId, currentNetwork, secretKey, lang} = useSelector(state => state.wallet);
+
+  const sendToTxt = lang === "en" ? engJs.sendTo : spainJs.sendTo;
+  const sendTxt = lang === "en" ? engJs.send : spainJs.send;
+  const cancelTxt = lang === "en" ? engJs.cancel : spainJs.cancel;
+
   const [recipient, setRecipient] = useState("");
   const [transferring, setTransferring] = useState(false);
 
@@ -68,10 +75,10 @@ const ReceiverDetails = ({setNextStep, amount}) => {
           </span>
         </div>
         <div className='flex p-2  text-white rounded-md focus:ring-white ring-1 ring-slate-400 transparent-all duration-200 bg-[#FFFFFF4D]'>
-          <span className='w-1/5 text-[#FFFFFFB2] font-medium'>Send To</span>
+          <span className='w-1/5 text-[#FFFFFFB2] font-medium'>{sendToTxt}</span>
           <input
             type='text'
-            className='text-end w-4/5 bg-transparent focus:outline-none text-white '
+            className='text-end w-4/5 font-inter bg-transparent focus:outline-none text-white '
             placeholder='Account ID'
             onChange={e => {
               setRecipient(e.target.value);
@@ -85,12 +92,12 @@ const ReceiverDetails = ({setNextStep, amount}) => {
           className='bit-btn w-fit self-center px-40 py-3 font-bold disabled:cursor-not-allowed'
           disabled={!recipient || transferring}
           onClick={sendNear}>
-          Send
+          {sendTxt}
         </button>
         <Link
           to='/homescreen'
           className='border-b w-fit self-center bit-btn bg-white px-7'>
-          Cancel
+          {cancelTxt}
         </Link>
       </div>
     </div>

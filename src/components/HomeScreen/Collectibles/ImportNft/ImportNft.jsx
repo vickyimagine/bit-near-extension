@@ -8,8 +8,15 @@ import toast from "react-hot-toast";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import {BiImport} from "react-icons/bi";
 
+import engJs from "../../../../Constants/en";
+import spainJs from "../../../../Constants/es";
+
 const ImportNft = ({setImport}) => {
-  const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
+  const {accountId, currentNetwork, secretKey, lang} = useSelector(state => state.wallet);
+  const contractIdTxt = lang === "en" ? engJs.contractId : spainJs.contractId;
+  const tokenIdTxt = lang === "en" ? engJs.tokenId : spainJs.tokenId;
+  const importTxt = lang === "en" ? engJs.import : spainJs.import;
+
   const [nftParams, setNftParams] = useState({
     contractId: "",
     tokenId: ""
@@ -84,14 +91,14 @@ const ImportNft = ({setImport}) => {
           type='text'
           name='contractId'
           onChange={handleParams}
-          placeholder='Contract ID'
+          placeholder={contractIdTxt}
           value={nftParams.contractId}
         />
         <Input
           type='numer'
           name='tokenId'
           onChange={handleParams}
-          placeholder='Token ID'
+          placeholder={tokenIdTxt}
           value={nftParams.tokenId}
         />
       </div>
@@ -99,7 +106,7 @@ const ImportNft = ({setImport}) => {
         className='bit-btn disabled:cursor-not-allowed px-7 '
         disabled={nftParams.contractId === "" || nftParams.tokenId === ""}
         onClick={importNFT}>
-        <span className='font-bold'>Import</span>
+        <span className='font-bold'>{importTxt}</span>
       </button>
     </div>
   );

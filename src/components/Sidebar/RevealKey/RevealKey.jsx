@@ -12,13 +12,20 @@ import {VscEyeClosed} from "react-icons/vsc";
 import {GoEye} from "react-icons/go";
 import {GoEyeClosed} from "react-icons/go";
 
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
+
 const RevealKey = () => {
   const [password, setPassword] = useState("");
   const [isKey, setIsKey] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
   const keyStore = fetchKeys();
-  const {secretKey} = useSelector(state => state.wallet);
+  const {secretKey, lang} = useSelector(state => state.wallet);
+  const revealTxt = lang === "en" ? engJs.revealSecretKey : spainJs.revealSecretKey;
+  const secretTxt = lang === "en" ? engJs.secretKey : spainJs.secretKey;
+  const enterPassTxt = lang === "en" ? engJs.enterPassword : spainJs.enterPassword;
+  const passwordTxt = lang === "en" ? engJs.password : spainJs.password;
 
   const checkPassword = () => {
     if (keyStore) {
@@ -44,7 +51,7 @@ const RevealKey = () => {
       </Link>
       <div className='flex flex-col items-center gap-y-4  ml-8'>
         <h1 className='text-white text-4xl font-bold '>
-          {isKey ? "Secret Key" : "Reveal Secret Key"}
+          {isKey ? `${secretTxt}` : `${revealTxt}`}
         </h1>
         {isKey ? (
           <>
@@ -63,12 +70,12 @@ const RevealKey = () => {
             {" "}
             <div className='flex flex-col items-center justify-around px-3  space-y-14 mb-24'>
               <div className='flex flex-col items-start space-y-4 mt-8'>
-                <p className='text-white '>Enter Password</p>
+                <p className='text-white '>{enterPassTxt}</p>
                 <div className='flex items-center relative  ring-1 focus:ring-white transition-all duration-200 ring-slate-400 p-2 rounded-md'>
                   <input
                     type={showPassword ? "text" : "password"}
-                    className='bg-transparent focus:outline-none text-white rounded-md w-64'
-                    placeholder='Password'
+                    className='bg-transparent focus:outline-none text-white font-inter rounded-md w-64'
+                    placeholder={passwordTxt}
                     onChange={e => {
                       setPassword(e.target.value);
                     }}
@@ -98,7 +105,7 @@ const RevealKey = () => {
               <button
                 className='bit-btn px-8 font-bold'
                 onClick={checkPassword}>
-                <span>Reveal Key</span>
+                <span>{revealTxt}</span>
               </button>
             </div>
           </>

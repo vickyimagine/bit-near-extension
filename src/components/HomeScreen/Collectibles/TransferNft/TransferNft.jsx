@@ -1,17 +1,37 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {transferNFT} from "../../../../utils/methods/nearMethods";
 import {useSelector} from "react-redux";
 import toast from "react-hot-toast";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
+import engJs from "../../../../Constants/en";
+import spainJs from "../../../../Constants/es";
 
 const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
-  const {accountId, currentNetwork, secretKey} = useSelector(state => state.wallet);
+  const {accountId, currentNetwork, secretKey, lang} = useSelector(state => state.wallet);
+
+  const transferTxt = lang === "en" ? engJs.transfer : spainJs.transfer;
+  const cancelTxt = lang === "en" ? engJs.cancel : spainJs.cancel;
+  const transferToTxt = lang === "en" ? engJs.transferTo : spainJs.transferTo;
 
   const [recipient, setRecipient] = useState("");
   const [transferring, setTransferring] = useState(false);
 
   const {token_id, contractId} = nft;
+  console.log(nft);
+  const updateStorage = async () => {
+    try {
+      const nftData = JSON.parse(localStorage.getItem("nfts")) || [];
+      console.log(nftData);
+      const updatedNfts = nftData.filter(
+        NFT => !(NFT.token_id === token_id && NFT.contractId === contractId)
+      );
+      console.log(updatedNfts);
+      localStorage.setItem("nfts", JSON.stringify(updatedNfts));
+    } catch (error) {
+      console.log(`Error occurred while updating storage: ${error}`);
+    }
+  };
 
   const transferNft = async () => {
     if (!recipient) {
@@ -22,7 +42,7 @@ const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
       setTransferring(true);
       toast.loading("Transferring NFT...");
       const res = await transferNFT(
-        token_id,
+        token_id.toString(),
         accountId,
         contractId,
         recipient,
@@ -31,13 +51,9 @@ const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
       );
 
       if (res.status) {
-        const nftData = JSON.parse(localStorage.getItem("nfts")) || [];
-        const updatedNfts = nftData.filter(
-          NFT => !(NFT.token_id === token_id && NFT.contractId === contractId)
-        );
-        localStorage.setItem("nfts", JSON.stringify(updatedNfts));
         toast.dismiss();
-        toast.success("NFT Transferred!");
+        toast.success("NFT Transferred on blockchain!");
+        await updateStorage();
         if (certTransfer || contractId === process.env.REACT_APP_BIT_CONTRACT) {
           const certOptions = {
             method: "POST",
@@ -49,48 +65,30 @@ const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
               token_id: token_id
             })
           };
-          const res = await fetch(
-            "http://15.206.186.148/api/v2/certificate/transferCertificate/",
+          const certRes = await fetch(
+            "https://bitmemoir.com/api/v2/certificate/transferCertificate/",
             certOptions
-          )
-            .then(res => res.json())
-            .then(data => {
-              console.log(data);
-              toast.dismiss();
-              toast.success("Certificate Transferred!");
-            });
+          );
+          if (certRes.ok) {
+            toast.success("Certificate Transferred!");
+          } else {
+            throw new Error("Failed to transfer certificate");
+          }
         }
       } else {
-        console.log("in Error");
         toast.dismiss();
-        toast.error("Transfer Error from blockchain !");
+        toast.error("Transfer Error from blockchain!");
       }
     } catch (error) {
       toast.dismiss();
-      toast.error("Error occured while transferring");
-      // console.log(`Error occured while transferring in client side:${error}`);
+      toast.error("Error occurred while transferring");
+      console.error(`Error occurred while transferring in client side: ${error}`);
+    } finally {
+      setIsTransfer(false);
+      setCardOpen(false);
+      setRecipient("");
+      setTransferring(false);
     }
-    setIsTransfer(false);
-    setCardOpen(false);
-    setRecipient("");
-    setTransferring(false);
-  };
-
-  const testTransfer = async () => {
-    const certOptions = {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        to: recipient,
-        token_id: token_id
-      })
-    };
-    const res = await fetch(
-      "http://15.206.186.148/api/v2/certificate/transferCertificate/",
-      certOptions
-    )
-      .then(res => res.json())
-      .then(data => console.log(data));
   };
 
   return (
@@ -109,10 +107,10 @@ const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
         {/* <span className='text-2xl text-white font-semibold'>{Number(amount)} NEAR</span> */}
       </div>
       <div className='flex p-2  rounded-md focus:ring-white ring-1 ring-slate-400 bg-transparent transparent-all duration-200'>
-        <span className='w-1/4 text-white font-semibold'>Transfer To</span>
+        <span className='w-1/4 text-white font-semibold'>{transferToTxt}</span>
         <input
           type='text'
-          className='text-end w-4/5 bg-transparent focus:outline-none text-white'
+          className='text-end w-4/5 bg-transparent font-inter focus:outline-none text-white'
           placeholder='Account ID'
           onChange={e => setRecipient(e.target.value)}
           value={recipient}
@@ -122,14 +120,14 @@ const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
         className='bit-btn disabled:cursor-not-allowed'
         disabled={transferring || !recipient}
         onClick={transferNft}>
-        Transfer{" "}
+        {transferTxt}
       </button>
       <button
         onClick={() => {
           setCardOpen(false);
         }}
         className='border-b w-fit self-center bit-btn bg-white px-7'>
-        Cancel
+        {cancelTxt}
       </button>
     </div>
   );

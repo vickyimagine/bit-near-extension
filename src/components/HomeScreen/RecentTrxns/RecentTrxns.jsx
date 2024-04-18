@@ -2,22 +2,29 @@ import React, {useState, useEffect} from "react";
 import Transaction from "./Transaction/Transaction";
 import {useSelector} from "react-redux";
 import {Oval} from "react-loader-spinner";
+import toast from "react-hot-toast";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 
 const RecentTrxns = () => {
   const pageSize = 3; // Number of transactions per page
   const [currentPage, setCurrentPage] = useState(1);
   const [transactions, setTransactions] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
-  const [btnText, setBtnText] = useState("Native");
+  const [btnText, setBtnText] = useState("Nativo");
 
-  const {accountId, currentNetwork} = useSelector(state => state.wallet);
+  const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
 
+  const prevTxt = lang === "en" ? engJs.previous : spainJs.previous;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
+  const sentTxt = lang === "en" ? engJs.sent : spainJs.sent;
+  const noTxnTxt = lang === "en" ? engJs.noTxn : spainJs.noTxn;
   const totalPages = Math.ceil(transactions?.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const visibleData = transactions?.slice(startIndex, endIndex);
   const API_KEY = process.env.REACT_APP_NEARBLOCKS_APIKEY; // Replace with your actual API key
-  const isNativeTxn = btnText === "Native";
+  const isNativeTxn = btnText === "Nativo";
 
   const activeStyle =
     "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg font-bold text-base  cursor-pointer transition-all duration-300 rounded-xl ";
@@ -66,7 +73,7 @@ const RecentTrxns = () => {
       // const filteredDataFunc = filterData.filter(
       //   item => item.actions[0].action !== "FUNCTION_CALL"
       // );
-      const filteredData = data.txns.filter(
+      const filteredData = data?.txns?.filter(
         item =>
           item.predecessor_account_id !== "system" &&
           item.actions[0].action !== "FUNCTION_CALL" &&
@@ -74,12 +81,12 @@ const RecentTrxns = () => {
       );
 
       // const filterData = data?.txns.filter(item => item.actions[0].action === "TRANSFER");
-      console.log(filteredData);
+      // console.log(filteredData);
       return filteredData;
       //   console.log(filteredData);
       // setTransactions(filteredData);
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
 
@@ -104,10 +111,11 @@ const RecentTrxns = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      return data.txns;
+      // console.log(data);
+      return data?.txns;
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
+      // toast.error("Error occured getting transactions !");
     }
   };
 
@@ -131,11 +139,11 @@ const RecentTrxns = () => {
       <div className=' border-t border-gray-500 px-4 '>
         <div className='flex justify-center h-10  my-4 space-x-3 '>
           <div
-            className={btnText === "Native" ? activeStyle : inActiveStyle}
+            className={btnText === "Nativo" ? activeStyle : inActiveStyle}
             onClick={e => {
               setBtnText(e.target.textContent);
             }}>
-            Native
+            Nativo
           </div>
           <div
             className={btnText === "Token" ? activeStyle : inActiveStyle}
@@ -157,10 +165,10 @@ const RecentTrxns = () => {
             />
             <p className='font-bold text-white text-xl'>Fetching Transactions...</p>
           </div>
-        ) : transactions?.length === 0 ? (
+        ) : transactions?.length === 0 || !transactions ? (
           <div className='h-52 flex items-center justify-center  '>
             <button className='bit-btn flex px-24 hover:scale-100 cursor-default font-bold'>
-              No Transaction Found
+              {noTxnTxt}
             </button>
           </div>
         ) : (
@@ -180,7 +188,7 @@ const RecentTrxns = () => {
                   currentPage === 1 ? "cursor-not-allowed hover:scale-100 opacity-75" : ""
                 }`}
                 disabled={currentPage === 1}>
-                Previous
+                {prevTxt}
               </button>
               <p className='text-white mx-1 text-sm font-inter'>
                 {currentPage} of {totalPages}
@@ -193,7 +201,7 @@ const RecentTrxns = () => {
                     : ""
                 }`}
                 disabled={currentPage === totalPages}>
-                Next
+                {nextTxt}
               </button>
             </div>
           </div>

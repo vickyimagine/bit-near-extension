@@ -9,11 +9,21 @@ import {FaArrowRight} from "react-icons/fa6";
 
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import toast from "react-hot-toast";
-import {HiMiniArrowLongRight} from "react-icons/hi2";
+
+import {useSelector} from "react-redux";
+import engJs from "../../../Constants/en";
+import spainJs from "../../../Constants/es";
 const NewAccount = () => {
+  const {lang} = useSelector(state => state.wallet);
+
   const [phrase, setPhrase] = useState(null);
   const [isEnterPhrase, setIsEnterPhrase] = useState(false);
   const [keyStore, setKeyStore] = useState(null);
+
+  const backupPhrsTxt = lang === "en" ? engJs.backupPhrs : spainJs.backupPhrs;
+  const backupPara1 = lang === "en" ? engJs.backupPhrsTxt1 : spainJs.backupPhrsTxt1;
+  const backupPara2 = lang === "en" ? engJs.backupPhrsTxt2 : spainJs.backupPhrsTxt2;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
 
   const generateStore = () => {
     let keys = generateSeedPhrase();
@@ -45,11 +55,9 @@ const NewAccount = () => {
           color='white'
         />
       </Link>
-      <h1 className='text-white text-[28px] font-bold'>Backup Phrase</h1>
+      <h1 className='text-white text-[28px] font-bold'>{backupPhrsTxt}</h1>
       <p className='text-white text-center font-inter font-light text-sm leading-relaxed'>
-        Your secret phrase helps you to backup and restore your BIT wallet account.Keep
-        your seed phrase key confidential.Access of this key to any other person could
-        give them access of this wallet
+        {backupPara1}
       </p>
       <CopyToClipboard text={phrase && phrase}>
         <div
@@ -60,17 +68,14 @@ const NewAccount = () => {
           {phrase && phrase}
         </div>
       </CopyToClipboard>
-      <p className='text-white text-sm text-center'>
-        Copy the secret phrase by clicking on the above box and save it at a secure
-        location.You 'll be asked to enter the secret phrase next.
-      </p>
+      <p className='text-white text-sm text-center'>{backupPara2}</p>
       <button
         className='bit-btn px-7 mb-3'
         onClick={() => {
           setIsEnterPhrase(true);
         }}>
         <p className='flex gap-x-2 items-center  font-bold'>
-          Next{" "}
+          {nextTxt}
           <FaArrowRight
             fontSize={22}
             color='black'

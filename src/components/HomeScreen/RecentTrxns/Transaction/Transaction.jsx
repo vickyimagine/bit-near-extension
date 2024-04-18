@@ -16,10 +16,7 @@ const Transaction = ({data}) => {
   const trxnAmount = (!isNftTxn && data?.actions_agg.deposit / 10 ** 24) || "";
   const isAccessKey = (!isNftTxn && data?.actions[0].action === "ADD_KEY") || "";
   const isMint = (isNftTxn && data?.cause === "MINT") || "";
-  const isNFTIncoming =
-    (isNftTxn && data?.token_new_owner_account_id === accountId) || "";
-
-  console.log(data);
+  const isNFTIncoming = (isNftTxn && data?.affected_account_id === accountId) || "";
   return (
     <div>
       <div className='bit-btn  rounded-xl bg-white font-inter cursor-pointer text-sm'>
@@ -59,15 +56,15 @@ const Transaction = ({data}) => {
                 4
               )}...${data?.nft.contract?.slice(-7)}`}</p>
             ) : isNFTIncoming ? (
-              <p className=''>{`from ${data?.token_old_owner_account_id?.slice(
+              <p className=''>{`${data?.involved_account_id?.slice(
                 0,
                 4
-              )}...${data?.token_old_owner_account_id?.slice(-7)}`}</p>
+              )}...${data?.involved_account_id?.slice(-7)}`}</p>
             ) : (
-              <p className=''>{`to ${data?.token_new_owner_account_id?.slice(
+              <p className=''>{`to ${data?.involved_account_id?.slice(
                 0,
                 4
-              )}...${data?.token_new_owner_account_id?.slice(-7)}`}</p>
+              )}...${data?.involved_account_id?.slice(-7)}`}</p>
             )
           ) : isAccessKey ? (
             <p className=''>{`for ${data?.predecessor_account_id?.slice(
@@ -100,7 +97,10 @@ const Transaction = ({data}) => {
               <p
                 className={`${isIncoming ? "text-green-500" : "text-red-500"} font-bold`}>
                 {isIncoming ? "+" : "-"}
-                {String(trxnAmount).length > 10 ? Math.ceil(trxnAmount) : trxnAmount} NEAR
+                {String(trxnAmount).length > 8
+                  ? Number(trxnAmount?.toString()?.slice(0, 5))
+                  : trxnAmount}{" "}
+                NEAR
               </p>
             )
           )}

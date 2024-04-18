@@ -8,8 +8,18 @@ import {LuSend} from "react-icons/lu";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import toast from "react-hot-toast";
 import TransferNft from "../../Collectibles/TransferNft/TransferNft";
-
+import {useSelector} from "react-redux";
+import engJs from "../../../../Constants/en";
+import spainJs from "../../../../Constants/es";
 const CertificateCard = ({card, setCardOpen}) => {
+  const {lang} = useSelector(state => state.wallet);
+  const nameTxt = lang === "en" ? engJs.name : spainJs.name;
+  const addressTxt = lang === "en" ? engJs.address : spainJs.address;
+  const descpTxt = lang === "en" ? engJs.descp : spainJs.descp;
+  const downloadTxt = lang === "en" ? engJs.download : spainJs.download;
+  const transferTxt = lang === "en" ? engJs.transfer : spainJs.transfer;
+  const orgNameTxt = lang === "en" ? engJs.orgName : spainJs.orgName;
+
   const [isExpandedName, setIsExpandedName] = useState(false);
   const [isExpandedOrgName, setIsExpandedOrgName] = useState(false);
   const [isExpandedDescription, setIsExpandedDescription] = useState(false);
@@ -35,7 +45,7 @@ const CertificateCard = ({card, setCardOpen}) => {
     return isExpanded ? text : `${text?.split(" ")?.slice(0, 5)?.join(" ")}`;
   };
 
-  console.log(process.env.REACT_APP_BIT_CONTRACT);
+  // console.log(process.env.REACT_APP_BIT_CONTRACT);
   return (
     <>
       {isTransfer ? (
@@ -94,19 +104,14 @@ const CertificateCard = ({card, setCardOpen}) => {
                 </div>
                 <div className='h-36 overflow-scroll text-white space-y-2 flex flex-col items-start '>
                   <div className='flex gap-x-3  w-full'>
-                    <p className='w-1/2 '>Name</p>
+                    <p className='w-1/2 '>{nameTxt}</p>
                     <p className='flex flex-col w-1/2 font-inter font-light'>
                       {card?.name}
                     </p>
                   </div>
+
                   <div className='flex gap-x-3 w-full '>
-                    <p className='w-1/2 '>CID</p>
-                    <p className='w-1/2 font-inter font-light flex-wrap flex'>
-                      {`${card?.cid?.slice(0, 4)}...${card?.cid?.slice(-5)}`}
-                    </p>
-                  </div>
-                  <div className='flex gap-x-3 w-full '>
-                    <p className='w-1/2 '>Org Name</p>
+                    <p className='w-1/2 '>{orgNameTxt}</p>
                     <p className='flex flex-col w-1/2 font-inter font-light'>
                       {truncateText(card?.orgName, isExpandedOrgName)}
                       {card?.orgName?.split(" ")?.length > 5 &&
@@ -122,7 +127,7 @@ const CertificateCard = ({card, setCardOpen}) => {
                     </p>
                   </div>
                   <div className='flex gap-x-3 w-full '>
-                    <p className='w-1/2 '>Address</p>
+                    <p className='w-1/2 '>{addressTxt}</p>
                     <p className='flex flex-col w-1/2 font-inter font-light '>
                       {truncateText(card?.address, isExpandedAddress)}
                       {card?.address?.split(" ")?.length > 5 &&
@@ -138,7 +143,7 @@ const CertificateCard = ({card, setCardOpen}) => {
                     </p>
                   </div>
                   <div className='flex gap-x-3 w-full '>
-                    <p className='w-1/2 '>Description</p>
+                    <p className='w-1/2 '>{descpTxt}</p>
                     <p className='flex flex-col w-1/2 font-inter font-light'>
                       {truncateText(card?.description, isExpandedDescription)}
                       {card?.description?.split(" ")?.length > 5 &&
@@ -169,14 +174,14 @@ const CertificateCard = ({card, setCardOpen}) => {
               onClick={() => {
                 nftDownload(card?.image);
               }}>
-              Download <HiOutlineDownload fontSize={22} />
+              {downloadTxt} <HiOutlineDownload fontSize={22} />
             </button>
             <button
               className='bit-btn w-fit h-fit gap-x-3  flex items-center justify-center px-5 font-bold'
               onClick={() => {
                 setIsTransfer(true);
               }}>
-              Transfer <LuSend fontSize={22} />
+              {transferTxt} <LuSend fontSize={22} />
             </button>
           </div>
         </div>
