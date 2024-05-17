@@ -83,8 +83,10 @@ const PrivacyPolicy = () => {
         <p>{privTxtArray[46]} </p> <br />
         <p>{privTxtArray[47]} </p> <br />
         <b> {privTxtArray[48]}</b> <p>{privTxtArray[49]} </p> <br />
-        <b> {privTxtArray[50]}: </b> <p>{privTxtArray[51]} </p> <br />
-        <b>{privTxtArray[52]}: </b> <p>{privTxtArray[53]} </p> <br />
+        <b> {privTxtArray[50]}: </b> <p className='font-bold'>{privTxtArray[51]} </p>{" "}
+        <br />
+        <b>{privTxtArray[52]}: </b> <p className='font-bold'>{privTxtArray[53]} </p>{" "}
+        <br />
         <b> {privTxtArray[54]}: </b> <p>{privTxtArray[55]} </p> <br />
         <b> {privTxtArray[56]}</b>{" "}
         <p>
@@ -107,14 +109,15 @@ const PrivacyPolicy = () => {
         <br />
         <b>{privTxtArray[75]}: </b> <p>{privTxtArray[76]} </p> <br />
         <b>{privTxtArray[77]}: </b> <p>{privTxtArray[78]} </p> <br />
-        <b> {privTxtArray[79]}: </b> <p>{privTxtArray[80]} </p> <br />
+        <b> {privTxtArray[79]}: </b> <p className='font-bold'>{privTxtArray[80]} </p>{" "}
+        <br />
         <b>{privTxtArray[81]}: </b>{" "}
         <p>
           {privTxtArray[82]}
           <br />
-          {privTxtArray[83]}{" "}
+          {privTxtArray[83]}:Nikhil Goyal
         </p>{" "}
-        <p> {privTxtArray[84]}: </p> <p> {privTxtArray[85]}: </p>{" "}
+        <p> {privTxtArray[84]}:support@beimagine.tech</p> <p>Web:{privTxtArray[85]}</p>
         <p>{privTxtArray[86]}</p>
         {privTxtArray[87]} <br />
         <p>{privTxtArray[88]}</p>{" "}

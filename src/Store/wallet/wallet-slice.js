@@ -8,7 +8,8 @@ const initialState = {
   accountId: null,
   balance: null,
   secretKey: null,
-  lang: localStorage.getItem("lang") || "en"
+  lang: localStorage.getItem("lang") || "en",
+  pendingCerts: []
 };
 
 const walletSlice = createSlice({
@@ -33,11 +34,20 @@ const walletSlice = createSlice({
       localStorage.setItem("lang", action.payload);
       state.lang = action.payload;
       chrome.storage.sync.set({lang: action.payload});
+    },
+    setPendingCerts(state, action) {
+      state.pendingCerts = action.payload;
     }
   }
 });
 
-export const {setCurrentNetwork, setAccountId, setBalance, setSecretKey, setLang} =
-  walletSlice.actions;
+export const {
+  setCurrentNetwork,
+  setAccountId,
+  setBalance,
+  setSecretKey,
+  setLang,
+  setPendingCerts
+} = walletSlice.actions;
 
 export default walletSlice.reducer;

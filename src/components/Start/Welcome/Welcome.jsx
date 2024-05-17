@@ -13,14 +13,6 @@ import {LangDrop} from "../..";
 
 const Welcome = () => {
   const {lang} = useSelector(state => state.wallet);
-
-  useEffect(() => {
-    localStorage.clear();
-    // isBitV4 = true;
-    localStorage.setItem("lang", lang);
-    localStorage.setItem("isBitV4", true);
-  }, []);
-
   const welcomeText = lang === "en" ? engJs.welcomeTo : spainJs.welcomeTo;
   const clickToStart = lang === "en" ? engJs.clickToStart : spainJs.clickToStart;
 

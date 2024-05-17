@@ -5,11 +5,18 @@ import {TbExternalLink} from "react-icons/tb";
 import {RiNftLine} from "react-icons/ri";
 import {MdOutlineImage} from "react-icons/md";
 import {useSelector} from "react-redux";
-
+import engJs from "./../../../../Constants/en";
+import spainJs from "./../../../../Constants/es";
 import {getElapsedTime} from "../../../../utils/methods/unixToElapsed";
 
 const Transaction = ({data}) => {
-  const {accountId, currentNetwork} = useSelector(state => state.wallet);
+  const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
+
+  const sentBtn = lang === "en" ? engJs.sent : spainJs.sent;
+  const receiveBtn = lang === "en" ? engJs.receive : spainJs.receive;
+  const fromTxt = lang === "en" ? engJs.from : spainJs.from;
+  const toTxt = lang === "en" ? engJs.to : spainJs.to;
+  const forTxt = lang === "en" ? engJs.for : spainJs.for;
 
   const isNftTxn = data?.nft !== undefined;
   const isIncoming = (!isNftTxn && data?.receiver_account_id === accountId) || "";
@@ -46,42 +53,42 @@ const Transaction = ({data}) => {
           ) : isAccessKey ? (
             <p className='font-bold'>Access Key Added</p>
           ) : (
-            <p className='font-bold'>{isIncoming ? "Receive" : "Sent"} NEAR</p>
+            <p className='font-bold'>{isIncoming ? receiveBtn : sentBtn} NEAR</p>
           )}
 
           {isNftTxn ? (
             isMint ? (
-              <p className=''>{`from ${data?.nft.contract.slice(
+              <p className=''>{`${fromTxt} ${data?.nft.contract.slice(
                 0,
                 4
-              )}...${data?.nft.contract?.slice(-7)}`}</p>
+              )}...${data?.nft.contract?.slice(-6)}`}</p>
             ) : isNFTIncoming ? (
               <p className=''>{`${data?.involved_account_id?.slice(
                 0,
                 4
-              )}...${data?.involved_account_id?.slice(-7)}`}</p>
+              )}...${data?.involved_account_id?.slice(-6)}`}</p>
             ) : (
-              <p className=''>{`to ${data?.involved_account_id?.slice(
+              <p className=''>{`${toTxt} ${data?.involved_account_id?.slice(
                 0,
                 4
-              )}...${data?.involved_account_id?.slice(-7)}`}</p>
+              )}...${data?.involved_account_id?.slice(-6)}`}</p>
             )
           ) : isAccessKey ? (
-            <p className=''>{`for ${data?.predecessor_account_id?.slice(
+            <p className=''>{`${forTxt} ${data?.predecessor_account_id?.slice(
               0,
               4
-            )}...${data?.predecessor_account_id?.slice(-7)}`}</p>
+            )}...${data?.predecessor_account_id?.slice(-6)}`}</p>
           ) : (
             <p className=''>
               {isIncoming
-                ? `from ${data?.predecessor_account_id?.slice(
+                ? `${fromTxt} ${data?.predecessor_account_id?.slice(
                     0,
                     4
-                  )}...${data?.predecessor_account_id?.slice(-7)}`
-                : `to ${data?.receiver_account_id?.slice(
+                  )}...${data?.predecessor_account_id?.slice(-6)}`
+                : `${toTxt} ${data?.receiver_account_id?.slice(
                     0,
                     4
-                  )}...${data?.predecessor_account_id?.slice(-7)}`}
+                  )}...${data?.predecessor_account_id?.slice(-6)}`}
             </p>
           )}
         </div>

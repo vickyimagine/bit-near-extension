@@ -58,7 +58,7 @@ const ImportNft = ({setImport}) => {
           toast.error("NFT doesn't belong to this account.");
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         toast.error(
           `Account ${
             nftParams.contractId.length > 17

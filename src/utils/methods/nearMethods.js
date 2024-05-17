@@ -12,7 +12,7 @@ export const fetchBalance = async (accountId, networkType, privateKey) => {
     // console.log(balance);
     return balance;
   } catch (error) {
-    // console.log(`Error occured:${error}`);
+    console.log(`Error occured:${error}`);
     return 0;
   }
 };
@@ -28,6 +28,9 @@ export const transferNear = async (
     privateKey = privateKey.slice(8);
   }
   const amount = nearAPI.utils.format.parseNearAmount(nearAmount);
+  // const provider = new nearAPI.providers.JsonRpcProvider(
+  //   `https://few-serene-dew.near-mainnet.quiknode.pro/8a6ce52775b1f360597c149ed986cb3ef4304ac7/`
+  // );
   const provider = new nearAPI.providers.JsonRpcProvider(
     `https://rpc.${networkType}.near.org`
   );
@@ -150,6 +153,7 @@ export const nearConnection = async (accountId, networkType, privateKey) => {
     keyStore, // instance of InMemoryKeyStore
     networkId: networkType,
     nodeUrl: `https://rpc.${networkType}.near.org`,
+    // nodeUrl: `https://few-serene-dew.near-mainnet.quiknode.pro/8a6ce52775b1f360597c149ed986cb3ef4304ac7/`,
     walletUrl: `https://wallet.${networkType}.near.org`,
     helperUrl: `https://helper.${networkType}.near.org`,
     explorerUrl: `https://explorer.${networkType}.near.org`

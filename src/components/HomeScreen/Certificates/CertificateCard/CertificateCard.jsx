@@ -11,7 +11,7 @@ import TransferNft from "../../Collectibles/TransferNft/TransferNft";
 import {useSelector} from "react-redux";
 import engJs from "../../../../Constants/en";
 import spainJs from "../../../../Constants/es";
-const CertificateCard = ({card, setCardOpen}) => {
+const CertificateCard = ({card, setCardOpen, isOwned}) => {
   const {lang} = useSelector(state => state.wallet);
   const nameTxt = lang === "en" ? engJs.name : spainJs.name;
   const addressTxt = lang === "en" ? engJs.address : spainJs.address;
@@ -168,22 +168,24 @@ const CertificateCard = ({card, setCardOpen}) => {
               </div>
             </div>
           </div>
-          <div className='max-h-36 flex space-x-6'>
-            <button
-              className='bit-btn w-fit h-fit gap-x-3 flex items-center justify-center px-5 font-bold'
-              onClick={() => {
-                nftDownload(card?.image);
-              }}>
-              {downloadTxt} <HiOutlineDownload fontSize={22} />
-            </button>
-            <button
-              className='bit-btn w-fit h-fit gap-x-3  flex items-center justify-center px-5 font-bold'
-              onClick={() => {
-                setIsTransfer(true);
-              }}>
-              {transferTxt} <LuSend fontSize={22} />
-            </button>
-          </div>
+          {isOwned && (
+            <div className='max-h-36 flex space-x-6'>
+              <button
+                className='bit-btn w-fit h-fit gap-x-3 flex items-center justify-center px-5 font-bold'
+                onClick={() => {
+                  nftDownload(card?.image);
+                }}>
+                {downloadTxt} <HiOutlineDownload fontSize={22} />
+              </button>
+              <button
+                className='bit-btn w-fit h-fit gap-x-3  flex items-center justify-center px-5 font-bold'
+                onClick={() => {
+                  setIsTransfer(true);
+                }}>
+                {transferTxt} <LuSend fontSize={22} />
+              </button>
+            </div>
+          )}
         </div>
       )}
     </>

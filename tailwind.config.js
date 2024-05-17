@@ -16,6 +16,5 @@ module.exports = {
       syncopate: ["Syncopate", "sans-serif"],
       synco_thin: ["Syncopate-Thin", "sans-serif"]
     }
-  },
-  plugins: []
+  }
 };

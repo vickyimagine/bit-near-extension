@@ -171,7 +171,7 @@ const ImportAccount = () => {
           />
         </div>
       </div>
-      <div className=' flex justify-center mb-5'>
+      <div className='flex justify-center mb-5'>
         <button
           className='bit-btn px-4 disabled:cursor-not-allowed'
           onClick={importAccount}

@@ -1,11 +1,4 @@
 /*global chrome*/
-
-import {TbInfoSquareRounded} from "react-icons/tb";
-import {LiaFileSignatureSolid} from "react-icons/lia";
-import {MdPrivacyTip} from "react-icons/md";
-import {IoExit} from "react-icons/io5";
-import {BiReset} from "react-icons/bi";
-import {FiKey} from "react-icons/fi";
 import keyLogo from "../Assets/key.svg";
 import terms from "../Assets/terms.svg";
 import about from "../Assets/about.svg";

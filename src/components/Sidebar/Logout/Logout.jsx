@@ -11,10 +11,12 @@ import {GoEyeClosed} from "react-icons/go";
 import {useSelector} from "react-redux";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
+import WarningCard from "./WarningCard";
 const Logout = () => {
   const {lang} = useSelector(state => state.wallet);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isWarning, setIsWarning] = useState(false);
 
   const navigate = useNavigate();
   const keyStore = fetchKeys();
@@ -22,6 +24,7 @@ const Logout = () => {
   const loginTxt = lang === "en" ? engJs.login : spainJs.login;
   const enterPassTxt = lang === "en" ? engJs.enterPassword : spainJs.enterPassword;
   const passwordTxt = lang === "en" ? engJs.password : spainJs.password;
+  const forgotTxt = lang === "en" ? engJs.forgotPassword : spainJs.forgotPassword;
 
   const checkPassword = () => {
     if (keyStore) {
@@ -37,7 +40,11 @@ const Logout = () => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-around w-full'>
+    <div
+      className={`relative flex flex-col items-center justify-around w-full `}
+      onClick={() => {
+        isWarning && setIsWarning(false);
+      }}>
       <h1 className='text-white text-5xl font-bold'>{loginTxt}</h1>
       <div className='flex flex-col items-start  space-y-3'>
         <p className='text-white font-semibold'>{enterPassTxt}</p>
@@ -73,12 +80,23 @@ const Logout = () => {
           )}
         </div>
       </div>
-      <button
-        className='bit-btn justify-center space-x-2 px-8'
-        onClick={checkPassword}>
-        <span>{loginTxt}</span>
-        <FiLogIn fontSize={20} />
-      </button>
+      <div className='space-y-3 flex flex-col items-center'>
+        <button
+          className='bit-btn justify-center space-x-2 px-8'
+          onClick={checkPassword}>
+          <span>{loginTxt}</span>
+          <FiLogIn fontSize={20} />
+        </button>
+        <button
+          className='text-white cursor-pointer disabled:cursor-default'
+          disabled={isWarning}
+          onClick={() => {
+            setIsWarning(true);
+          }}>
+          {forgotTxt} ?
+        </button>
+        {isWarning && <WarningCard setIsWarning={setIsWarning} />}
+      </div>
     </div>
   );
 };

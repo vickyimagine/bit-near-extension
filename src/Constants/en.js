@@ -23,6 +23,10 @@ export default {
   orgName: "Org Name",
   useMax: "Use Max",
   availToSend: "Available To Send",
+  from: "from",
+  to: "to",
+  for: "for",
+  forgotPassword: "Forgot Password",
   sendTo: "Send To",
   fetchingCerts: "Fetching Certificates...",
   name: "Name",
@@ -329,5 +333,12 @@ export default {
     " WE, OUR OFFICERS, DIRECTORS, EMPLOYEES, AFFILIATES AND AGENTS WILL NOT BE LIABLE FOR ANY ACTS OR OMISSIONS OF A THIRD PARTY, OR FOR ANY UNAUTHORIZED INTERCEPTION OF DATA OR BREACHES ATTRIBUTABLE IN FULL OR IN PART TO THE ACTS OR OMISSIONS OF THIRD PARTIES, OR FOR DAMAGES ASSOCIATED THAT RESULT FROM THE OPERATIONS SYSTEMS, EQUIPMENT, FACILITIES OR SERVICE PROVIDED BY THIRD PARTIES THAT ARE INTERCONNECTED WITH THE SERVERS.",
   privTxt98: "Permission to use your company logo and name ",
   privTxt99:
-    "By registering with BIT, you grant permission to BIT to use your company logo and name as our client in our marketing collaterals website and social media posts "
+    "By registering with BIT, you grant permission to BIT to use your company logo and name as our client in our marketing collaterals website and social media posts ",
+  inWalletTxt: "In-Wallet",
+  pendingTxt: "Pending",
+  nativeTxt: "Native",
+  warningCardTxt:
+    'After clicking "Proceed" you will be prompted to enter your secret key or secret phrase to create a new password. This action is irreversible; if you forget your secret phrase, you may lose access to your account.',
+  proceedTxt: "Proceed",
+  resetPassword: "Reset Password"
 };

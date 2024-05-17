@@ -11,13 +11,9 @@
 /build.zip
 
 # production
-/build 4.4.zip
-/build v4.5.zip
-/build v4.6.zip
-/build v4.7.zip
 /build
+/buildFiles
 
-# misc
 .DS_Store
 .env
 .env.local

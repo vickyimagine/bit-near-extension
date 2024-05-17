@@ -7,24 +7,25 @@ import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 
 const RecentTrxns = () => {
-  const pageSize = 3; // Number of transactions per page
-  const [currentPage, setCurrentPage] = useState(1);
-  const [transactions, setTransactions] = useState([]);
-  const [isLoader, setIsLoader] = useState(false);
-  const [btnText, setBtnText] = useState("Nativo");
-
   const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
-
   const prevTxt = lang === "en" ? engJs.previous : spainJs.previous;
   const nextTxt = lang === "en" ? engJs.next : spainJs.next;
   const sentTxt = lang === "en" ? engJs.sent : spainJs.sent;
   const noTxnTxt = lang === "en" ? engJs.noTxn : spainJs.noTxn;
+  const nativeTxt = lang === "en" ? engJs.nativeTxt : spainJs.nativeTxt;
+
+  const pageSize = 3; // Number of transactions per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [transactions, setTransactions] = useState([]);
+  const [isLoader, setIsLoader] = useState(false);
+
+  const [btnText, setBtnText] = useState(nativeTxt);
   const totalPages = Math.ceil(transactions?.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const visibleData = transactions?.slice(startIndex, endIndex);
   const API_KEY = process.env.REACT_APP_NEARBLOCKS_APIKEY; // Replace with your actual API key
-  const isNativeTxn = btnText === "Nativo";
+  const isNativeTxn = btnText === nativeTxt;
 
   const activeStyle =
     "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg font-bold text-base  cursor-pointer transition-all duration-300 rounded-xl ";
@@ -130,20 +131,24 @@ const RecentTrxns = () => {
   };
 
   useEffect(() => {
+    setBtnText(nativeTxt);
+  }, [lang]);
+
+  useEffect(() => {
     setCurrentPage(1);
     fetchAllTrxns();
-  }, [accountId, currentNetwork, btnText]);
+  }, [accountId, currentNetwork, btnText, lang]);
 
   return (
     <>
       <div className=' border-t border-gray-500 px-4 '>
         <div className='flex justify-center h-10  my-4 space-x-3 '>
           <div
-            className={btnText === "Nativo" ? activeStyle : inActiveStyle}
+            className={btnText === nativeTxt ? activeStyle : inActiveStyle}
             onClick={e => {
               setBtnText(e.target.textContent);
             }}>
-            Nativo
+            {nativeTxt}
           </div>
           <div
             className={btnText === "Token" ? activeStyle : inActiveStyle}

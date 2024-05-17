@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Routes, Route} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {
   NewAccount,
   ImportAccount,
@@ -9,6 +10,14 @@ import {
 } from "../../components";
 
 const CreateAccount = () => {
+  const {lang} = useSelector(state => state.wallet);
+
+  useEffect(() => {
+    localStorage.clear();
+    // isBitV4 = true;
+    localStorage.setItem("lang", lang);
+    localStorage.setItem("isBitV4", true);
+  }, []);
   return (
     <Routes>
       <Route

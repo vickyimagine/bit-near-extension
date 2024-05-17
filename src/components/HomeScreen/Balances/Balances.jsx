@@ -10,9 +10,10 @@ import {GoArrowUpRight} from "react-icons/go";
 import {GoArrowDownLeft} from "react-icons/go";
 import {RiFileCopyLine} from "react-icons/ri";
 import {useDispatch, useSelector} from "react-redux";
-import {setBalance} from "../../../Store/wallet/wallet-slice";
+import {setBalance, setPendingCerts} from "../../../Store/wallet/wallet-slice";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
+import {contactBackground} from "../../../utils/methods/contactBackground";
 
 const Balances = () => {
   //hooks
@@ -42,6 +43,14 @@ const Balances = () => {
     }
   };
 
+  const getPendingCerts = async () => {
+    const data = await contactBackground("getPendingCerts");
+    // console.log(data);
+    if (data) {
+      dispatch(setPendingCerts(data));
+    }
+  };
+
   //useEffects
 
   useEffect(() => {
@@ -50,6 +59,10 @@ const Balances = () => {
         navigate("/logout");
       }
     });
+  }, []);
+
+  useEffect(() => {
+    getPendingCerts();
   }, []);
 
   useEffect(() => {
