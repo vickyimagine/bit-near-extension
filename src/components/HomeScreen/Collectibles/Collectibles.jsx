@@ -6,18 +6,20 @@ import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 
 const Collectibles = () => {
+  //hooks
+  const {currentNetwork, lang} = useSelector(state => state.wallet);
   const [NFTs, setNFTs] = useState([]);
   const [isImport, setIsImport] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [nftCard, setNFTCard] = useState();
 
-  const {currentNetwork, lang} = useSelector(state => state.wallet);
-
+  //translations
   const collNotVisTxt =
     lang === "en" ? engJs.dontSeeCollectibles : spainJs.dontSeeCollectibles;
   const importCollTxt =
     lang === "en" ? engJs.importCollectibles : spainJs.importCollectibles;
 
+  //functions
   const fetchStoreNFT = () => {
     const storedNFTs = JSON.parse(localStorage.getItem("nfts")) || [];
     const filteredNFTs = storedNFTs.filter(
@@ -26,6 +28,7 @@ const Collectibles = () => {
     setNFTs(filteredNFTs);
   };
 
+  //useEffects
   useEffect(() => {
     fetchStoreNFT();
   }, [localStorage.getItem("nfts"), currentNetwork]);

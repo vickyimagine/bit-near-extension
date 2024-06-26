@@ -4,18 +4,16 @@ import {useDispatch} from "react-redux";
 import {setAccountId, setSecretKey} from "../../Store/wallet/wallet-slice";
 import {fetchKeys} from "../../utils";
 import {Sidebar, HomeScreen, Send, Receive, Dropdown, LangDrop} from "../../components";
-import {GiHamburgerMenu} from "react-icons/gi";
 import {bitLogo} from "../../Assets";
 import {decrypt} from "n-krypta";
 import {RxHamburgerMenu} from "react-icons/rx";
-import {MdOutlineLanguage} from "react-icons/md";
 
 const Home = () => {
   //hooks
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // New state for sidebar
-
   const dispatch = useDispatch();
   const keyStore = fetchKeys();
+
   //functions
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

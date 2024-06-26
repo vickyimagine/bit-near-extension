@@ -2,25 +2,27 @@ import React, {useState, useEffect} from "react";
 import {useSelector} from "react-redux";
 import engJs from "../../Constants/en";
 import spainJs from "../../Constants/es";
-
 import {Balances, Collectibles, Certificates, RecentTrxns} from "..";
 
-const HomeScreen = ({isSideBar, setIsSidebar}) => {
+const HomeScreen = ({isSideBar}) => {
+  //hooks
   const {lang} = useSelector(state => state.wallet);
+
+  //translations
   const balanceTxt = lang === "en" ? engJs.balance : spainJs.balance;
   const collectiblesTxt = lang === "en" ? engJs.collectibles : spainJs.collectibles;
   const certificateTxt = lang === "en" ? engJs.certificates : spainJs.certificates;
   const txnTxt = lang === "en" ? engJs.txn : spainJs.txn;
 
   const buttons = [balanceTxt, collectiblesTxt, certificateTxt, txnTxt];
-
   const [btnText, setBtnText] = useState(balanceTxt);
   const [buttonId, setbuttonId] = useState(0);
-
+  //useEffects
   useEffect(() => {
     setBtnText(buttons[buttonId]);
   }, [lang]);
 
+  //styles
   const activeStyle =
     "flex items-center justify-center w-1/2 text-center bit-btn text-lg text-bitBg  cursor-pointer transition-all duration-300 font-semibold rounded-xl px-4 ";
   const inActiveStyle =

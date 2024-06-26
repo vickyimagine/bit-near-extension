@@ -1,8 +1,7 @@
 import React from "react";
-import {BsSendFill, BsArrow90DegDown} from "react-icons/bs";
+import {BsSendFill} from "react-icons/bs";
 import {IoMdKey} from "react-icons/io";
 import {TbExternalLink} from "react-icons/tb";
-import {RiNftLine} from "react-icons/ri";
 import {MdOutlineImage} from "react-icons/md";
 import {useSelector} from "react-redux";
 import engJs from "./../../../../Constants/en";
@@ -10,20 +9,22 @@ import spainJs from "./../../../../Constants/es";
 import {getElapsedTime} from "../../../../utils/methods/unixToElapsed";
 
 const Transaction = ({data}) => {
+  //hooks
   const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
-
-  const sentBtn = lang === "en" ? engJs.sent : spainJs.sent;
-  const receiveBtn = lang === "en" ? engJs.receive : spainJs.receive;
-  const fromTxt = lang === "en" ? engJs.from : spainJs.from;
-  const toTxt = lang === "en" ? engJs.to : spainJs.to;
-  const forTxt = lang === "en" ? engJs.for : spainJs.for;
-
   const isNftTxn = data?.nft !== undefined;
   const isIncoming = (!isNftTxn && data?.receiver_account_id === accountId) || "";
   const trxnAmount = (!isNftTxn && data?.actions_agg.deposit / 10 ** 24) || "";
   const isAccessKey = (!isNftTxn && data?.actions[0].action === "ADD_KEY") || "";
   const isMint = (isNftTxn && data?.cause === "MINT") || "";
   const isNFTIncoming = (isNftTxn && data?.affected_account_id === accountId) || "";
+
+  //translations
+  const sentBtn = lang === "en" ? engJs.sent : spainJs.sent;
+  const receiveBtn = lang === "en" ? engJs.receive : spainJs.receive;
+  const fromTxt = lang === "en" ? engJs.from : spainJs.from;
+  const toTxt = lang === "en" ? engJs.to : spainJs.to;
+  const forTxt = lang === "en" ? engJs.for : spainJs.for;
+
   return (
     <div>
       <div className='bit-btn  rounded-xl bg-white font-inter cursor-pointer text-sm'>

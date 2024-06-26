@@ -1,27 +1,28 @@
 /*global chrome*/
 import React, {useState} from "react";
-
 import {shuffle} from "../../../utils";
-import {CreatePassword} from "../../../components";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import {BsArrowCounterclockwise} from "react-icons/bs";
 import {HiMiniArrowLongRight} from "react-icons/hi2";
+import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
+
 const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
+  //hooks
   const {lang} = useSelector(state => state.wallet);
+  const navigate = useNavigate();
   const [originalArray, setOriginalArray] = useState(phrase);
   const [checkedArray, setCheckedArray] = useState([]);
-  const [nextPage, setNextPage] = useState(false);
-  const [keyVault, setkeyVault] = useState();
+  const isPhraseCorrect = checkedArray.join("") === phrase.join("");
 
+  //translations
   const enterPhrsTxt = lang === "en" ? engJs.enterPhrsTxt1 : spainJs.enterPhrsTxt1;
   const retryTxt = lang === "en" ? engJs.retry : spainJs.retry;
   const nextTxt = lang === "en" ? engJs.next : spainJs.next;
 
-  const isPhraseCorrect = checkedArray.join("") === phrase.join("");
-
+  //functions
   //Add element in the above box array
   const updateCheckedArray = word => {
     const newOriginalArray = shuffle(originalArray.filter(item => item !== word));
@@ -54,17 +55,11 @@ const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
         secretKey: keyStore.secretKey,
         accountId: keyStore.accountId
       };
-      setkeyVault(newStore);
+      navigate("/login/create-password");
     }
-    setNextPage(true);
   };
 
-  return nextPage ? (
-    <CreatePassword
-      setNextPage={setNextPage}
-      keyStore={keyVault}
-    />
-  ) : (
+  return (
     <div className='flex flex-col w-full justify-start mt-3 space-y-7 items-center'>
       <button
         className='self-start px-4'

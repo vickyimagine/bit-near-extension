@@ -6,33 +6,34 @@ import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 
 const Certificates = () => {
+  //hooks
   const {accountId, currentNetwork, lang, pendingCerts} = useSelector(
     state => state.wallet
   );
+  const [certificates, setCertificates] = useState([]);
+  const [cardOpen, setCardOpen] = useState(false);
+  const [card, setCard] = useState();
+  const [isLoader, setIsLoader] = useState(false);
+  const [btnText, setBtnText] = useState(inWalletTxt);
+  const isOwnedSection = btnText === inWalletTxt;
+  const isPendingCerts = pendingCerts.length !== 0;
+
+  //translations
   const fetchCertsTxt = lang === "en" ? engJs.fetchingCerts : spainJs.fetchingCerts;
   const noCertText = lang === "en" ? engJs.noCertIssue : spainJs.noCertIssue;
   const certAvailMainTxt = lang === "en" ? engJs.certAvailMain : spainJs.certAvailMain;
   const inWalletTxt = lang === "en" ? engJs.inWalletTxt : spainJs.inWalletTxt;
   const pendingTxt = lang === "en" ? engJs.pendingTxt : spainJs.pendingTxt;
-
   const certAppreciationTxt =
     lang === "en" ? engJs.certAppreciation : spainJs.certAppreciation;
 
-  const [certificates, setCertificates] = useState([]);
-
-  const [cardOpen, setCardOpen] = useState(false);
-  const [card, setCard] = useState();
-  const [isLoader, setIsLoader] = useState(false);
-  const [btnText, setBtnText] = useState(inWalletTxt);
-
-  const isOwnedSection = btnText === inWalletTxt;
-  const isPendingCerts = pendingCerts.length !== 0;
-
+  //styles
   const activeStyle =
     "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg font-bold text-base  cursor-pointer transition-all duration-300 rounded-xl ";
   const inActiveStyle =
     "flex items-center justify-center w-1/2 text-center text-white font-bold  text-base  cursor-pointer transition-all duration-300 rounded-xl border";
 
+  //functions
   const getCerts = async () => {
     setIsLoader(true);
 
@@ -100,6 +101,7 @@ const Certificates = () => {
     }
   };
 
+  //useEffects
   useEffect(() => {
     setCertificates([]);
     if (currentNetwork.type === "mainnet") {

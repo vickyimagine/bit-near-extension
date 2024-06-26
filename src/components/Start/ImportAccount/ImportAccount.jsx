@@ -1,10 +1,8 @@
 /*global chrome*/
 import React, {useState} from "react";
-import {IoMdArrowRoundBack} from "react-icons/io";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {genFromSecret, getAccountId} from "../../../utils";
 import {parseSeedPhrase} from "near-seed-phrase";
-import {CreatePassword} from "../../../components";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import {toast} from "react-hot-toast";
 import {encrypt} from "n-krypta";
@@ -14,7 +12,11 @@ import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 
 const ImportAccount = () => {
+  //hooks
   const {lang} = useSelector(state => state.wallet);
+  const navigate = useNavigate();
+
+  //translations
   const importAccountTxt = lang === "en" ? engJs.importAccount : spainJs.importAccount;
   const secretKeyTxt = lang === "en" ? engJs.secretKey : spainJs.secretKey;
   const phraseTxt = lang === "en" ? engJs.phrase : spainJs.phrase;
@@ -26,10 +28,9 @@ const ImportAccount = () => {
     method: secretKeyTxt,
     value: ""
   });
-  const [keyStore, setKeyStore] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [nextPage, setNextPage] = useState(false);
   const methods = [secretKeyTxt, phraseTxt];
+  //functions
   const handleInput = e => {
     setInputData(prev => {
       return {
@@ -52,8 +53,7 @@ const ImportAccount = () => {
   };
 
   //Check if input phrase is valid or not
-
-  function checkInputPhrase(input) {
+  const checkInputPhrase = input => {
     // Split the input phrase into words using space as the delimiter
     const words = input.trim().split(" ");
 
@@ -64,7 +64,7 @@ const ImportAccount = () => {
 
     // If the number of words is 12, return true or perform further processing
     return true;
-  }
+  };
 
   const importAccount = () => {
     try {
@@ -95,9 +95,8 @@ const ImportAccount = () => {
         publicKey: publicKey,
         secretKey: encrypt(secretKey, publicKey)
       };
-      setKeyStore(newStore);
-
-      setNextPage(true);
+      localStorage.setItem("tempKeystore", JSON.stringify({keyStore: newStore}));
+      navigate("/login/create-password");
     } catch (error) {
       // Handle the error (e.g., display a toast error message)
       toast.error(
@@ -110,12 +109,7 @@ const ImportAccount = () => {
     }));
   };
 
-  return nextPage ? (
-    <CreatePassword
-      setNextPage={setNextPage}
-      keyStore={keyStore}
-    />
-  ) : (
+  return (
     <div className='flex flex-col justify-between w-full'>
       <Link
         to='/login/account-options'

@@ -4,8 +4,6 @@ import {useNavigate} from "react-router-dom";
 import {FiLogIn} from "react-icons/fi";
 import {fetchKeys} from "../../../utils";
 import {toast} from "react-hot-toast";
-import {VscEye} from "react-icons/vsc";
-import {VscEyeClosed} from "react-icons/vsc";
 import {GoEye} from "react-icons/go";
 import {GoEyeClosed} from "react-icons/go";
 import {useSelector} from "react-redux";
@@ -13,14 +11,15 @@ import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 import WarningCard from "./WarningCard";
 const Logout = () => {
+  //hooks
   const {lang} = useSelector(state => state.wallet);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isWarning, setIsWarning] = useState(false);
-
   const navigate = useNavigate();
   const keyStore = fetchKeys();
 
+  //translations
   const loginTxt = lang === "en" ? engJs.login : spainJs.login;
   const enterPassTxt = lang === "en" ? engJs.enterPassword : spainJs.enterPassword;
   const passwordTxt = lang === "en" ? engJs.password : spainJs.password;

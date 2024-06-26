@@ -7,19 +7,13 @@ import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 
 const RecentTrxns = () => {
+  //hooks
   const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
-  const prevTxt = lang === "en" ? engJs.previous : spainJs.previous;
-  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
-  const sentTxt = lang === "en" ? engJs.sent : spainJs.sent;
-  const noTxnTxt = lang === "en" ? engJs.noTxn : spainJs.noTxn;
-  const nativeTxt = lang === "en" ? engJs.nativeTxt : spainJs.nativeTxt;
-
-  const pageSize = 3; // Number of transactions per page
   const [currentPage, setCurrentPage] = useState(1);
   const [transactions, setTransactions] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
-
   const [btnText, setBtnText] = useState(nativeTxt);
+  const pageSize = 3; // Number of transactions per page
   const totalPages = Math.ceil(transactions?.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -27,11 +21,20 @@ const RecentTrxns = () => {
   const API_KEY = process.env.REACT_APP_NEARBLOCKS_APIKEY; // Replace with your actual API key
   const isNativeTxn = btnText === nativeTxt;
 
+  //translations
+  const prevTxt = lang === "en" ? engJs.previous : spainJs.previous;
+  const nextTxt = lang === "en" ? engJs.next : spainJs.next;
+  const sentTxt = lang === "en" ? engJs.sent : spainJs.sent;
+  const noTxnTxt = lang === "en" ? engJs.noTxn : spainJs.noTxn;
+  const nativeTxt = lang === "en" ? engJs.nativeTxt : spainJs.nativeTxt;
+
+  //styles
   const activeStyle =
     "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg font-bold text-base  cursor-pointer transition-all duration-300 rounded-xl ";
   const inActiveStyle =
     "flex items-center justify-center w-1/2 text-center text-white font-bold  text-base  cursor-pointer transition-all duration-300 rounded-xl border";
 
+  //functions
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -130,6 +133,7 @@ const RecentTrxns = () => {
     setIsLoader(false);
   };
 
+  //useEffects
   useEffect(() => {
     setBtnText(nativeTxt);
   }, [lang]);

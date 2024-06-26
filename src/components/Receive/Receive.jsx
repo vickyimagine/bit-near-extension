@@ -2,14 +2,15 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import QRCode from "react-qr-code";
-
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import engJs from "../../Constants/en";
 import spainJs from "../../Constants/es";
 
 const Receive = () => {
+  //hooks
   const {accountId, lang} = useSelector(state => state.wallet);
 
+  //translations
   const qrTxt = lang === "en" ? engJs.qrText : spainJs.qrText;
 
   return (

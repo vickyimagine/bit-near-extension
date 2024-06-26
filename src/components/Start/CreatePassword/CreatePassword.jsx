@@ -1,11 +1,9 @@
 /*global chrome*/
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-
 import Terms from "../../Sidebar/Terms&Conditions/Terms";
 import toast from "react-hot-toast";
 import {decrypt} from "n-krypta";
-
 import {GoEye} from "react-icons/go";
 import {GoEyeClosed} from "react-icons/go";
 import {FaArrowRight} from "react-icons/fa6";
@@ -14,8 +12,18 @@ import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 import {LangDrop} from "../..";
 
-const EnterPassword = ({setNextPage, keyStore}) => {
+const EnterPassword = () => {
+  //hooks
   const {lang} = useSelector(state => state.wallet);
+  const [checked, setChecked] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [terms, setTerms] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const keyStore = JSON.parse(localStorage.getItem("tempKeystore"))?.keyStore;
+
+  //translations
   const createPasswordText =
     lang === "en" ? engJs.createPassword : spainJs.createPassword;
   const passwordTxt = lang === "en" ? engJs.password : spainJs.password;
@@ -24,22 +32,19 @@ const EnterPassword = ({setNextPage, keyStore}) => {
   const iAcceptTxt = lang === "en" ? engJs.iAcceptAll : spainJs.iAcceptAll;
   const termsCondsTxt = lang === "en" ? engJs.termsConds : spainJs.termsConds;
   const nextTxt = lang === "en" ? engJs.next : spainJs.next;
-  const [checked, setChecked] = useState(false);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [terms, setTerms] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const navigate = useNavigate();
+  //useEffects
+  useEffect(() => {
+    localStorage.setItem("onPassword", true);
+  }, []);
 
+  //functions
   const storeWalletObject = async secretKey => {
     // console.log(secretKey);
     // chrome.storage.sync.set({
     //   secretKey
     // });
   };
-
   const handleSave = async () => {
     if (!(password.length >= 8)) {
       toast.error("Password length should be greater than 8 characters");
@@ -61,10 +66,12 @@ const EnterPassword = ({setNextPage, keyStore}) => {
 
       // Store the updated JSON string back into local storage
       localStorage.setItem("keyStore", updatedJSON);
+      localStorage.removeItem("tempKeystore");
+      localStorage.removeItem("onPassword");
 
-      chrome.storage.sync.set({
-        keyStore: updatedJSON
-      });
+      // chrome.storage.sync.set({
+      //   keyStore: updatedJSON
+      // });
       toast.success("Welcome to Bitwallet", {
         style: {
           marginTop: "20px"

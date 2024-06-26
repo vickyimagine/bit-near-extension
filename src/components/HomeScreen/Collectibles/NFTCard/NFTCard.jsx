@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {nftDownload} from "../../../../utils/methods/downloadNFT";
-import {IoMdArrowRoundBack} from "react-icons/io";
 import {HiOutlineDownload} from "react-icons/hi";
 import {LuSend} from "react-icons/lu";
 import TransferNft from "../TransferNft/TransferNft";
@@ -13,12 +12,8 @@ import toast from "react-hot-toast";
 import engJs from "../../../../Constants/en";
 import spainJs from "../../../../Constants/es";
 const NFTCard = ({nft, setCardOpen}) => {
+  //hooks
   const {currentNetwork, lang} = useSelector(state => state.wallet);
-
-  const downloadTxt = lang === "en" ? engJs.download : spainJs.download;
-  const transferTxt = lang === "en" ? engJs.transfer : spainJs.transfer;
-  const tokenIdTxt = lang === "en" ? engJs.tokenId : spainJs.tokenId;
-
   const [isTransfer, setIsTransfer] = useState(false);
   const [nftData, setNftData] = useState({
     tokenId: "",
@@ -28,6 +23,12 @@ const NFTCard = ({nft, setCardOpen}) => {
     media: ""
   });
 
+  //translations
+  const downloadTxt = lang === "en" ? engJs.download : spainJs.download;
+  const transferTxt = lang === "en" ? engJs.transfer : spainJs.transfer;
+  const tokenIdTxt = lang === "en" ? engJs.tokenId : spainJs.tokenId;
+
+  //useEffects
   useEffect(() => {
     if (nft) {
       setNftData({

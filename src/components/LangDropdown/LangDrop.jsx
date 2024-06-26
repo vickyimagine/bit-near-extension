@@ -2,19 +2,20 @@ import React, {useState} from "react";
 import {langs} from "../../Constants/langs";
 import {useDispatch, useSelector} from "react-redux";
 import {setLang} from "../../Store/wallet/wallet-slice";
-import {IoIosArrowDown} from "react-icons/io";
+
 import {MdOutlineLanguage} from "react-icons/md";
 
 const LangDropdown = ({isMainScreen, classNames, buttonClass}) => {
+  //hooks
   const {lang} = useSelector(state => state.wallet);
   const [isOpen, setIsOpen] = useState(false);
   const [inputData, setInputData] = useState({
     lang: lang === "en" ? "English" : "Spanish",
     value: ""
   });
-
   const dispatch = useDispatch();
 
+  //functions
   const toggleDropdown = () => {
     setIsOpen(prev => {
       return !prev;

@@ -6,21 +6,21 @@ import {toast} from "react-hot-toast";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import engJs from "../../Constants/en";
 import spainJs from "../../Constants/es";
-
 import {transferNear} from "../../utils";
 
 const ReceiverDetails = ({setNextStep, amount}) => {
+  //hooks
   const {accountId, currentNetwork, secretKey, lang} = useSelector(state => state.wallet);
+  const [recipient, setRecipient] = useState("");
+  const [transferring, setTransferring] = useState(false);
+  const navigate = useNavigate();
 
+  //translations
   const sendToTxt = lang === "en" ? engJs.sendTo : spainJs.sendTo;
   const sendTxt = lang === "en" ? engJs.send : spainJs.send;
   const cancelTxt = lang === "en" ? engJs.cancel : spainJs.cancel;
 
-  const [recipient, setRecipient] = useState("");
-  const [transferring, setTransferring] = useState(false);
-
-  const navigate = useNavigate();
-
+  //functions
   const sendNear = async () => {
     // if (recipient.length !== 64) {
     //   setRecipient("");

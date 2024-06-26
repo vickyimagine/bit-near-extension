@@ -1,6 +1,5 @@
 /*global chrome*/
 import React, {useState, useEffect} from "react";
-import {Link, useNavigate} from "react-router-dom";
 import {transferNFT} from "../../../../utils/methods/nearMethods";
 import {useSelector} from "react-redux";
 import toast from "react-hot-toast";
@@ -10,17 +9,18 @@ import spainJs from "../../../../Constants/es";
 import {contactBackground} from "../../../../utils/methods/contactBackground";
 
 const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
+  //hooks
   const {accountId, currentNetwork, secretKey, lang} = useSelector(state => state.wallet);
+  const [recipient, setRecipient] = useState("");
+  const [transferring, setTransferring] = useState(false);
+  const {token_id, contractId} = nft;
 
+  //translations
   const transferTxt = lang === "en" ? engJs.transfer : spainJs.transfer;
   const cancelTxt = lang === "en" ? engJs.cancel : spainJs.cancel;
   const transferToTxt = lang === "en" ? engJs.transferTo : spainJs.transferTo;
 
-  const [recipient, setRecipient] = useState("");
-  const [transferring, setTransferring] = useState(false);
-
-  const {token_id, contractId} = nft;
-  // console.log(nft);
+  //functions
   const updateStorage = async () => {
     try {
       const nftData = JSON.parse(localStorage.getItem("nfts")) || [];
@@ -88,7 +88,6 @@ const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
       setTransferring(false);
     }
   };
-
   return (
     <div className='flex flex-col  space-y-10'>
       <div className='relative flex items-center justify-center my-5 mb-8'>

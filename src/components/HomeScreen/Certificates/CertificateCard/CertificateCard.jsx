@@ -12,7 +12,15 @@ import {useSelector} from "react-redux";
 import engJs from "../../../../Constants/en";
 import spainJs from "../../../../Constants/es";
 const CertificateCard = ({card, setCardOpen, isOwned}) => {
+  //hooks
   const {lang} = useSelector(state => state.wallet);
+  const [isExpandedName, setIsExpandedName] = useState(false);
+  const [isExpandedOrgName, setIsExpandedOrgName] = useState(false);
+  const [isExpandedDescription, setIsExpandedDescription] = useState(false);
+  const [isExpandedAddress, setIsExpandedAddress] = useState(false);
+  const [isTransfer, setIsTransfer] = useState(false);
+
+  //translations
   const nameTxt = lang === "en" ? engJs.name : spainJs.name;
   const addressTxt = lang === "en" ? engJs.address : spainJs.address;
   const descpTxt = lang === "en" ? engJs.descp : spainJs.descp;
@@ -20,12 +28,7 @@ const CertificateCard = ({card, setCardOpen, isOwned}) => {
   const transferTxt = lang === "en" ? engJs.transfer : spainJs.transfer;
   const orgNameTxt = lang === "en" ? engJs.orgName : spainJs.orgName;
 
-  const [isExpandedName, setIsExpandedName] = useState(false);
-  const [isExpandedOrgName, setIsExpandedOrgName] = useState(false);
-  const [isExpandedDescription, setIsExpandedDescription] = useState(false);
-  const [isExpandedAddress, setIsExpandedAddress] = useState(false);
-  const [isTransfer, setIsTransfer] = useState(false);
-
+  //functions
   const toggleExpandedName = () => {
     setIsExpandedName(!isExpandedName);
   };

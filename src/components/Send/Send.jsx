@@ -1,28 +1,26 @@
 import React, {useState, useRef, useEffect} from "react";
 import "./Send.css";
-
 import ReceiverDetails from "./ReceiverDetails";
 import {Link} from "react-router-dom";
-import {IoMdArrowRoundBack} from "react-icons/io";
 import {useSelector} from "react-redux";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
-
 import engJs from "../../Constants/en";
 import spainJs from "../../Constants/es";
 const Send = () => {
   //hooks
   const {balance, lang} = useSelector(state => state.wallet);
+  const [inputLength, setInputLength] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [nextStep, setNextStep] = useState(false);
+  // Create a reference to the input element
+  const inputRef = useRef(null);
 
+  //translations
   const useMaxTxt = lang === "en" ? engJs.useMax : spainJs.useMax;
   const availToSendTxt = lang === "en" ? engJs.availToSend : spainJs.availToSend;
   const continueTxt = lang === "en" ? engJs.continue : spainJs.continue;
 
-  const [inputLength, setInputLength] = useState(0);
-  const [amount, setAmount] = useState(0);
-  const [nextStep, setNextStep] = useState(false);
-
-  // Create a reference to the input element
-  const inputRef = useRef(null);
+  //useEffects
   useEffect(() => {
     // Focus on the input element when the component is mounted
     inputRef.current.focus();

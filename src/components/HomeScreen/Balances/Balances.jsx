@@ -20,12 +20,15 @@ const Balances = () => {
   const {accountId, balance, currentNetwork, secretKey, lang} = useSelector(
     state => state.wallet
   );
-  const sendTxt = lang === "en" ? engJs.send : spainJs.send;
-  const receiveTxt = lang === "en" ? engJs.receive : spainJs.receive;
-  const walletTxt = lang === "en" ? engJs.walletId : spainJs.walletId;
   const dispatch = useDispatch();
   const keyStore = fetchKeys();
   const navigate = useNavigate();
+
+  //translations
+  const sendTxt = lang === "en" ? engJs.send : spainJs.send;
+  const receiveTxt = lang === "en" ? engJs.receive : spainJs.receive;
+  const walletTxt = lang === "en" ? engJs.walletId : spainJs.walletId;
+
   //functions
   const fetchAccountBal = async () => {
     // console.log(secretKey);/
@@ -52,7 +55,6 @@ const Balances = () => {
   };
 
   //useEffects
-
   useEffect(() => {
     chrome.storage.sync.get("loggedIn").then(res => {
       if (!res.loggedIn) {

@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {Routes, Route} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {
   NewAccount,
   ImportAccount,
@@ -11,12 +12,21 @@ import {
 
 const CreateAccount = () => {
   const {lang} = useSelector(state => state.wallet);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.clear();
+    // localStorage.clear();
     // isBitV4 = true;
     localStorage.setItem("lang", lang);
     localStorage.setItem("isBitV4", true);
+    const isTempStore = localStorage.getItem("tempKeystore");
+    const isOnPassword = localStorage.getItem("onPassword");
+    if (isTempStore && !isOnPassword) {
+      navigate("/login/new-account");
+    }
+    if (isOnPassword) {
+      navigate("/login/create-password");
+    }
   }, []);
   return (
     <Routes>
@@ -35,6 +45,10 @@ const CreateAccount = () => {
       <Route
         path='/import-account'
         element={<ImportAccount />}
+      />
+      <Route
+        path='/create-password'
+        element={<CreatePassword />}
       />
     </Routes>
   );

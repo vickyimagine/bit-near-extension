@@ -71,6 +71,7 @@ const changeOwnership = (to, tokenId) => {
         "https://bitmemoir.com/api/v2/certificate/transferCertificate/",
         certOptions
       );
+      console.log(certRes);
       resolve(certRes);
     } catch (error) {
       reject(false);
