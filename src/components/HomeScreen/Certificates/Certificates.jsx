@@ -10,6 +10,7 @@ const Certificates = () => {
   const {accountId, currentNetwork, lang, pendingCerts} = useSelector(
     state => state.wallet
   );
+  const inWalletTxt = lang === "en" ? engJs.inWalletTxt : spainJs.inWalletTxt;
   const [certificates, setCertificates] = useState([]);
   const [cardOpen, setCardOpen] = useState(false);
   const [card, setCard] = useState();
@@ -22,7 +23,6 @@ const Certificates = () => {
   const fetchCertsTxt = lang === "en" ? engJs.fetchingCerts : spainJs.fetchingCerts;
   const noCertText = lang === "en" ? engJs.noCertIssue : spainJs.noCertIssue;
   const certAvailMainTxt = lang === "en" ? engJs.certAvailMain : spainJs.certAvailMain;
-  const inWalletTxt = lang === "en" ? engJs.inWalletTxt : spainJs.inWalletTxt;
   const pendingTxt = lang === "en" ? engJs.pendingTxt : spainJs.pendingTxt;
   const certAppreciationTxt =
     lang === "en" ? engJs.certAppreciation : spainJs.certAppreciation;
@@ -37,8 +37,8 @@ const Certificates = () => {
   const getCerts = async () => {
     setIsLoader(true);
 
-    const apiUrl = `https://bitmemoir.com/api/v2/certificate/getCertificate/?wallet=${accountId}`;
-    // const apiUrl = `http://15.206.186.148/api/v2/certificate/getCertificate/?wallet=${accountId}`;
+    // const apiUrl = `https://bitmemoir.com/api/v2/certificate/getCertificate/?email=vivek@beimagine.tech`;
+    const apiUrl = `http://15.206.186.148/api/v2/certificate/getCertificate/?email=vivek@beimagine.tech`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -108,7 +108,7 @@ const Certificates = () => {
       if (isOwnedSection) {
         getCerts();
       } else {
-        getPendingCerts();
+        // getPendingCerts();
       }
     }
   }, [currentNetwork, cardOpen, btnText]);

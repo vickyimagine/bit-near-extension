@@ -14,7 +14,8 @@ const WarningCard = ({setIsWarning}) => {
   const resetPassTxt = lang === "en" ? engJs.resetPassword : spainJs.resetPassword;
   const navigate = useNavigate();
   const handleReset = () => {
-    chrome.storage.sync.set({loggedIn: true});
+    // chrome.storage.sync.set({loggedIn: true});
+    localStorage.removeItem("keyStore");
     navigate("/login/import-account");
   };
   return (

@@ -199,7 +199,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // Connection request
     else if (message === "acceptConnection") {
       const asyncResponse = async () => {
-        let connectedSites = await chrome.storage.sync.get("connectedSites");
+        let connectedSites = (await chrome.storage.sync.get("connectedSites")) || [];
         connectedSites.connectedSites.push(request.data.origin);
         await chrome.storage.sync.set({
           connectedSites: connectedSites.connectedSites

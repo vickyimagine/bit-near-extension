@@ -18,7 +18,7 @@ const walletSlice = createSlice({
   reducers: {
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
-      chrome.storage.sync.set({network: action.payload});
+      // chrome.storage.sync.set({network: action.payload});
       localStorage.setItem("network", JSON.stringify(action.payload));
     },
     setAccountId(state, action) {
@@ -33,7 +33,7 @@ const walletSlice = createSlice({
     setLang(state, action) {
       localStorage.setItem("lang", action.payload);
       state.lang = action.payload;
-      chrome.storage.sync.set({lang: action.payload});
+      // chrome.storage.sync.set({lang: action.payload});
     },
     setPendingCerts(state, action) {
       state.pendingCerts = action.payload;

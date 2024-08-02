@@ -41,7 +41,7 @@ const Balances = () => {
         secretKey
       );
       // console.log(accountBalance);
-      chrome.storage.sync.set({balance: accountBalance});
+      // chrome.storage.sync.set({balance: accountBalance});
       dispatch(setBalance(accountBalance));
     }
   };
@@ -55,17 +55,17 @@ const Balances = () => {
   };
 
   //useEffects
-  useEffect(() => {
-    chrome.storage.sync.get("loggedIn").then(res => {
-      if (!res.loggedIn) {
-        navigate("/logout");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   chrome.storage.sync.get("loggedIn").then(res => {
+  //     if (!res.loggedIn) {
+  //       navigate("/logout");
+  //     }
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    getPendingCerts();
-  }, []);
+  // useEffect(() => {
+  //   getPendingCerts();
+  // }, []);
 
   useEffect(() => {
     fetchAccountBal();
