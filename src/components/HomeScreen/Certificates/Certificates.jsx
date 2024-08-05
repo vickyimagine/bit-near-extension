@@ -107,7 +107,7 @@ const Certificates = () => {
       if (isOwnedSection) {
         getCerts();
       } else {
-        // getPendingCerts();
+        getPendingCerts();
       }
     }
   }, [currentNetwork, cardOpen, btnText]);
