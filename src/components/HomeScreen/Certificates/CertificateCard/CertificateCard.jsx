@@ -49,6 +49,14 @@ const CertificateCard = ({card, setCardOpen, isOwned}) => {
   };
 
   // console.log(process.env.REACT_APP_BIT_CONTRACT);
+
+  let aspectRatio = 1;
+  if (card.width && card.height) {
+    aspectRatio = card.width / card.height;
+  }
+
+  console.log(aspectRatio);
+
   return (
     <>
       {isTransfer ? (
@@ -59,7 +67,9 @@ const CertificateCard = ({card, setCardOpen, isOwned}) => {
           certTransfer={true}
         />
       ) : (
-        <div className='flex flex-col items-center mt-2 space-y-7'>
+        <div
+          className='flex flex-col items-center mt-2 space-y-7'
+          style={{height: "310px", overflowY: "scroll"}}>
           <div className='flex flex-col justify-start w-full space-y-2 gap-x-5'>
             <button
               className='w-fit px-5 self-start pb-3'
@@ -75,7 +85,11 @@ const CertificateCard = ({card, setCardOpen, isOwned}) => {
               <img
                 src={card?.image}
                 alt={card?.name}
-                className='h-24 w-40 object-cover cursor-pointer bg-gradient-to-b from-white to-[#B3E1FF] p-[6px] py-[8px] rounded-xl'
+                className='w-40 cursor-pointer bg-gradient-to-b from-white to-[#B3E1FF] p-[6px] py-[8px] rounded-xl'
+                style={{
+                  aspectRatio: aspectRatio,
+                  height: "fit-content"
+                }}
               />
               <div className='flex flex-col space-y-2 w-2/3'>
                 <div className='flex justify-start w-full text-white border-b border-white'>

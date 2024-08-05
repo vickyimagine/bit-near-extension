@@ -9,6 +9,7 @@ import spainJs from "../../../Constants/es";
 const RecentTrxns = () => {
   //hooks
   const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
+  const nativeTxt = lang === "en" ? engJs.nativeTxt : spainJs.nativeTxt;
   const [currentPage, setCurrentPage] = useState(1);
   const [transactions, setTransactions] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
@@ -26,7 +27,6 @@ const RecentTrxns = () => {
   const nextTxt = lang === "en" ? engJs.next : spainJs.next;
   const sentTxt = lang === "en" ? engJs.sent : spainJs.sent;
   const noTxnTxt = lang === "en" ? engJs.noTxn : spainJs.noTxn;
-  const nativeTxt = lang === "en" ? engJs.nativeTxt : spainJs.nativeTxt;
 
   //styles
   const activeStyle =
