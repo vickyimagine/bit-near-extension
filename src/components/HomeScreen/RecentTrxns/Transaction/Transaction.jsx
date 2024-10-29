@@ -9,16 +9,14 @@ import spainJs from "./../../../../Constants/es";
 import {getElapsedTime} from "../../../../utils/methods/unixToElapsed";
 
 const Transaction = ({data}) => {
-  //hooks
   const {accountId, currentNetwork, lang} = useSelector(state => state.wallet);
   const isNftTxn = data?.nft !== undefined;
-  const isIncoming = (!isNftTxn && data?.receiver_account_id === accountId) || "";
+  const isIncoming = !isNftTxn && data?.receiver_account_id === accountId;
   const trxnAmount = (!isNftTxn && data?.actions_agg.deposit / 10 ** 24) || "";
-  const isAccessKey = (!isNftTxn && data?.actions[0].action === "ADD_KEY") || "";
-  const isMint = (isNftTxn && data?.cause === "MINT") || "";
-  const isNFTIncoming = (isNftTxn && data?.affected_account_id === accountId) || "";
+  const isAccessKey = !isNftTxn && data?.actions[0].action === "ADD_KEY";
+  const isMint = isNftTxn && data?.cause === "MINT";
+  const isNFTIncoming = isNftTxn && data?.affected_account_id === accountId;
 
-  //translations
   const sentBtn = lang === "en" ? engJs.sent : spainJs.sent;
   const receiveBtn = lang === "en" ? engJs.receive : spainJs.receive;
   const fromTxt = lang === "en" ? engJs.from : spainJs.from;
@@ -27,7 +25,9 @@ const Transaction = ({data}) => {
 
   return (
     <div>
-      <div className='bit-btn  rounded-xl bg-white font-inter cursor-pointer text-sm'>
+      <div
+        className='bit-btn rounded-xl bg-white font-inter cursor-pointer text-sm'
+        aria-label='Transaction details'>
         <div className='w-fit mr-1'>
           {isNftTxn ? (
             <MdOutlineImage fontSize={28} />
@@ -46,7 +46,7 @@ const Transaction = ({data}) => {
           )}
         </div>
 
-        <div className=' w-2/3'>
+        <div className='w-2/3'>
           {isNftTxn ? (
             <p className='font-bold'>
               {data?.cause} {data?.nft?.symbol}
@@ -94,35 +94,30 @@ const Transaction = ({data}) => {
           )}
         </div>
 
-        <div className=' w-2/3 pl-5 '>
+        <div className='w-2/3 pl-5'>
           {isNftTxn ? (
-            <p className={`text-blue-800 font-bold`}>
-              Token Id:
-              {data?.token_id}
-            </p>
+            <p className={`text-blue-800 font-bold`}>Token Id: {data?.token_id}</p>
           ) : (
             !isAccessKey && (
               <p
                 className={`${isIncoming ? "text-green-500" : "text-red-500"} font-bold`}>
                 {isIncoming ? "+" : "-"}
                 {String(trxnAmount).length > 8
-                  ? Number(trxnAmount?.toString()?.slice(0, 5))
-                  : trxnAmount}{" "}
-                NEAR
+                  ? (trxnAmount / 10 ** 3).toFixed(2) + " K"
+                  : (trxnAmount / 10 ** 24).toFixed(2) + " NEAR"}
               </p>
             )
           )}
-          <p>{getElapsedTime(Number(data?.block_timestamp))}</p>
+          <p className='text-xs text-gray-400'>{getElapsedTime(data?.block_timestamp)}</p>
         </div>
-        <a
-          href={
-            currentNetwork.type === "mainnet"
-              ? `https://nearblocks.io/txns/${data?.transaction_hash}`
-              : `https://testnet.nearblocks.io/txns/${data?.transaction_hash}`
-          }
-          target='_blank'>
-          <TbExternalLink fontSize={28} />
-        </a>
+        <div className='w-fit'>
+          <a
+            href={`https://explorer.near.org/transactions/${data?.tx_hash}`}
+            target='_blank'
+            rel='noopener noreferrer'>
+            <TbExternalLink fontSize={21} />
+          </a>
+        </div>
       </div>
     </div>
   );
