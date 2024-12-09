@@ -1,5 +1,3 @@
-/*global chrome*/
-
 import React, {useState} from "react"; // Import necessary React hooks
 import {Link} from "react-router-dom"; // Import Link for routing
 import {fetchKeys} from "../../../utils"; // Import utility function to fetch keys

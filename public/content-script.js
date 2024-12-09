@@ -1,5 +1,5 @@
 // Listening to connection-popup
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.from === "Bit-wallet-connection-popup") {
     if (request.message === "accept") {
       contentScriptToBackgroundScript("acceptConnection", {
@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 // Communicating with Background Script
 const contentScriptToBackgroundScript = (message, data) => {
-  chrome.runtime.sendMessage(
+  browser.runtime.sendMessage(
     {from: "Bit-wallet-content-script", message, data},
     function (response) {
       if (response.from === "Bit-wallet-background-script") {
@@ -71,9 +71,9 @@ const injectConnectionScript = origin => {
     "scrollbars=no,resizeable=no,status=no,location=no,toolbar=no,menubar=no,width=350,height=550,left=" +
     leftpos +
     ",top=0";
-  let newURL = chrome.runtime.getURL("connection-popup.html");
+  let newURL = browser.runtime.getURL("connection-popup.html");
   window.open(newURL, "Bit-wallet", params);
-  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "connectRequestOrigin") {
       sendResponse({origin});
     }
@@ -86,9 +86,9 @@ const injectPasswordScript = password => {
     "scrollbars=no,resizeable=no,status=no,location=no,toolbar=no,menubar=no,width=350,height=600,left=" +
     leftpos +
     ",top=0";
-  let newURL = chrome.runtime.getURL("password-popup.html");
+  let newURL = browser.runtime.getURL("password-popup.html");
   window.open(newURL, "Bit-wallet", params);
-  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "getPassword") {
       sendResponse({password});
     }
@@ -99,7 +99,7 @@ const injectPasswordScript = password => {
 const injectInitialScript = () => {
   const script = document.createElement("script");
   script.type = "module";
-  script.src = chrome.runtime.getURL("inject-script.js");
+  script.src = browser.runtime.getURL("inject-script.js");
   script.onload = () => {
     if (script.parentNode) {
       script.parentNode.removeChild(script);

@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState} from "react";
 import {transferNFT} from "../../../../utils/methods/nearMethods";
 import {useSelector} from "react-redux";

@@ -1,7 +1,7 @@
 const connectionScript = () => {
   function poppulateOrigin() {
-    chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {message: "connectRequestOrigin"}, res => {
+    browser.tabs.query({active: true, currentWindow: false}, function (tabs) {
+      browser.tabs.sendMessage(tabs[0].id, {message: "connectRequestOrigin"}, res => {
         document.getElementById("origin").innerHTML = res.origin;
       });
     });
@@ -10,8 +10,8 @@ const connectionScript = () => {
   poppulateOrigin();
   function handleConnect() {
     let origin = document.getElementById("origin").innerHTML;
-    chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {
+    browser.tabs.query({active: true, currentWindow: false}, function (tabs) {
+      browser.tabs.sendMessage(tabs[0].id, {
         from: "Bit-wallet-connection-popup",
         message: "accept",
         origin: origin
@@ -21,8 +21,8 @@ const connectionScript = () => {
   }
 
   function handleReject() {
-    chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {
+    browser.tabs.query({active: true, currentWindow: false}, function (tabs) {
+      browser.tabs.sendMessage(tabs[0].id, {
         message: "reject",
         from: "Bit-wallet-connection-popup"
       });

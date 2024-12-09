@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import Terms from "../../Sidebar/Terms&Conditions/Terms";
@@ -10,6 +9,7 @@ import {useSelector} from "react-redux";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 import {LangDrop} from "../..";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 const EnterPassword = () => {
   // Hooks
@@ -41,7 +41,7 @@ const EnterPassword = () => {
   // Functions
   const storeWalletObject = async secretKey => {
     // console.log(secretKey);
-    // chrome.storage.sync.set({ secretKey });
+    // browser.storage.local.set({ secretKey });
   };
 
   const handleSave = async () => {
@@ -63,7 +63,7 @@ const EnterPassword = () => {
       localStorage.removeItem("tempKeystore");
       localStorage.removeItem("onPassword");
 
-      // chrome.storage.sync.set({ keyStore: updatedJSON });
+      // browser.storage.local.set({keyStore: updatedJSON});
 
       toast.success("Welcome to Bitwallet", {
         style: {marginTop: "20px"}

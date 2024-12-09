@@ -1,6 +1,6 @@
-/*global chrome*/
-
 //dock which gets data from bridge and pass to the react components
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
+
 export const contactBackground = async (msg, configs) => {
   const {message, data} = await dataFromBackground(msg, configs);
   // console.log(message, data);
@@ -19,7 +19,7 @@ export const contactBackground = async (msg, configs) => {
 const dataFromBackground = (message, data) => {
   return new Promise((res, rej) => {
     try {
-      chrome.runtime.sendMessage(
+      browser.runtime.sendMessage(
         {
           from: "Bit-extension",
           message,

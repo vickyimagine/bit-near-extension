@@ -1,58 +1,78 @@
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({
-    connectedSites: [],
-    loggedIn: true
-  });
-  // updateDB();
+// Handle installation and startup events
+browser.runtime.onInstalled.addListener(() => {
+  try {
+    browser.storage.local.set({
+      connectedSites: [],
+      loggedIn: true
+    });
+  } catch (error) {
+    console.error("Error during onInstalled:", error);
+  }
 });
 
-chrome.runtime.onStartup.addListener(() => {
-  // console.log("ON startup");
-  chrome.storage.sync.set({
-    loggedIn: false
-  });
+browser.runtime.onStartup.addListener(() => {
+  try {
+    browser.storage.local.set({
+      loggedIn: false
+    });
+  } catch (error) {
+    console.error("Error during onStartup:", error);
+  }
 });
 
+// Get account ID from storage
 const getAccountId = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("keyStore", keystore => {
-      if (chrome.runtime.lastError) {
-        reject(false);
-      } else {
-        const keys = JSON.parse(keystore["keyStore"]);
-        const accountId = keys["accountId"];
-        resolve(accountId);
-      }
-    });
+    browser.storage.local
+      .get("keyStore")
+      .then(keystore => {
+        try {
+          const keys = JSON.parse(keystore["keyStore"]);
+          resolve(keys["accountId"]);
+        } catch (error) {
+          reject("Error parsing keyStore data");
+        }
+      })
+      .catch(error => {
+        reject("Error retrieving keyStore: " + error);
+      });
   });
 };
 
+// Get password from storage
 const getPassword = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("keyStore", keystore => {
-      if (chrome.runtime.lastError) {
-        reject(false);
-      } else {
-        const keys = JSON.parse(keystore["keyStore"]);
-
-        const password = keys["password"];
-        resolve(password);
-      }
-    });
+    browser.storage.local
+      .get("keyStore")
+      .then(keystore => {
+        try {
+          const keys = JSON.parse(keystore["keyStore"]);
+          resolve(keys["password"]);
+        } catch (error) {
+          reject("Error parsing keyStore data");
+        }
+      })
+      .catch(error => {
+        reject("Error retrieving keyStore: " + error);
+      });
   });
 };
+
+// Check if user is logged in
 const checkLoggedIn = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("loggedIn", loggedIn => {
-      if (chrome.runtime.lastError) {
-        reject(false);
-      } else {
+    browser.storage.local
+      .get("loggedIn")
+      .then(loggedIn => {
         resolve(loggedIn.loggedIn);
-      }
-    });
+      })
+      .catch(error => {
+        reject("Error retrieving loggedIn status: " + error);
+      });
   });
 };
 
+// Change ownership of a certificate
 const changeOwnership = (to, tokenId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -71,224 +91,179 @@ const changeOwnership = (to, tokenId) => {
         "https://bitmemoir.com/api/v2/certificate/transferCertificate/",
         certOptions
       );
-      console.log(certRes);
       resolve(certRes);
     } catch (error) {
-      reject(false);
+      reject("Failed to transfer certificate: " + error);
     }
   });
 };
 
+// Update the transaction database
 const updateDB = txn => {
   return new Promise(async (resolve, reject) => {
-    const pendingTxns = await getPendingTrxns();
-    const updatedTxns = pendingTxns.filter(
-      trxn => !(trxn.to === txn.to && trxn.token_id === txn.token_id)
-    );
+    try {
+      const pendingTxns = await getPendingTrxns();
+      const updatedTxns = pendingTxns.filter(
+        trxn => !(trxn.to === txn.to && trxn.token_id === txn.token_id)
+      );
 
-    chrome.storage.sync.set({certPendings: updatedTxns}, function () {
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
-      } else {
-        resolve({status: true});
-      }
-    });
+      await browser.storage.local.set({certPendings: updatedTxns});
+      resolve({status: true});
+    } catch (error) {
+      reject("Error updating transaction database: " + error);
+    }
   });
 };
 
-//stores the failed txns into chrome storage
+// Store failed transactions in the database
 const storeInDB = txn => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("certPendings", trxns => {
-      let trxnData = trxns.certPendings || [];
-
-      // If txns is an array, concatenate it with trxnData
-      if (Array.isArray(txn)) {
-        trxnData = [...trxnData, ...txn];
-      } else {
-        // If txns is a single object, add it to trxnData
-        trxnData.push(txn);
-      }
-
-      chrome.storage.sync.set({certPendings: trxnData}, function () {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
+    browser.storage.local
+      .get("certPendings")
+      .then(trxns => {
+        let trxnData = trxns.certPendings || [];
+        if (Array.isArray(txn)) {
+          trxnData = [...trxnData, ...txn];
         } else {
-          resolve({status: true});
+          trxnData.push(txn);
         }
-      });
-    });
+
+        browser.storage.local
+          .set({certPendings: trxnData})
+          .then(() => resolve({status: true}))
+          .catch(error => reject("Error storing transaction: " + error));
+      })
+      .catch(error => reject("Error retrieving certPendings: " + error));
   });
 };
 
-//get the pending trxns
+// Get the pending transactions
 const getPendingTrxns = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("certPendings", trxns => {
-      let trxnData = trxns.certPendings || [];
-
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
-      } else {
-        resolve(trxnData);
-      }
-    });
+    browser.storage.local
+      .get("certPendings")
+      .then(trxns => {
+        resolve(trxns.certPendings || []);
+      })
+      .catch(error => reject("Error retrieving pending transactions: " + error));
   });
 };
 
+// Retry mechanism for NFT ownership transfer
 const nftRetryMechanism = async () => {
-  console.log("nft Retry triggered");
+  console.log("NFT retry triggered");
   try {
-    //fetch the pending txn from chrome storage
     const txns = await getPendingTrxns();
-    //try to resend them one by one
     for (const txn of txns) {
       console.log(txn);
       const res = await changeOwnership(txn.to, txn.token_id);
       console.log(res);
-      //if got OK response remove that specific txn from the pending txns array
       if (res.ok) {
-        const res = await updateDB(txn);
-        console.log(res);
-        if (res.status) {
+        const updateRes = await updateDB(txn);
+        console.log(updateRes);
+        if (updateRes.status) {
           console.log("Pending txn removed successfully");
         } else {
-          console.log("Updating txn failed..");
+          console.log("Failed to update txn");
         }
       } else {
-        console.log("Failed due to backend ");
+        console.log("Failed due to backend issue");
       }
     }
   } catch (error) {
-    console.log(`Error occured while retrying the transfer:${error}`);
+    console.error("Error during NFT retry:", error);
   }
 };
 
-// Background script
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+// Background script message listener
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const sendGoodResponse = (message, data) => {
     sendResponse({from: "Bit-wallet-background-script", message, data});
   };
 
   if (request.from === "Bit-wallet-content-script") {
-    let message = request.message;
-    // Initial check
+    const message = request.message;
+
     if (message === "checkAccountCreated") {
       const asyncResponse = async () => {
-        let origin = request.data.origin;
-        let connectedSites = await chrome.storage.sync.get("connectedSites");
         try {
+          const origin = request.data.origin;
+          const connectedSites = await browser.storage.local.get("connectedSites");
           let accountId = "";
-          let isLoggedIn = checkLoggedIn();
+          const isLoggedIn = await checkLoggedIn();
           if (isLoggedIn && connectedSites.connectedSites.includes(origin)) {
             accountId = await getAccountId();
           }
-          sendGoodResponse("checkAccountCreated", {
-            status: true,
-            accountId: accountId
-          });
-        } catch {
-          sendGoodResponse("checkAccountCreated", {
-            status: false
-          });
+          sendGoodResponse("checkAccountCreated", {status: true, accountId});
+        } catch (error) {
+          sendGoodResponse("checkAccountCreated", {status: false});
         }
       };
       asyncResponse();
       return true;
-    }
-    // Connection request
-    else if (message === "acceptConnection") {
+    } else if (message === "acceptConnection") {
       const asyncResponse = async () => {
-        let connectedSites = (await chrome.storage.sync.get("connectedSites")) || [];
-        connectedSites.connectedSites.push(request.data.origin);
-        await chrome.storage.sync.set({
-          connectedSites: connectedSites.connectedSites
-        });
         try {
-          let accountId = await getAccountId();
-          sendGoodResponse("acceptConnection", {
-            status: true,
-            accountId: accountId
+          const connectedSites =
+            (await browser.storage.local.get("connectedSites")) || [];
+          connectedSites.connectedSites.push(request.data.origin);
+          await browser.storage.local.set({
+            connectedSites: connectedSites.connectedSites
           });
-        } catch {
-          sendGoodResponse("acceptConnection", {
-            status: false
-          });
+
+          const accountId = await getAccountId();
+          sendGoodResponse("acceptConnection", {status: true, accountId});
+        } catch (error) {
+          sendGoodResponse("acceptConnection", {status: false});
         }
       };
       asyncResponse();
       return true;
-    }
-    // Logged In  Check
-    else if (message === "checkIsLoggedIn") {
+    } else if (message === "checkIsLoggedIn") {
       const asyncResponse = async () => {
-        let loggedIn = await checkLoggedIn();
-        let password = await getPassword();
         try {
-          sendGoodResponse("checkIsLoggedIn", {
-            status: loggedIn,
-            password: password
-          });
-        } catch {
-          sendGoodResponse("checkIsLoggedIn", {
-            status: false
-          });
+          const loggedIn = await checkLoggedIn();
+          const password = await getPassword();
+          sendGoodResponse("checkIsLoggedIn", {status: loggedIn, password});
+        } catch (error) {
+          sendGoodResponse("checkIsLoggedIn", {status: false});
         }
       };
       asyncResponse();
       return true;
-    }
-    // Enter Password
-    else if (message === "enterPassword") {
+    } else if (message === "enterPassword") {
       const asyncResponse = async () => {
-        let password = await getPassword();
-        let enteredPassword = request.data.password;
-        if (password === enteredPassword) {
-          chrome.storage.sync.set({
-            loggedIn: true
-          });
-          try {
-            let accountId = await getAccountId();
-            sendGoodResponse("acceptConnection", {
-              status: true,
-              accountId: accountId
-            });
-          } catch {
-            sendGoodResponse("acceptConnection", {
-              status: false
-            });
+        try {
+          const password = await getPassword();
+          const enteredPassword = request.data.password;
+          if (password === enteredPassword) {
+            await browser.storage.local.set({loggedIn: true});
+            const accountId = await getAccountId();
+            sendGoodResponse("acceptConnection", {status: true, accountId});
+          } else {
+            sendGoodResponse("acceptConnection", {status: false});
           }
-        } else {
-          sendGoodResponse("acceptConnection", {
-            status: false
-          });
+        } catch (error) {
+          sendGoodResponse("acceptConnection", {status: false});
         }
       };
       asyncResponse();
       return true;
     }
   } else if (request.from === "Bit-extension") {
-    // console.log(request);
     if (request.message === "UpdateOwnership") {
-      console.log(request.data);
       const {to, token_id} = request.data;
       const asyncResponse = async () => {
-        const certRes = await changeOwnership(to, token_id);
-        if (certRes.ok) {
-          // Extracting JSON data from response
-          console.log("Cert transferred successfully");
-          sendGoodResponse("UpdateOwnership", {
-            status: true
-          });
-        } else {
-          const res = await storeInDB(request.data);
-          console.log("stored in dB");
-          console.log(res);
-          console.log("Cert Transfer failed from backedn");
-          // console.log("not transfered");
+        try {
+          const certRes = await changeOwnership(to, token_id);
+          if (certRes.ok) {
+            sendGoodResponse("UpdateOwnership", {status: true});
+          } else {
+            await storeInDB(request.data);
+            sendGoodResponse("UpdateOwnership", {status: false});
+          }
+        } catch (error) {
           sendGoodResponse("UpdateOwnership", {status: false});
-
-          // throw new Error("Failed to transfer certificate");
         }
       };
       asyncResponse();
@@ -296,7 +271,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message === "getPendingCerts") {
       const asyncResponse = async () => {
         const txns = await getPendingTrxns();
-
         sendGoodResponse("getPendingCerts", {txns});
       };
       asyncResponse();
@@ -304,7 +278,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message === "TriggerRetry") {
       const asyncResponse = async () => {
         await nftRetryMechanism();
-        sendGoodResponse("TriggerRetry", {msg: "Retried !"});
+        sendGoodResponse("TriggerRetry", {msg: "Retried!"});
       };
       asyncResponse();
       return true;

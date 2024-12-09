@@ -1,8 +1,7 @@
-/*global chrome*/
 import {createSlice} from "@reduxjs/toolkit";
 
 import {networks} from "../../Constants/networks";
-
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 const initialState = {
   currentNetwork: JSON.parse(localStorage.getItem("network")) || networks[0],
   accountId: null,
@@ -18,7 +17,7 @@ const walletSlice = createSlice({
   reducers: {
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
-      // chrome.storage.sync.set({network: action.payload});
+      browser.storage.local.set({network: action.payload});
       localStorage.setItem("network", JSON.stringify(action.payload));
     },
     setAccountId(state, action) {
@@ -33,7 +32,7 @@ const walletSlice = createSlice({
     setLang(state, action) {
       localStorage.setItem("lang", action.payload);
       state.lang = action.payload;
-      // chrome.storage.sync.set({lang: action.payload});
+      browser.storage.local.set({lang: action.payload});
     },
     setPendingCerts(state, action) {
       state.pendingCerts = action.payload;

@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState} from "react";
 import {shuffle} from "../../../utils";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
