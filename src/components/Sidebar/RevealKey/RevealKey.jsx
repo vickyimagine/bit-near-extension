@@ -1,5 +1,3 @@
-/*global chrome*/
-
 import React, {useState} from "react"; // Import necessary React hooks
 import {Link} from "react-router-dom"; // Import Link for routing
 import {fetchKeys} from "../../../utils"; // Import utility function to fetch keys
@@ -11,6 +9,7 @@ import {GoEye, GoEyeClosed} from "react-icons/go"; // Import eye icons
 
 import engJs from "../../../Constants/en"; // Import English translations
 import spainJs from "../../../Constants/es"; // Import Spanish translations
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 const RevealKey = () => {
   // State hooks

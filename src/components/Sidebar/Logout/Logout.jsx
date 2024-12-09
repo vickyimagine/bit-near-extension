@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {FiLogIn} from "react-icons/fi";
@@ -10,6 +9,7 @@ import {useSelector} from "react-redux";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 import WarningCard from "./WarningCard";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 const Logout = () => {
   //hooks
   const {lang} = useSelector(state => state.wallet);
@@ -29,7 +29,7 @@ const Logout = () => {
     if (keyStore) {
       if (keyStore.password === password && password) {
         toast.success("Logged In");
-        chrome.storage.sync.set({loggedIn: true});
+        browser.storage.sync.set({loggedIn: true});
         navigate("/");
       } else {
         toast.error("Wrong Password !");

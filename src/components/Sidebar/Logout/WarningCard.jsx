@@ -1,10 +1,10 @@
-/*global chrome*/
 import React from "react";
 import {HiOutlineInformationCircle} from "react-icons/hi";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 const WarningCard = ({setIsWarning}) => {
   const {lang} = useSelector(state => state.wallet);
@@ -14,7 +14,7 @@ const WarningCard = ({setIsWarning}) => {
   const resetPassTxt = lang === "en" ? engJs.resetPassword : spainJs.resetPassword;
   const navigate = useNavigate();
   const handleReset = () => {
-    // chrome.storage.sync.set({loggedIn: true});
+    // browser.storage.sync.set({loggedIn: true});
     localStorage.removeItem("keyStore");
     navigate("/login/import-account");
   };

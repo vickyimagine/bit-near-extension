@@ -1,10 +1,10 @@
-/*global chrome*/
 import keyLogo from "../Assets/key.svg";
 import terms from "../Assets/terms.svg";
 import about from "../Assets/about.svg";
 import privacy from "../Assets/Privacy.svg";
 import logout from "../Assets/out.svg";
 import reset from "../Assets/reset.svg";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 export const sidebarLinks = [
   {
@@ -36,7 +36,7 @@ export const sidebarLinks = [
     title: "log out",
     destination: "/logout",
     handler: () => {
-      chrome.storage.sync.set({loggedIn: false});
+      browser.storage.sync.set({loggedIn: false});
     }
   },
   {
@@ -45,8 +45,8 @@ export const sidebarLinks = [
     destination: "/login/welcome",
     handler: () => {
       localStorage.clear();
-      chrome.storage.sync.clear();
-      chrome.storage.sync.set({
+      browser.storage.sync.clear();
+      browser.storage.sync.set({
         loggedIn: true
       });
     }

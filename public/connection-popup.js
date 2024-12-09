@@ -1,39 +1,48 @@
 const connectionScript = () => {
-  function poppulateOrigin() {
-    chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {message: "connectRequestOrigin"}, res => {
-        document.getElementById("origin").innerHTML = res.origin;
+  async function poppulateOrigin() {
+    try {
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      const res = await browser.tabs.sendMessage(tabs[0].id, {
+        message: "connectRequestOrigin"
       });
-    });
+      document.getElementById("origin").innerHTML = res.origin;
+    } catch (error) {
+      console.error("Error fetching origin:", error);
+    }
   }
 
   poppulateOrigin();
-  function handleConnect() {
-    let origin = document.getElementById("origin").innerHTML;
-    chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {
+
+  async function handleConnect() {
+    try {
+      const origin = document.getElementById("origin").innerHTML;
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      await browser.tabs.sendMessage(tabs[0].id, {
         from: "Bit-wallet-connection-popup",
         message: "accept",
         origin: origin
       });
       window.close();
-    });
+    } catch (error) {
+      console.error("Error handling connect:", error);
+    }
   }
 
-  function handleReject() {
-    chrome.tabs.query({active: true, currentWindow: false}, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {
+  async function handleReject() {
+    try {
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      await browser.tabs.sendMessage(tabs[0].id, {
         message: "reject",
         from: "Bit-wallet-connection-popup"
       });
       window.close();
-    });
+    } catch (error) {
+      console.error("Error handling reject:", error);
+    }
   }
 
-  var connectbtn = document.getElementById("connectButton");
-  connectbtn.onclick = handleConnect;
-  var rejectbtn = document.getElementById("rejectButton");
-  rejectbtn.onclick = handleReject;
+  document.getElementById("connectButton").onclick = handleConnect;
+  document.getElementById("rejectButton").onclick = handleReject;
 };
 
 window.onload = connectionScript;

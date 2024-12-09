@@ -1,4 +1,3 @@
-/* global chrome */
 import React, {useEffect} from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import toast from "react-hot-toast";
@@ -11,6 +10,7 @@ import {setBalance, setPendingCerts} from "../../../Store/wallet/wallet-slice";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
 import {contactBackground} from "../../../utils/methods/contactBackground";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 /**
  * Balances component displays the wallet's balance and provides
@@ -43,7 +43,7 @@ const Balances = () => {
         secretKey
       );
       // console.log(accountBalance);
-      // chrome.storage.sync.set({balance: accountBalance});
+      browser.storage.sync.set({balance: accountBalance});
       dispatch(setBalance(accountBalance));
     }
   };
@@ -61,18 +61,18 @@ const Balances = () => {
   };
 
   // Checks if the user is logged in; redirects if not
-  // useEffect(() => {
-  //   chrome.storage.sync.get("loggedIn").then(res => {
-  //     if (!res.loggedIn) {
-  //       navigate("/logout");
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    browser.storage.sync.get("loggedIn").then(res => {
+      if (!res.loggedIn) {
+        navigate("/logout");
+      }
+    });
+  }, []);
 
   // Initial call to fetch pending certificates
-  // useEffect(() => {
-  //   getPendingCerts();
-  // }, []);
+  useEffect(() => {
+    getPendingCerts();
+  }, []);
 
   // Fetch balance on account or network change
   useEffect(() => {

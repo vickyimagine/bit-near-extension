@@ -1,40 +1,47 @@
-/*global chrome*/
+import browser from "webextension-polyfill"; // Import the polyfill
 
-//dock which gets data from bridge and pass to the react components
+// Dock which gets data from bridge and passes it to React components
 export const contactBackground = async (msg, configs) => {
-  const {message, data} = await dataFromBackground(msg, configs);
-  // console.log(message, data);
-  if (message === "UpdateOwnership") {
-    // console.log(data);
-    return data;
-  } else if (message === "getPendingCerts") {
-    // console.log(data.txns);
-    return data.txns;
-  } else if (message === "TriggerRetry") {
-    console.log(data.msg);
+  try {
+    const {message, data} = await dataFromBackground(msg, configs);
+
+    if (message === "UpdateOwnership") {
+      return data;
+    } else if (message === "getPendingCerts") {
+      return data.txns;
+    } else if (message === "TriggerRetry") {
+      console.log(data.msg);
+    }
+  } catch (error) {
+    console.error("Error in contactBackground:", error);
+    return null;
   }
 };
 
-//bridge to pass data between background and frontend
+// Bridge to pass data between background and frontend
 const dataFromBackground = (message, data) => {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     try {
-      chrome.runtime.sendMessage(
-        {
+      browser.runtime
+        .sendMessage({
           from: "Bit-extension",
           message,
           data
-        },
-        function (response) {
-          //   console.log(response);
-          if (response.from === "Bit-wallet-background-script") {
-            // console.log(response);
-            res(response);
+        })
+        .then(response => {
+          if (response && response.from === "Bit-wallet-background-script") {
+            resolve(response);
+          } else {
+            reject(new Error("Unexpected response from background script"));
           }
-        }
-      );
+        })
+        .catch(error => {
+          console.error("Error in sendMessage:", error);
+          reject(error);
+        });
     } catch (error) {
-      rej(false);
+      console.error("Error sending message:", error);
+      reject(error);
     }
   });
 };

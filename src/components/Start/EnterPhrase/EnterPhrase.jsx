@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState} from "react";
 import {shuffle} from "../../../utils";
 import {PiArrowBendUpLeftBold} from "react-icons/pi";
@@ -8,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 const EnterPhrase = ({phrase, setIsEnterPhrase, keyStore}) => {
   //hooks

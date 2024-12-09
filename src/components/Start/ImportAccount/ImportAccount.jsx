@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {genFromSecret, getAccountId} from "../../../utils";
@@ -10,6 +9,7 @@ import {IoIosArrowDown} from "react-icons/io";
 import {useSelector} from "react-redux";
 import engJs from "../../../Constants/en";
 import spainJs from "../../../Constants/es";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 const ImportAccount = () => {
   // Hooks

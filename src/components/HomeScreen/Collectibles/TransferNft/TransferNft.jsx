@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState} from "react";
 import {transferNFT} from "../../../../utils/methods/nearMethods";
 import {useSelector} from "react-redux";
@@ -7,6 +6,7 @@ import {PiArrowBendUpLeftBold} from "react-icons/pi";
 import engJs from "../../../../Constants/en";
 import spainJs from "../../../../Constants/es";
 import {contactBackground} from "../../../../utils/methods/contactBackground";
+import browser from "webextension-polyfill"; // Import the polyfill for compatibility
 
 const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
   const {accountId, currentNetwork, secretKey, lang} = useSelector(state => state.wallet);
