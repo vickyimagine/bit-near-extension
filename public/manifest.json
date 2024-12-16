@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Bitwallet",
-  "version": "4.9.7",
+  "version": "4.9.8",
   "permissions": ["activeTab", "storage", "tabs", "webNavigation", "<all_urls>"],
   "background": {
     "scripts": ["background.js"],
