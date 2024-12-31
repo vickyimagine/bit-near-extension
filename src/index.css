@@ -4,7 +4,7 @@
 
 @layer components {
   .bit-btn {
-    @apply flex justify-center space-x-3 items-center bg-col_1  font-semibold p-3 py-2 rounded-full hover:scale-105 transition-all duration-200;
+    @apply flex justify-center space-x-3 items-center bg-col_1   p-3 py-2 rounded-full hover:scale-105 transition-all duration-200;
   }
 }
 @font-face {

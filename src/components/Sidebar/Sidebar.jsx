@@ -24,7 +24,7 @@ const Sidebar = () => {
           return (
             <span
               key={index}
-              className=' hover:bg-col_1 flex items-center gap-x-3 py-6 cursor-pointer font-semibold text-lg pl-5 pt-2 p-1  transition-all duration-400'
+              className=' hover:bg-col_1 flex items-center gap-x-3 py-6 cursor-pointer  text-lg pl-5 pt-2 p-1  transition-all duration-400'
               onClick={() => {
                 item.handler();
                 navigate(item.destination);

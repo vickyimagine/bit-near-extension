@@ -75,8 +75,8 @@ const CertificateCard = ({card, setCardOpen, isOwned}) => {
 
               <div className='flex flex-col w-2/3 space-y-2'>
                 <div className='flex border-b border-white text-white'>
-                  <p className='text-xl font-bold w-1/2 border-r'>Token Id</p>
-                  <p className='flex items-center gap-x-4 w-1/2 font-inter font-bold'>
+                  <p className='text-xl  w-1/2 border-r'>Token Id</p>
+                  <p className='flex items-center gap-x-4 w-1/2 font-inter '>
                     {card?.token_id}
                     <div className='flex'>
                       <a
@@ -135,12 +135,12 @@ const CertificateCard = ({card, setCardOpen, isOwned}) => {
           {isOwned && (
             <div className='flex space-x-6'>
               <button
-                className='bit-btn gap-x-3 px-5 font-bold flex items-center'
+                className='bit-btn gap-x-3 px-5  flex items-center'
                 onClick={() => nftDownload(card?.image)}>
                 {downloadTxt} <HiOutlineDownload fontSize={22} />
               </button>
               <button
-                className='bit-btn gap-x-3 px-5 font-bold flex items-center'
+                className='bit-btn gap-x-3 px-5  flex items-center'
                 onClick={() => setIsTransfer(true)}>
                 {transferTxt} <LuSend fontSize={22} />
               </button>

@@ -25,8 +25,8 @@ const PrivacyPolicy = () => {
           color='white'
         />
       </Link>
-      <h1 className='text-5xl text-white font-semibold'>{privacyTxt}</h1>
-      <p className='text-xl font-semibold text-white'>
+      <h1 className='text-5xl text-white '>{privacyTxt}</h1>
+      <p className='text-xl  text-white'>
         {lang === "en" ? "About" : "Sobre"} Beyond Imagination Technologies
       </p>
       <div className='privacy text-white overflow-y-scroll cursor-default'>
@@ -60,14 +60,14 @@ const PrivacyPolicy = () => {
         </p>{" "}
         <br />
         <p>{privTxtArray[19]} </p> <br />
-        <h2 className='font-bold'> {privTxtArray[20]}</h2>{" "}
+        <h2 className=''> {privTxtArray[20]}</h2>{" "}
         <ul className=' list-decimal pl-6 mt-2'>
           <li>{privTxtArray[21]} </li> <li>{privTxtArray[22]} </li>{" "}
           <li> {privTxtArray[23]} </li> <li>{privTxtArray[24]} </li>{" "}
           <li>{privTxtArray[25]} </li> <li>{privTxtArray[26]} </li>{" "}
         </ul>{" "}
         <br />
-        <h2 className='font-bold'> {privTxtArray[27]} </h2> <p> {privTxtArray[28]} </p>{" "}
+        <h2 className=''> {privTxtArray[27]} </h2> <p> {privTxtArray[28]} </p>{" "}
         <ul className=' list-disc pl-6 mt-2'>
           <li>{privTxtArray[29]} </li> <li> {privTxtArray[30]} </li>{" "}
           <li> {privTxtArray[31]} </li> <li>{privTxtArray[32]} </li>{" "}
@@ -83,10 +83,8 @@ const PrivacyPolicy = () => {
         <p>{privTxtArray[46]} </p> <br />
         <p>{privTxtArray[47]} </p> <br />
         <b> {privTxtArray[48]}</b> <p>{privTxtArray[49]} </p> <br />
-        <b> {privTxtArray[50]}: </b> <p className='font-bold'>{privTxtArray[51]} </p>{" "}
-        <br />
-        <b>{privTxtArray[52]}: </b> <p className='font-bold'>{privTxtArray[53]} </p>{" "}
-        <br />
+        <b> {privTxtArray[50]}: </b> <p className=''>{privTxtArray[51]} </p> <br />
+        <b>{privTxtArray[52]}: </b> <p className=''>{privTxtArray[53]} </p> <br />
         <b> {privTxtArray[54]}: </b> <p>{privTxtArray[55]} </p> <br />
         <b> {privTxtArray[56]}</b>{" "}
         <p>
@@ -109,8 +107,7 @@ const PrivacyPolicy = () => {
         <br />
         <b>{privTxtArray[75]}: </b> <p>{privTxtArray[76]} </p> <br />
         <b>{privTxtArray[77]}: </b> <p>{privTxtArray[78]} </p> <br />
-        <b> {privTxtArray[79]}: </b> <p className='font-bold'>{privTxtArray[80]} </p>{" "}
-        <br />
+        <b> {privTxtArray[79]}: </b> <p className=''>{privTxtArray[80]} </p> <br />
         <b>{privTxtArray[81]}: </b>{" "}
         <p>
           {privTxtArray[82]}

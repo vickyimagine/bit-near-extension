@@ -30,9 +30,9 @@ const RecentTrxns = () => {
 
   // Styles for active and inactive buttons
   const activeStyle =
-    "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg font-bold text-base cursor-pointer transition-all duration-300 rounded-xl ";
+    "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg  text-base cursor-pointer transition-all duration-300 rounded-xl ";
   const inActiveStyle =
-    "flex items-center justify-center w-1/2 text-center text-white font-bold text-base cursor-pointer transition-all duration-300 rounded-xl border";
+    "flex items-center justify-center w-1/2 text-center text-white  text-base cursor-pointer transition-all duration-300 rounded-xl border";
 
   // Function to navigate to the next page
   const handleNextPage = () => {
@@ -168,11 +168,11 @@ const RecentTrxns = () => {
               strokeWidth={2}
               strokeWidthSecondary={2}
             />
-            <p className='font-bold text-white text-xl'>Fetching Transactions...</p>
+            <p className=' text-white text-xl'>Fetching Transactions...</p>
           </div>
         ) : transactions?.length === 0 || !transactions ? (
           <div className='h-52 flex items-center justify-center'>
-            <button className='bit-btn flex px-24 hover:scale-100 cursor-default font-bold'>
+            <button className='bit-btn flex px-24 hover:scale-100 cursor-default '>
               {noTxnTxt}
             </button>
           </div>
@@ -191,7 +191,7 @@ const RecentTrxns = () => {
             <div className='flex justify-center gap-x-4 items-center'>
               <button
                 onClick={handlePreviousPage}
-                className={`bit-btn text-base rounded-xl px-3 p-1 bg-white font-bold ${
+                className={`bit-btn text-base rounded-xl px-3 p-1 bg-white  ${
                   currentPage === 1 ? "cursor-not-allowed hover:scale-100 opacity-75" : ""
                 }`}
                 disabled={currentPage === 1}>

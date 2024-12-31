@@ -60,13 +60,13 @@ const NewAccount = () => {
           color='white'
         />
       </Link>
-      <h1 className='text-white text-[28px] font-bold'>{backupPhrsTxt}</h1>
+      <h1 className='text-white text-[28px] '>{backupPhrsTxt}</h1>
       <p className='text-white text-center font-inter font-light text-sm leading-relaxed'>
         {backupPara1}
       </p>
       <CopyToClipboard text={phrase && phrase}>
         <div
-          className='border bg-white hover:bg-col_1  opacity-85 text-black font-semibold text-center p-2 text-xs rounded-xl cursor-pointer hover:text-bitBg active:scale-95 transition-all duration-400'
+          className='border bg-white hover:bg-col_1  opacity-85 text-black  text-center p-2 text-xs rounded-xl cursor-pointer hover:text-bitBg active:scale-95 transition-all duration-400'
           onClick={() => {
             toast.success("Copied in your clipboard !");
             localStorage.setItem(
@@ -86,7 +86,7 @@ const NewAccount = () => {
         onClick={() => {
           setIsEnterPhrase(true);
         }}>
-        <p className='flex gap-x-2 items-center  font-bold'>
+        <p className='flex gap-x-2 items-center  '>
           {nextTxt}
           <FaArrowRight
             fontSize={22}

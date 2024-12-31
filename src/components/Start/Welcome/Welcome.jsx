@@ -25,7 +25,7 @@ const Welcome = () => {
       </h1>
 
       <Link to='/login/account-options'>
-        <button className='bit-btn px-20 py-4 mt-20 font-semibold'>
+        <button className='bit-btn px-20 py-4 mt-20 '>
           <p>{clickToStart}</p>
           <BiRightArrow fontSize={18} />
         </button>

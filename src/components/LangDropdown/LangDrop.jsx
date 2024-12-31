@@ -43,7 +43,7 @@ const LangDropdown = ({isMainScreen, classNames, buttonClass}) => {
           {langs.map((item, idx) => (
             <button
               key={item.key} // Use item.key as a unique key
-              className={`flex items-center rounded-md justify-center py-2 gap-x-3 font-bold bg-white ${
+              className={`flex items-center rounded-md justify-center py-2 gap-x-3  bg-white ${
                 idx === 0
                   ? "border-b-[#7e787880] rounded-b-none border-[white] border"
                   : ""

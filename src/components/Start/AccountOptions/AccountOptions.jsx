@@ -32,14 +32,14 @@ const AccountOptions = () => {
 
       <div className='flex flex-col items-center gap-y-2'>
         <Link to='/login/new-account'>
-          <button className='bit-btn px-28 py-4 font-bold flex items-center justify-center'>
+          <button className='bit-btn px-28 py-4  flex items-center justify-center'>
             <p className='mr-2'>{createAccount}</p>
             <CgUserAdd fontSize={21} />
           </button>
         </Link>
         <p className='text-col_1'>{or}</p>
         <Link to='/login/import-account'>
-          <button className='bit-btn bg-white px-28 py-4 font-bold flex items-center justify-center'>
+          <button className='bit-btn bg-white px-28 py-4  flex items-center justify-center'>
             <p className='mr-2'>{importAccount}</p>
             <LuDownload fontSize={21} />
           </button>

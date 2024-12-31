@@ -63,7 +63,7 @@ const EnterPassword = () => {
       localStorage.removeItem("tempKeystore");
       localStorage.removeItem("onPassword");
 
-      // browser.storage.local.set({keyStore: updatedJSON});
+      browser.storage.local.set({keyStore: updatedJSON});
 
       toast.success("Welcome to Bitwallet", {
         style: {marginTop: "20px"}
@@ -81,9 +81,7 @@ const EnterPassword = () => {
     <div className='flex flex-col w-full items-center space-y-8'>
       <LangDrop isMainScreen={false} />
       <div className='flex flex-col w-full space-y-4 p-6 mt-6 rounded-md h-fit'>
-        <h1 className='text-white text-3xl font-bold self-center mb-2'>
-          {createPassword}
-        </h1>
+        <h1 className='text-white text-3xl  self-center mb-2'>{createPassword}</h1>
 
         {/* Password Input */}
         <div className='flex items-center relative py-2'>
@@ -154,7 +152,7 @@ const EnterPassword = () => {
         className={"bit-btn px-8 py-2 disabled:cursor-not-allowed"}
         disabled={password.length === 0 || confirmPassword.length === 0 || !checked}
         onClick={handleSave}>
-        <p className='text-lg font-bold'>{next}</p>
+        <p className='text-lg '>{next}</p>
         <FaArrowRight fontSize={22} />
       </button>
     </div>

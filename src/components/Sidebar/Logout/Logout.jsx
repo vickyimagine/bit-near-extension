@@ -44,9 +44,9 @@ const Logout = () => {
       onClick={() => {
         isWarning && setIsWarning(false);
       }}>
-      <h1 className='text-white text-5xl font-bold'>{loginTxt}</h1>
+      <h1 className='text-white text-5xl '>{loginTxt}</h1>
       <div className='flex flex-col items-start  space-y-3'>
-        <p className='text-white font-semibold'>{enterPassTxt}</p>
+        <p className='text-white '>{enterPassTxt}</p>
         <div className='flex items-center relative'>
           <input
             type={showPassword ? "text" : "password"}

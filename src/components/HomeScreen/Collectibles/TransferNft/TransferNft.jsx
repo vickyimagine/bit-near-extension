@@ -95,7 +95,7 @@ const TransferNft = ({setIsTransfer, nft, setCardOpen, certTransfer}) => {
         </button>
       </div>
       <div className='flex p-2 rounded-md ring-1 ring-slate-400 bg-transparent duration-200'>
-        <span className='w-1/4 text-white font-semibold'>{translations.transferTo}</span>
+        <span className='w-1/4 text-white '>{translations.transferTo}</span>
         <input
           type='text'
           className='text-end w-4/5 bg-transparent font-inter focus:outline-none text-white'

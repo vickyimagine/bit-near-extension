@@ -77,7 +77,7 @@ const Collectibles = () => {
             <div className='flex flex-col items-center justify-center space-y-3'>
               <p className='text-white font-medium'>{translations.collNotVis}</p>
               <button
-                className='bit-btn px-24 font-bold'
+                className='bit-btn px-24 '
                 onClick={() => setIsImport(true)}>
                 {translations.importColl}
               </button>

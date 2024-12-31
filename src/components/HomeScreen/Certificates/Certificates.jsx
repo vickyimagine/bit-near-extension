@@ -37,9 +37,9 @@ const Certificates = () => {
 
   // Button styles
   const activeStyle =
-    "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg font-bold text-base cursor-pointer transition-all duration-300 rounded-xl ";
+    "flex items-center justify-center w-1/2 px-2 text-center bg-white text-bitBg  text-base cursor-pointer transition-all duration-300 rounded-xl ";
   const inActiveStyle =
-    "flex items-center justify-center w-1/2 text-center text-white font-bold text-base cursor-pointer transition-all duration-300 rounded-xl border";
+    "flex items-center justify-center w-1/2 text-center text-white  text-base cursor-pointer transition-all duration-300 rounded-xl border";
 
   // Fetch certificates from API
   const getCerts = useCallback(async () => {
@@ -131,11 +131,11 @@ const Certificates = () => {
                 strokeWidth={2}
                 strokeWidthSecondary={2}
               />
-              <p className='font-bold text-white text-xl'>{fetchCertsTxt}</p>
+              <p className=' text-white text-xl'>{fetchCertsTxt}</p>
             </div>
           ) : certificates.length === 0 ? (
             <div className='h-72 flex items-center justify-center'>
-              <button className='bit-btn font-bold flex hover:scale-100 cursor-default px-24'>
+              <button className='bit-btn  flex hover:scale-100 cursor-default px-24'>
                 {currentNetwork.type === "mainnet" ? noCertText : certAvailMainTxt}
               </button>
             </div>

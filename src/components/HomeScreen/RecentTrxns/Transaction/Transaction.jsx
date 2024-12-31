@@ -48,13 +48,13 @@ const Transaction = ({data}) => {
 
         <div className='w-2/3'>
           {isNftTxn ? (
-            <p className='font-bold'>
+            <p className=''>
               {data?.cause} {data?.nft?.symbol}
             </p>
           ) : isAccessKey ? (
-            <p className='font-bold'>Access Key Added</p>
+            <p className=''>Access Key Added</p>
           ) : (
-            <p className='font-bold'>{isIncoming ? receiveBtn : sentBtn} NEAR</p>
+            <p className=''>{isIncoming ? receiveBtn : sentBtn} NEAR</p>
           )}
 
           {isNftTxn ? (
@@ -96,11 +96,10 @@ const Transaction = ({data}) => {
 
         <div className='w-2/3 pl-5'>
           {isNftTxn ? (
-            <p className={`text-blue-800 font-bold`}>Token Id: {data?.token_id}</p>
+            <p className={`text-blue-800 `}>Token Id: {data?.token_id}</p>
           ) : (
             !isAccessKey && (
-              <p
-                className={`${isIncoming ? "text-green-500" : "text-red-500"} font-bold`}>
+              <p className={`${isIncoming ? "text-green-500" : "text-red-500"} `}>
                 {isIncoming ? "+" : "-"}
                 {String(trxnAmount).length > 8
                   ? (trxnAmount / 10 ** 3).toFixed(2) + " K"

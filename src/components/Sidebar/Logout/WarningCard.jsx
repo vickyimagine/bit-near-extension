@@ -19,7 +19,7 @@ const WarningCard = ({setIsWarning}) => {
   };
   return (
     <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-2xl shadow-black rounded p-6 h-72 w-80 justify-evenly text-justify flex flex-col items-center space-y-2 z-20 '>
-      <h2 className='text-xl font-bold mb-2'>{resetPassTxt}</h2>
+      <h2 className='text-xl  mb-2'>{resetPassTxt}</h2>
       <p className='text-sm text-red-400'>
         <HiOutlineInformationCircle
           fontSize={24}

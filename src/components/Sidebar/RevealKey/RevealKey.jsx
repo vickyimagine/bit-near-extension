@@ -50,7 +50,7 @@ const RevealKey = () => {
         />
       </Link>
       <div className='flex flex-col items-center gap-y-4 ml-8'>
-        <h1 className='text-white text-4xl font-bold'>
+        <h1 className='text-white text-4xl '>
           {isKey ? secretKeyLabel : revealSecretKey}
         </h1>
         {isKey ? (
@@ -91,7 +91,7 @@ const RevealKey = () => {
               </div>
             </div>
             <button
-              className='bit-btn px-8 font-bold'
+              className='bit-btn px-8 '
               onClick={checkPassword}>
               <span>{revealSecretKey}</span>
             </button>

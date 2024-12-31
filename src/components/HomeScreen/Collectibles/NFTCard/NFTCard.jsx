@@ -72,10 +72,8 @@ const NFTCard = ({nft, setCardOpen}) => {
                 />
                 <div className='flex flex-col space-y-3  w-2/3'>
                   <div className='flex justify-start w-full text-white  border-b border-white'>
-                    <p className='text-xl font-bold w-1/2   border-r border-white'>
-                      {tokenIdTxt}
-                    </p>
-                    <p className=' flex items-center justify-evenly font-inter gap-x-4 text-lg font-bold w-1/2 '>
+                    <p className='text-xl  w-1/2   border-r border-white'>{tokenIdTxt}</p>
+                    <p className=' flex items-center justify-evenly font-inter gap-x-4 text-lg  w-1/2 '>
                       {nftData?.tokenId}
                       <div className='flex'>
                         <a
@@ -118,14 +116,14 @@ const NFTCard = ({nft, setCardOpen}) => {
             </div>
             <div className=' max-h-40 mt-5 flex space-x-6'>
               <button
-                className='bit-btn w-fit h-fit gap-x-3 flex items-center justify-center px-5 font-bold'
+                className='bit-btn w-fit h-fit gap-x-3 flex items-center justify-center px-5 '
                 onClick={() => {
                   nftDownload(nftData?.media);
                 }}>
                 {downloadTxt} <HiOutlineDownload fontSize={22} />
               </button>
               <button
-                className='bit-btn w-fit h-fit gap-x-3  flex items-center justify-center px-5 font-bold'
+                className='bit-btn w-fit h-fit gap-x-3  flex items-center justify-center px-5 '
                 onClick={() => setIsTransfer(true)}>
                 {transferTxt} <LuSend fontSize={22} />
               </button>

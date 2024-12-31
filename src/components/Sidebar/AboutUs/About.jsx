@@ -21,8 +21,8 @@ const About = () => {
           color='white'
         />
       </Link>
-      <h1 className='text-5xl text-white font-semibold'>{aboutTxt}</h1>
-      <p className='text-xl font-semibold text-white'>
+      <h1 className='text-5xl text-white '>{aboutTxt}</h1>
+      <p className='text-xl  text-white'>
         {lang === "en" ? "About" : "Sobre"} Beyond Imagination Technologies
       </p>
       <div className='about text-white overflow-y-scroll cursor-default'>

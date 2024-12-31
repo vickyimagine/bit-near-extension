@@ -115,7 +115,7 @@ const ImportNft = ({setImport}) => {
         disabled={nftParams.contractId === "" || nftParams.tokenId === ""} // Disable button if inputs are empty
         onClick={importNFT} // Handle NFT import action
       >
-        <span className='font-bold'>{importTxt}</span> {/* Button text */}
+        <span className=''>{importTxt}</span> {/* Button text */}
       </button>
     </div>
   );

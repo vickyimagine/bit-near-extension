@@ -59,40 +59,40 @@ const Terms = ({setTerms}) => {
         </Link>
       )}
 
-      <h1 className='text-5xl text-white font-semibold mt-3'>{termsTxt}</h1>
+      <h1 className='text-5xl text-white  mt-3'>{termsTxt}</h1>
 
       <div className='terms text-white overflow-y-scroll cursor-default space-y-3'>
         <p>{termsPara1}</p>
-        <span className='font-bold text-white text-xl'>{termsHead2}:</span>
+        <span className=' text-white text-xl'>{termsHead2}:</span>
         <p>{termsPara2}</p>
-        <span className='font-bold text-white text-xl'>{termsHead3}</span>
+        <span className=' text-white text-xl'>{termsHead3}</span>
         <p>{termsPara3}</p>
-        <span className='font-bold text-white text-xl'>{termsHead4}</span>
+        <span className=' text-white text-xl'>{termsHead4}</span>
         <p>{termsPara4}</p>
-        <span className='font-bold text-white text-xl'>{termsHead5}:</span>
+        <span className=' text-white text-xl'>{termsHead5}:</span>
         <p>{termsPara5}</p>
 
-        <span className='font-bold text-white text-xl'>{termsHead6}</span>
+        <span className=' text-white text-xl'>{termsHead6}</span>
         <p>{termsPara6}</p>
-        <span className='font-bold text-white text-xl'>{termsHead7}:</span>
+        <span className=' text-white text-xl'>{termsHead7}:</span>
         <p>{termsPara7}</p>
-        <span className='font-bold text-white text-xl'>{termsHead8}:</span>
+        <span className=' text-white text-xl'>{termsHead8}:</span>
         <p>{termsPara8}</p>
 
-        <span className='font-bold text-white text-xl'>{termsHead9}:</span>
+        <span className=' text-white text-xl'>{termsHead9}:</span>
         <p>{termsPara9}</p>
-        <span className='font-bold text-white text-xl'>{termsHead10}</span>
+        <span className=' text-white text-xl'>{termsHead10}</span>
         <p>{termsPara10}</p>
 
-        <span className='font-bold text-white text-xl'>{termsHead11}:</span>
+        <span className=' text-white text-xl'>{termsHead11}:</span>
         <p>{termsPara11}</p>
-        <span className='font-bold text-white text-xl'>{termsHead12}:</span>
+        <span className=' text-white text-xl'>{termsHead12}:</span>
         <p>{termsPara12}</p>
-        <span className='font-bold text-white text-xl'>{termsHead13}:</span>
+        <span className=' text-white text-xl'>{termsHead13}:</span>
         <p>{termsPara13}</p>
-        <span className='font-bold text-white text-xl'>{termsHead14}:</span>
+        <span className=' text-white text-xl'>{termsHead14}:</span>
         <p>{termsPara14}</p>
-        <span className='font-bold text-white text-xl'>{termsHead15}:</span>
+        <span className=' text-white text-xl'>{termsHead15}:</span>
         <p>{termsPara15}</p>
       </div>
     </div>

@@ -29,7 +29,7 @@ const Receive = () => {
           size={250}
         />{" "}
         {/* Use empty string if accountId is undefined */}
-        <p className='text-center mt-5 font-bold text-sm w-48'>{qrTxt}</p>
+        <p className='text-center mt-5  text-sm w-48'>{qrTxt}</p>
       </div>
     </div>
   );

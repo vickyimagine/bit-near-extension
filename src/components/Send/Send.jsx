@@ -46,7 +46,7 @@ const Send = () => {
               ref={inputRef} // Attach the ref to the input element
               className={`${
                 inputLength < 6 ? "text-5xl" : inputLength < 11 ? "text-4xl" : "text-3xl"
-              } text-center outline-none font-semibold h-20 font-syncopate bg-transparent input-field text-white placeholder:text-white`}
+              } text-center outline-none  h-20 font-syncopate bg-transparent input-field text-white placeholder:text-white`}
               type='text'
               maxLength={18} // Set max length for the input
               placeholder='0'
@@ -57,7 +57,7 @@ const Send = () => {
               }}
             />
             <button
-              className='bit-btn bg-white rounded-lg font-bold w-fit px-4 self-center'
+              className='bit-btn bg-white rounded-lg  w-fit px-4 self-center'
               onClick={() => {
                 setInputLength(String(balance).length); // Update input length to balance length
                 setAmount(balance); // Set amount to max balance
@@ -71,7 +71,7 @@ const Send = () => {
               <span className='font-syncopate'>{balance} NEAR</span>
             </div>
             <button
-              className={`bit-btn font-bold w-fit self-center px-36 disabled:hover:scale-100 disabled:hover:cursor-not-allowed disabled:opacity-75 disabled:text-bitBg`}
+              className={`bit-btn  w-fit self-center px-36 disabled:hover:scale-100 disabled:hover:cursor-not-allowed disabled:opacity-75 disabled:text-bitBg`}
               disabled={amount === 0 || balance === 0 || Number(amount) > Number(balance)} // Disable button based on conditions
               onClick={() => setNextStep(true)} // Move to the next step on click
             >

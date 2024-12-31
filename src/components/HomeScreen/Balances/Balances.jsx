@@ -95,7 +95,7 @@ const Balances = () => {
     <div className='h-80 space-y-8 border-t border-gray-500 py-2'>
       {/* Display Wallet ID with Copy Functionality */}
       <div className='flex items-center justify-between px-5 py-1'>
-        <span className='font-semibold text-xl text-white'>{walletTxt}</span>
+        <span className=' text-xl text-white'>{walletTxt}</span>
         <CopyToClipboard text={accountId}>
           <div
             className='flex items-center gap-x-3 font-normal font-inter rounded-md px-3 p-1 cursor-pointer active:scale-105 text-white'
@@ -111,7 +111,7 @@ const Balances = () => {
 
       {/* Display Account Balance */}
       <div className='flex flex-col text-white text-center'>
-        <span className='flex flex-col items-center font-semibold'>
+        <span className='flex flex-col items-center '>
           <span className='text-7xl font-syncopate bg-gradient-to-r from-[#a107d9] to-[#00B2FF] w-fit text-transparent bg-clip-text inline-block'>
             {balance || 0}
           </span>
@@ -124,7 +124,7 @@ const Balances = () => {
         <Link
           to='/send'
           className='flex flex-col items-center space-y-2'>
-          <button className='bit-btn text-bitBg p-3 px-8 rounded-full hover:scale-105 gap-x-2 font-bold py-3'>
+          <button className='bit-btn text-bitBg p-3 px-8 rounded-full hover:scale-105 gap-x-2  py-3'>
             {sendTxt}
             <GoArrowUpRight fontSize={24} />
           </button>
@@ -132,7 +132,7 @@ const Balances = () => {
         <Link
           to='/receive'
           className='flex flex-col items-center space-y-2'>
-          <button className='bit-btn text-bitBg p-3 px-6 gap-x-2 hover:scale-105 font-bold'>
+          <button className='bit-btn text-bitBg p-3 px-6 gap-x-2 hover:scale-105 '>
             {receiveTxt}
             <GoArrowDownLeft fontSize={24} />
           </button>

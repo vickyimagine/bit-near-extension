@@ -45,7 +45,7 @@ const HomeScreen = ({isSideBar}) => {
 
   // Styles for active and inactive buttons
   const activeStyle =
-    "flex items-center justify-center w-1/2 text-center bit-btn text-lg text-bitBg cursor-pointer transition-all duration-300 font-semibold rounded-xl px-4 ";
+    "flex items-center justify-center w-1/2 text-center bit-btn text-lg text-bitBg cursor-pointer transition-all duration-300  rounded-xl px-4 ";
   const inActiveStyle =
     "flex items-center justify-center w-1/2 text-lg text-center text-white cursor-pointer transition-all duration-300 rounded-xl";
 

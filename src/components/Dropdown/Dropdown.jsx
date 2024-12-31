@@ -28,7 +28,7 @@ const Dropdown = () => {
   return (
     <div className='relative inline-block text-left ml-8'>
       <button
-        className='select-button flex justify-center items-center gap-x-2 w-36 max-w-xs border text-black bg-white border-gray-600 focus:outline-none rounded-full p-1 py-2 font-bold'
+        className='select-button flex justify-center items-center gap-x-2 w-36 max-w-xs border text-black bg-white border-gray-600 focus:outline-none rounded-full p-1 py-2 '
         onClick={toggleDropdown}>
         {currentNetwork.networkName}
         <IoIosArrowDown
@@ -43,7 +43,7 @@ const Dropdown = () => {
           {networks.map((network, index) => (
             <button
               key={network.networkName}
-              className={`flex items-center justify-center w-full py-2 font-bold text-black rounded-md hover:bg-gray-100 ${
+              className={`flex items-center justify-center w-full py-2  text-black rounded-md hover:bg-gray-100 ${
                 index === 0 ? "border-b border-gray-300" : ""
               }`}
               onClick={() => selectNetwork(network)}>

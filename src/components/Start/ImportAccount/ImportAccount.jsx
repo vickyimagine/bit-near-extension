@@ -106,7 +106,7 @@ const ImportAccount = () => {
         />
       </Link>
       <div className='flex flex-col space-y-2 gap-y-16'>
-        <h1 className='text-white text-4xl font-bold self-center'>{importAccountTxt}</h1>
+        <h1 className='text-white text-4xl  self-center'>{importAccountTxt}</h1>
         <div className='flex flex-col space-y-2'>
           <div className='relative inline-block text-right self-end'>
             <button
@@ -126,7 +126,7 @@ const ImportAccount = () => {
                 {methods.map((item, idx) => (
                   <button
                     key={item}
-                    className={`flex items-center rounded-md justify-center py-2 font-bold bg-white ${
+                    className={`flex items-center rounded-md justify-center py-2  bg-white ${
                       idx === 0 &&
                       "border-b-[#7e787880] rounded-b-none border-[white] border"
                     } text-black hover:bg-gray-100 w-full`}

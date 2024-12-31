@@ -82,7 +82,7 @@ const ReceiverDetails = ({setNextStep, amount}) => {
       </div>
       <div className='flex flex-col space-y-7'>
         <button
-          className='bit-btn w-fit self-center px-40 py-3 font-bold disabled:cursor-not-allowed'
+          className='bit-btn w-fit self-center px-40 py-3  disabled:cursor-not-allowed'
           disabled={!recipient || transferring} // Disable if no recipient or if transferring
           onClick={sendNear}>
           {send}
