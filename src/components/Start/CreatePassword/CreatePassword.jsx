@@ -63,7 +63,7 @@ const EnterPassword = () => {
       localStorage.removeItem("tempKeystore");
       localStorage.removeItem("onPassword");
 
-      browser.storage.local.set({keyStore: updatedJSON});
+      // browser.storage.local.set({keyStore: updatedJSON});
 
       toast.success("Welcome to Bitwallet", {
         style: {marginTop: "20px"}
