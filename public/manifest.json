@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Bitwallet",
   "version": "4.9.6",
-  "permissions": ["activeTab", "storage", "background"],
+  "permissions": ["activeTab", "storage", "background", "scripting"],
   "background": {
     "service_worker": "background.js"
   },
